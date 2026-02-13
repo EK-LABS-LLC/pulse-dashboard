@@ -8,7 +8,7 @@ export function Cta() {
           className="text-[clamp(2rem,3.5vw,3.2rem)] font-bold text-white mb-4 leading-tight"
           style={{ fontFamily: "'Space Grotesk', sans-serif", letterSpacing: '-0.03em' }}
         >
-          Start seeing what your LLMs are doing
+          Start tracking your agents
         </h2>
         <p className="text-neutral-500 text-[15px] mb-9 max-w-[400px] mx-auto">
           Free tier available. No credit card required.

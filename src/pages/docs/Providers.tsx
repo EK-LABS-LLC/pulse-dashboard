@@ -11,7 +11,7 @@ export default function Providers() {
 
       <section className="mb-10">
         <h2 className="text-xl font-semibold text-white mb-4" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>observe(client, provider, options?)</h2>
-        <p className="text-sm text-neutral-500 mb-4">Wraps an LLM client and returns a traced version. The returned client has the same type and API as the original.</p>
+        <p className="text-sm text-neutral-500 mb-4">Wraps an LLM client and returns a traced version. The returned client has same type and API as original.</p>
         <CodeTabs
           ts={
             <pre className="bg-[#111111] border border-neutral-800 p-4 font-mono text-sm text-neutral-400 overflow-x-auto"><code>{`const traced = observe(client, Provider.OpenAI);
@@ -29,7 +29,7 @@ traced = observe(client, Provider.OPENROUTER)`}</code></pre>
           <li><strong className="text-neutral-300">OpenAI / OpenRouter</strong> — <code className="font-mono text-[0.9em]">client.chat.completions.create</code></li>
           <li><strong className="text-neutral-300">Anthropic</strong> — <code className="font-mono text-[0.9em]">client.messages.create</code></li>
         </ul>
-        <p className="text-sm text-neutral-500 mt-3">All other methods on the client remain untouched.</p>
+        <p className="text-sm text-neutral-500 mt-3">All other methods on client remain untouched.</p>
       </section>
 
       <section className="mb-10">
@@ -87,7 +87,7 @@ for chunk in stream:
   print(chunk.choices[0].delta.content or "", end="")`}</code></pre>
           }
         />
-        <p className="text-sm text-neutral-500 mt-3">Both streaming and non-streaming calls are traced. For streams, the trace is recorded after the stream completes.</p>
+        <p className="text-sm text-neutral-500 mt-3">Both streaming and non-streaming calls are traced. For streams, trace is recorded after stream completes.</p>
       </section>
 
       <section className="mb-10">
@@ -156,7 +156,7 @@ with client.messages.stream(
 
       <section className="mb-10">
         <h2 className="text-xl font-semibold text-white mb-4" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>OpenRouter</h2>
-        <p className="text-sm text-neutral-500 mb-4">OpenRouter uses the OpenAI client library. Pass <code className="font-mono text-[0.9em]">Provider.OpenRouter</code> so Pulse records the correct provider and extracts OpenRouter-specific cost data.</p>
+        <p className="text-sm text-neutral-500 mb-4">OpenRouter uses OpenAI client library. Pass <code className="font-mono text-[0.9em]">Provider.OpenRouter</code> so Pulse records correct provider and extracts OpenRouter-specific cost data.</p>
         <CodeTabs
           ts={
             <pre className="bg-[#111111] border border-neutral-800 p-4 font-mono text-sm text-neutral-400 overflow-x-auto"><code>{`import OpenAI from 'openai';
@@ -193,7 +193,7 @@ res = client.chat.completions.create(
 )`}</code></pre>
           }
         />
-        <p className="text-sm text-neutral-500 mt-3">When OpenRouter includes a <code className="font-mono text-[0.9em]">cost</code> field in the response, Pulse uses that directly instead of calculating from token counts.</p>
+        <p className="text-sm text-neutral-500 mt-3">When OpenRouter includes a <code className="font-mono text-[0.9em]">cost</code> field in response, Pulse uses that directly instead of calculating from token counts.</p>
       </section>
 
       <section className="mb-10">
@@ -230,8 +230,8 @@ res = client.chat.completions.create(
 
       <section className="mb-10">
         <h2 className="text-xl font-semibold text-white mb-4" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>Error handling</h2>
-        <p className="text-sm text-neutral-500 mb-3">If the LLM call throws, the SDK captures an error trace (with <code className="font-mono text-[0.9em]">status: "error"</code> and error details) and then re-throws the original error. Your application error handling is unaffected.</p>
-        <p className="text-sm text-neutral-500">If trace sending fails (network error, server down), the SDK logs a warning and continues. Tracing never breaks your application.</p>
+        <p className="text-sm text-neutral-500 mb-3">If LLM call throws, SDK captures an error trace (with <code className="font-mono text-[0.9em]">status: "error"</code> and error details) and then re-throws original error. Your application error handling is unaffected.</p>
+        <p className="text-sm text-neutral-500">If trace sending fails (network error, server down), SDK logs a warning and continues. Tracing never breaks your application.</p>
       </section>
     </div>
   );

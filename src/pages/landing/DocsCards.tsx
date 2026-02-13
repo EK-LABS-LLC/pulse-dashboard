@@ -18,7 +18,7 @@ export function DocsCards() {
             className="text-[clamp(1.8rem,3vw,2.6rem)] font-bold leading-tight text-white mb-4"
             style={{ fontFamily: "'Space Grotesk', sans-serif", letterSpacing: '-0.03em' }}
           >
-            Built for engineers who read docs first
+            Everything you need to track your agent usage
           </h2>
           <p className="text-neutral-500 text-[15px] leading-relaxed">
             Guides, API reference, and examples to get you from zero to production.
