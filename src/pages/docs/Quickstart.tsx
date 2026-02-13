@@ -13,8 +13,24 @@ export default function Quickstart() {
       <section className="mb-10">
         <h2 className="text-xl font-semibold text-white mb-4" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>Install</h2>
         <CodeTabs
-          ts={<pre className="bg-[#111111] border border-neutral-800 p-4 font-mono text-sm text-neutral-400 overflow-x-auto"><code>bun add @pulse/sdk</code></pre>}
-          py={<pre className="bg-[#111111] border border-neutral-800 p-4 font-mono text-sm text-neutral-400 overflow-x-auto"><code>pip install pulse-sdk</code></pre>}
+          ts={
+            <div className="bg-[#111111] border border-neutral-800 p-4 font-mono text-sm overflow-x-auto">
+              <div>
+                <span className="text-violet-300">bun</span>{' '}
+                <span className="text-green-300">add</span>{' '}
+                <span className="text-neutral-300">@pulse/sdk</span>
+              </div>
+            </div>
+          }
+          py={
+            <div className="bg-[#111111] border border-neutral-800 p-4 font-mono text-sm overflow-x-auto">
+              <div>
+                <span className="text-violet-300">pip</span>{' '}
+                <span className="text-green-300">install</span>{' '}
+                <span className="text-neutral-300">pulse-sdk</span>
+              </div>
+            </div>
+          }
         />
         <p className="text-sm text-neutral-500 mt-3">Works with Bun, Node, or any JavaScript/Python runtime.</p>
       </section>
@@ -24,18 +40,56 @@ export default function Quickstart() {
         <p className="text-sm text-neutral-500 mb-4">Call <code className="font-mono text-[0.9em]">initPulse()</code> once at application startup. You need an API key from the Pulse dashboard.</p>
         <CodeTabs
           ts={
-            <pre className="bg-[#111111] border border-neutral-800 p-4 font-mono text-sm text-neutral-400 overflow-x-auto"><code>{`import { initPulse } from '@pulse/sdk';
-
-initPulse({
-  apiKey: 'pulse_sk_...',
-});`}</code></pre>
+            <div className="bg-[#111111] border border-neutral-800 p-4 font-mono text-sm overflow-x-auto">
+              <div>
+                <span className="text-violet-300">import</span>{' '}
+                <span className="text-neutral-300">initPulse</span>{' '}
+                <span className="text-violet-300">from</span>{' '}
+                <span className="text-green-300">'@pulse/sdk'</span>;
+              </div>
+              <br />
+              <div>
+                <span className="text-neutral-300">initPulse</span>
+                <span>(</span>
+                <span>{'{'}</span>
+              </div>
+              <div>
+                <span>{'  '}</span>
+                <span className="text-neutral-300">apiKey</span>
+                <span>: </span>
+                <span className="text-green-300">'pulse_sk_...'</span>
+              </div>
+              <div>
+                <span>{'}'}</span>
+                <span>)</span>;
+              </div>
+            </div>
           }
           py={
-            <pre className="bg-[#111111] border border-neutral-800 p-4 font-mono text-sm text-neutral-400 overflow-x-auto"><code>{`from pulse_sdk import init_pulse
-
-init_pulse({
-  "api_key": "pulse_sk_...",
-})`}</code></pre>
+            <div className="bg-[#111111] border border-neutral-800 p-4 font-mono text-sm overflow-x-auto">
+              <div>
+                <span className="text-violet-300">from</span>{' '}
+                <span className="text-neutral-300">pulse_sdk</span>{' '}
+                <span className="text-violet-300">import</span>{' '}
+                <span className="text-neutral-300">init_pulse</span>
+              </div>
+              <br />
+              <div>
+                <span className="text-neutral-300">init_pulse</span>
+                <span>(</span>
+                <span>{'{'}</span>
+              </div>
+              <div>
+                <span>{'  '}</span>
+                <span className="text-green-300">"api_key"</span>
+                <span>: </span>
+                <span className="text-green-300">"pulse_sk_..."</span>
+              </div>
+              <div>
+                <span>{'}'}</span>
+                <span>)</span>
+              </div>
+            </div>
           }
         />
         <p className="text-sm text-neutral-500 mt-3">This starts background trace batching and registers shutdown handlers to flush remaining traces on exit.</p>
@@ -46,38 +100,175 @@ init_pulse({
         <p className="text-sm text-neutral-500 mb-4">Use <code className="font-mono text-[0.9em]">observe()</code> to wrap your LLM client. The returned client behaves identically — all tracing happens as a side effect.</p>
         <CodeTabs
           ts={
-            <pre className="bg-[#111111] border border-neutral-800 p-4 font-mono text-sm text-neutral-400 overflow-x-auto"><code>{`import { initPulse, observe, Provider } from '@pulse/sdk';
-import OpenAI from 'openai';
-
-initPulse({ apiKey: 'pulse_sk_...' });
-
-const client = observe(
-  new OpenAI({ apiKey: 'sk-...' }),
-  Provider.OpenAI
-);
-
-// Use as normal. Traces are captured automatically.
-const res = await client.chat.completions.create({
-  model: 'gpt-4o',
-  messages: [{ role: 'user', content: 'Hello' }],
-});`}</code></pre>
+            <div className="bg-[#111111] border border-neutral-800 p-4 font-mono text-sm overflow-x-auto">
+              <div>
+                <span className="text-violet-300">import</span>{' '}
+                <span className="text-neutral-300">{`{ initPulse, observe, Provider }`}</span>{' '}
+                <span className="text-violet-300">from</span>{' '}
+                <span className="text-green-300">'@pulse/sdk'</span>;
+              </div>
+              <div>
+                <span className="text-violet-300">import</span>{' '}
+                <span className="text-blue-300">OpenAI</span>{' '}
+                <span className="text-violet-300">from</span>{' '}
+                <span className="text-green-300">'openai'</span>;
+              </div>
+              <br />
+              <div>
+                <span className="text-neutral-300">initPulse</span>
+                <span>(</span>
+                <span>{'{'}</span>
+                <span>{' '}</span>
+                <span className="text-neutral-300">apiKey</span>
+                <span>: </span>
+                <span className="text-green-300">'pulse_sk_...'</span>
+                <span>{' '}</span>
+                <span>{'}'}</span>
+                <span>)</span>;
+              </div>
+              <br />
+              <div>
+                <span className="text-violet-300">const</span>{' '}
+                <span className="text-neutral-300">client</span>{' '}
+                <span>=</span>{' '}
+                <span className="text-neutral-300">observe</span>
+                <span>(</span>
+              </div>
+              <div>
+                <span>{'  '}</span>
+                <span className="text-violet-300">new</span>{' '}
+                <span className="text-blue-300">OpenAI</span>
+                <span>{'({'}</span>
+                <span>{' '}</span>
+                <span className="text-neutral-300">apiKey</span>
+                <span>: </span>
+                <span className="text-green-300">'sk-...'</span>
+                <span>{' '}</span>
+                <span>{'})'}</span>
+                <span>,</span>
+              </div>
+              <div>
+                <span>{'  '}</span>
+                <span className="text-blue-300">Provider</span>
+                <span>.OpenAI</span>
+              </div>
+              <div>);</div>
+              <br />
+              <div>
+                <span className="text-neutral-600">// Use as normal. Traces are captured automatically.</span>
+              </div>
+              <div>
+                <span className="text-violet-300">const</span>{' '}
+                <span className="text-neutral-300">res</span>{' '}
+                <span>=</span>{' '}
+                <span className="text-violet-300">await</span>{' '}
+                <span className="text-neutral-300">client</span>
+                <span>.chat.completions.create(</span>
+              </div>
+              <div>
+                <span>{'  '}</span>
+                <span>model:</span>{' '}
+                <span className="text-green-300">'gpt-4o'</span>
+                <span>,</span>
+              </div>
+              <div>
+                <span>{'  '}</span>
+                <span>messages:</span>{' '}
+                <span>{'[{ '}</span>
+                <span>role:</span>{' '}
+                <span className="text-green-300">'user'</span>
+                <span>,</span>{' '}
+                <span>content:</span>{' '}
+                <span className="text-green-300">'Hello'</span>{' '}
+                <span>{'}]'}</span>
+                <span>,</span>
+              </div>
+              <div>);</div>
+            </div>
           }
           py={
-            <pre className="bg-[#111111] border border-neutral-800 p-4 font-mono text-sm text-neutral-400 overflow-x-auto"><code>{`from pulse_sdk import init_pulse, observe, Provider
-from openai import OpenAI
-
-init_pulse({ "api_key": "pulse_sk_..." })
-
-client = observe(
-  OpenAI(api_key="sk-..."),
-  Provider.OPENAI
-)
-
-# Use as normal. Traces are captured automatically.
-res = client.chat.completions.create(
-  model="gpt-4o",
-  messages=[{ "role": "user", "content": "Hello" }],
-)`}</code></pre>
+            <div className="bg-[#111111] border border-neutral-800 p-4 font-mono text-sm overflow-x-auto">
+              <div>
+                <span className="text-violet-300">from</span>{' '}
+                <span className="text-neutral-300">pulse_sdk</span>{' '}
+                <span className="text-violet-300">import</span>{' '}
+                <span className="text-neutral-300">init_pulse</span>
+                <span>, </span>
+                <span className="text-neutral-300">observe</span>
+                <span>, </span>
+                <span className="text-neutral-300">Provider</span>
+              </div>
+              <div>
+                <span className="text-violet-300">from</span>{' '}
+                <span className="text-neutral-300">openai</span>{' '}
+                <span className="text-violet-300">import</span>{' '}
+                <span className="text-blue-300">OpenAI</span>
+              </div>
+              <br />
+              <div>
+                <span className="text-neutral-300">init_pulse</span>
+                <span>(</span>
+                <span>{'{'}</span>
+                <span>{' '}</span>
+                <span className="text-green-300">"api_key"</span>
+                <span>: </span>
+                <span className="text-green-300">"pulse_sk_..."</span>
+                <span>{' '}</span>
+                <span>{'}'}</span>
+                <span>)</span>
+              </div>
+              <br />
+              <div>
+                <span className="text-neutral-300">client</span>{' '}
+                <span>=</span>{' '}
+                <span className="text-neutral-300">observe</span>
+                <span>(</span>
+              </div>
+              <div>
+                <span>{'  '}</span>
+                <span className="text-blue-300">OpenAI</span>
+                <span>(api_key=</span>
+                <span className="text-green-300">"sk-..."</span>
+                <span>),</span>
+              </div>
+              <div>
+                <span>{'  '}</span>
+                <span className="text-blue-300">Provider</span>
+                <span>.OPENAI</span>
+              </div>
+              <div>)</div>
+              <br />
+              <div>
+                <span className="text-neutral-600"># Use as normal. Traces are captured automatically.</span>
+              </div>
+              <div>
+                <span className="text-neutral-300">res</span>{' '}
+                <span>=</span>{' '}
+                <span className="text-neutral-300">client</span>
+                <span>.chat.completions.create(</span>
+              </div>
+              <div>
+                <span>{'  '}</span>
+                <span>model=</span>
+                <span className="text-green-300">"gpt-4o"</span>
+                <span>,</span>
+              </div>
+              <div>
+                <span>{'  '}</span>
+                <span>messages=[</span>
+                <span>{'{ '}</span>
+                <span className="text-green-300">"role"</span>
+                <span>: </span>
+                <span className="text-green-300">"user"</span>
+                <span>, </span>
+                <span className="text-green-300">"content"</span>
+                <span>: </span>
+                <span className="text-green-300">"Hello"</span>
+                <span>{' }'},</span>
+                <span>]</span>
+              </div>
+              <div>)</div>
+            </div>
           }
         />
       </section>
