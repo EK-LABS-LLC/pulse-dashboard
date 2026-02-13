@@ -1,8 +1,8 @@
 const metrics = [
-  { value: '< 2ms', label: 'SDK overhead' },
-  { value: '3', label: 'Providers' },
-  { value: '100%', label: 'Source available' },
-  { value: '0', label: 'Vendor lock-in' },
+  { value: "< 2ms", label: "SDK overhead" },
+  { value: "3", label: "Providers" },
+  { value: "100%", label: "Source available" },
+  { value: "0", label: "Vendor lock-in" },
 ];
 
 export function Metrics() {
@@ -12,11 +12,11 @@ export function Metrics() {
         {metrics.map((m, i) => (
           <div
             key={i}
-            className={`py-10 text-center ${i < metrics.length - 1 ? 'md:border-r border-neutral-800' : ''}`}
+            className={`py-10 text-center ${i < metrics.length - 1 ? "md:border-r border-neutral-800" : ""}`}
           >
             <h3
               className="text-3xl font-bold text-white"
-              style={{ fontFamily: "'Space Grotesk', sans-serif", letterSpacing: '-0.03em' }}
+              style={{ fontFamily: "'Space Grotesk', sans-serif", letterSpacing: "-0.03em" }}
             >
               {m.value}
             </h3>

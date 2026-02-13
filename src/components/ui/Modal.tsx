@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef } from "react";
 
 interface ModalProps {
   isOpen: boolean;
@@ -19,14 +19,12 @@ export function Modal({ isOpen, onClose, title, children }: ModalProps) {
     );
 
     const firstElement = focusableElements?.[0] as HTMLElement;
-    const lastElement = focusableElements?.[
-      (focusableElements?.length || 0) - 1
-    ] as HTMLElement;
+    const lastElement = focusableElements?.[(focusableElements?.length || 0) - 1] as HTMLElement;
 
     firstElement?.focus();
 
     const handleTab = (e: KeyboardEvent) => {
-      if (e.key !== 'Tab') return;
+      if (e.key !== "Tab") return;
 
       if (e.shiftKey) {
         if (document.activeElement === firstElement) {
@@ -41,26 +39,26 @@ export function Modal({ isOpen, onClose, title, children }: ModalProps) {
       }
     };
 
-    document.addEventListener('keydown', handleTab);
+    document.addEventListener("keydown", handleTab);
 
     // Prevent body scroll
-    document.body.style.overflow = 'hidden';
+    document.body.style.overflow = "hidden";
 
     return () => {
-      document.removeEventListener('keydown', handleTab);
-      document.body.style.overflow = '';
+      document.removeEventListener("keydown", handleTab);
+      document.body.style.overflow = "";
     };
   }, [isOpen]);
 
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && isOpen) {
+      if (e.key === "Escape" && isOpen) {
         onClose();
       }
     };
 
-    document.addEventListener('keydown', handleEscape);
-    return () => document.removeEventListener('keydown', handleEscape);
+    document.addEventListener("keydown", handleEscape);
+    return () => document.removeEventListener("keydown", handleEscape);
   }, [isOpen, onClose]);
 
   if (!isOpen) return null;
@@ -95,12 +93,7 @@ export function Modal({ isOpen, onClose, title, children }: ModalProps) {
             className="text-neutral-400 hover:text-neutral-100 transition-colors"
             aria-label="Close modal"
           >
-            <svg
-              className="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"

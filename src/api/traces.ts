@@ -1,5 +1,5 @@
-import { useQuery } from '@tanstack/react-query';
-import { getTrace, getTraces, type GetTracesParams } from '../lib/apiClient';
+import { useQuery } from "@tanstack/react-query";
+import { getTrace, getTraces, type GetTracesParams } from "../lib/apiClient";
 
 export function useTracesQuery(
   scope: string,
@@ -15,9 +15,8 @@ export function useTracesQuery(
 
 export function useTraceDetailQuery(projectId: string | undefined, traceId: string | undefined) {
   return useQuery({
-    queryKey: ['trace', projectId, traceId],
+    queryKey: ["trace", projectId, traceId],
     enabled: !!projectId && !!traceId,
     queryFn: () => getTrace(traceId as string),
   });
 }
-

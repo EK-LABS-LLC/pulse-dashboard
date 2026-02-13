@@ -1,11 +1,11 @@
-import { useEffect, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
-import type { Trace } from '../../lib/apiClient';
+import { useEffect, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
+import type { Trace } from "../../lib/apiClient";
 
 interface TraceDetailPanelProps {
   trace: Trace | null;
   onClose: () => void;
-  onNavigate?: (direction: 'prev' | 'next') => void;
+  onNavigate?: (direction: "prev" | "next") => void;
   hasPrev?: boolean;
   hasNext?: boolean;
 }
@@ -30,24 +30,34 @@ const ChevronRightIcon = () => (
 
 const ExternalLinkIcon = () => (
   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={1.5}
+      d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+    />
   </svg>
 );
 
 const CopyIcon = () => (
   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={1.5}
+      d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
+    />
   </svg>
 );
 
 const formatLatency = (ms: number | null | undefined) => {
-  if (ms === null || ms === undefined) return '--';
+  if (ms === null || ms === undefined) return "--";
   if (ms < 1000) return `${ms}ms`;
   return `${(ms / 1000).toFixed(2)}s`;
 };
 
 const formatCost = (cents: number | null | undefined) => {
-  if (cents === null || cents === undefined) return '--';
+  if (cents === null || cents === undefined) return "--";
   return `$${(cents / 100).toFixed(4)}`;
 };
 
@@ -56,25 +66,25 @@ const formatTokens = (tokens: number | null | undefined) => {
   return tokens;
 };
 
-const extractMessagePreview = (body: unknown, type: 'input' | 'output'): string => {
-  if (!body || typeof body !== 'object') return '';
+const extractMessagePreview = (body: unknown, type: "input" | "output"): string => {
+  if (!body || typeof body !== "object") return "";
 
   const obj = body as Record<string, unknown>;
 
-  if (type === 'input') {
+  if (type === "input") {
     // Try to get the last user message or system message
     if (Array.isArray(obj.messages)) {
       const messages = obj.messages as Array<{ role?: string; content?: string }>;
-      const lastUserMessage = [...messages].reverse().find(m => m.role === 'user');
+      const lastUserMessage = [...messages].reverse().find((m) => m.role === "user");
       if (lastUserMessage?.content) return lastUserMessage.content;
-      const systemMessage = messages.find(m => m.role === 'system');
+      const systemMessage = messages.find((m) => m.role === "system");
       if (systemMessage?.content) return systemMessage.content;
     }
     // Fallback: stringify
     return JSON.stringify(body).slice(0, 200);
   }
 
-  if (type === 'output') {
+  if (type === "output") {
     // Try to get the assistant's response
     if (Array.isArray(obj.choices)) {
       const choices = obj.choices as Array<{ message?: { content?: string }; text?: string }>;
@@ -89,7 +99,7 @@ const extractMessagePreview = (body: unknown, type: 'input' | 'output'): string 
     return JSON.stringify(body).slice(0, 200);
   }
 
-  return '';
+  return "";
 };
 
 export default function TraceDetailPanel({
@@ -101,28 +111,33 @@ export default function TraceDetailPanel({
 }: TraceDetailPanelProps) {
   const navigate = useNavigate();
 
-  const handleKeyDown = useCallback((e: KeyboardEvent) => {
-    if (e.key === 'Escape') {
-      onClose();
-    }
-  }, [onClose]);
+  const handleKeyDown = useCallback(
+    (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        onClose();
+      }
+    },
+    [onClose]
+  );
 
   useEffect(() => {
-    document.addEventListener('keydown', handleKeyDown);
-    return () => document.removeEventListener('keydown', handleKeyDown);
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
   }, [handleKeyDown]);
 
   if (!trace) return null;
 
-  const isError = trace.status === 'error';
+  const isError = trace.status === "error";
   const totalTokens = (trace.inputTokens || 0) + (trace.outputTokens || 0);
   const inputPercent = totalTokens > 0 ? ((trace.inputTokens || 0) / totalTokens) * 100 : 0;
   const outputPercent = totalTokens > 0 ? ((trace.outputTokens || 0) / totalTokens) * 100 : 0;
 
-  const inputPreview = extractMessagePreview(trace.requestBody, 'input');
+  const inputPreview = extractMessagePreview(trace.requestBody, "input");
   const outputPreview = isError
-    ? (typeof trace.error === 'string' ? trace.error : JSON.stringify(trace.error || {}))
-    : extractMessagePreview(trace.responseBody, 'output');
+    ? typeof trace.error === "string"
+      ? trace.error
+      : JSON.stringify(trace.error || {})
+    : extractMessagePreview(trace.responseBody, "output");
 
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);
@@ -154,7 +169,7 @@ export default function TraceDetailPanel({
           {onNavigate && (
             <>
               <button
-                onClick={() => onNavigate('prev')}
+                onClick={() => onNavigate("prev")}
                 disabled={!hasPrev}
                 className="p-1.5 hover:bg-neutral-800 rounded text-neutral-500 hover:text-white disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-neutral-500"
                 title="Previous"
@@ -162,7 +177,7 @@ export default function TraceDetailPanel({
                 <ChevronLeftIcon />
               </button>
               <button
-                onClick={() => onNavigate('next')}
+                onClick={() => onNavigate("next")}
                 disabled={!hasNext}
                 className="p-1.5 hover:bg-neutral-800 rounded text-neutral-500 hover:text-white disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-neutral-500"
                 title="Next"
@@ -244,7 +259,10 @@ export default function TraceDetailPanel({
                     <span>{formatTokens(trace.inputTokens).toLocaleString()}</span>
                   </div>
                   <div className="w-full bg-neutral-800 h-1.5 rounded">
-                    <div className="bg-accent h-1.5 rounded" style={{ width: `${inputPercent}%` }}></div>
+                    <div
+                      className="bg-accent h-1.5 rounded"
+                      style={{ width: `${inputPercent}%` }}
+                    ></div>
                   </div>
                 </div>
                 <div>
@@ -253,7 +271,10 @@ export default function TraceDetailPanel({
                     <span>{formatTokens(trace.outputTokens).toLocaleString()}</span>
                   </div>
                   <div className="w-full bg-neutral-800 h-1.5 rounded">
-                    <div className="bg-neutral-400 h-1.5 rounded" style={{ width: `${outputPercent}%` }}></div>
+                    <div
+                      className="bg-neutral-400 h-1.5 rounded"
+                      style={{ width: `${outputPercent}%` }}
+                    ></div>
                   </div>
                 </div>
               </div>
@@ -265,34 +286,32 @@ export default function TraceDetailPanel({
             <div className="bg-neutral-900 border border-neutral-800 rounded p-3">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-xs text-neutral-500 uppercase tracking-wide">Input</span>
-                <button
-                  onClick={openInNewTab}
-                  className="text-xs text-accent/60 hover:text-accent"
-                >
+                <button onClick={openInNewTab} className="text-xs text-accent/60 hover:text-accent">
                   View full
                 </button>
               </div>
-              <div className="text-sm text-neutral-300 line-clamp-3">
-                {inputPreview}
-              </div>
+              <div className="text-sm text-neutral-300 line-clamp-3">{inputPreview}</div>
             </div>
           )}
 
           {/* Output Preview / Error */}
           {outputPreview && (
-            <div className={`bg-neutral-900 border rounded p-3 ${isError ? 'border-error/30' : 'border-neutral-800'}`}>
+            <div
+              className={`bg-neutral-900 border rounded p-3 ${isError ? "border-error/30" : "border-neutral-800"}`}
+            >
               <div className="flex items-center justify-between mb-2">
-                <span className={`text-xs uppercase tracking-wide ${isError ? 'text-error' : 'text-neutral-500'}`}>
-                  {isError ? 'Error' : 'Output'}
-                </span>
-                <button
-                  onClick={openInNewTab}
-                  className="text-xs text-accent/60 hover:text-accent"
+                <span
+                  className={`text-xs uppercase tracking-wide ${isError ? "text-error" : "text-neutral-500"}`}
                 >
+                  {isError ? "Error" : "Output"}
+                </span>
+                <button onClick={openInNewTab} className="text-xs text-accent/60 hover:text-accent">
                   View full
                 </button>
               </div>
-              <div className={`text-sm line-clamp-3 ${isError ? 'text-error/80' : 'text-neutral-300'}`}>
+              <div
+                className={`text-sm line-clamp-3 ${isError ? "text-error/80" : "text-neutral-300"}`}
+              >
                 {outputPreview}
               </div>
             </div>
@@ -303,11 +322,10 @@ export default function TraceDetailPanel({
             <div className="bg-neutral-900 border border-neutral-800 rounded p-3">
               <div className="text-xs text-neutral-500 uppercase tracking-wide mb-2">Session</div>
               <div className="flex items-center justify-between">
-                <span className="text-sm font-mono text-accent/80">{trace.sessionId.slice(0, 12)}...</span>
-                <button
-                  onClick={viewSession}
-                  className="text-xs text-accent/60 hover:text-accent"
-                >
+                <span className="text-sm font-mono text-accent/80">
+                  {trace.sessionId.slice(0, 12)}...
+                </span>
+                <button onClick={viewSession} className="text-xs text-accent/60 hover:text-accent">
                   View session
                 </button>
               </div>
@@ -319,14 +337,19 @@ export default function TraceDetailPanel({
             <div className="bg-neutral-900 border border-neutral-800 rounded p-3">
               <div className="text-xs text-neutral-500 uppercase tracking-wide mb-2">Metadata</div>
               <div className="space-y-1.5 text-sm">
-                {Object.entries(trace.metadata).slice(0, 5).map(([key, value]) => (
-                  <div key={key} className="flex justify-between">
-                    <span className="text-neutral-500">{key}</span>
-                    <span className="font-mono text-xs truncate max-w-[180px]" title={String(value)}>
-                      {String(value)}
-                    </span>
-                  </div>
-                ))}
+                {Object.entries(trace.metadata)
+                  .slice(0, 5)
+                  .map(([key, value]) => (
+                    <div key={key} className="flex justify-between">
+                      <span className="text-neutral-500">{key}</span>
+                      <span
+                        className="font-mono text-xs truncate max-w-[180px]"
+                        title={String(value)}
+                      >
+                        {String(value)}
+                      </span>
+                    </div>
+                  ))}
               </div>
             </div>
           )}

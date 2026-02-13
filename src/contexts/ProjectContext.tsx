@@ -1,28 +1,12 @@
-import { createContext, useCallback, useContext, useEffect, useState, type ReactNode } from 'react';
-import { useAuth } from './AuthContext';
+import { useCallback, useEffect, useState, type ReactNode } from "react";
+import { useAuth } from "../hooks/useAuth";
+import { ProjectContext, type Project } from "./project-context";
 
-const SELECTED_PROJECT_KEY = 'pulse_selected_project';
-
-interface Project {
-  id: string;
-  name: string;
-  createdAt: string;
-  role: string;
-}
+const SELECTED_PROJECT_KEY = "pulse_selected_project";
 
 interface ProjectsResponse {
   projects: Project[];
 }
-
-interface ProjectContextType {
-  projects: Project[];
-  selectedProject: Project | null;
-  isProjectLoading: boolean;
-  setSelectedProject: (project: Project) => void;
-  refreshProjects: () => Promise<void>;
-}
-
-const ProjectContext = createContext<ProjectContextType | null>(null);
 
 export function ProjectProvider({ children }: { children: ReactNode }) {
   const { isAuthenticated } = useAuth();
@@ -34,9 +18,9 @@ export function ProjectProvider({ children }: { children: ReactNode }) {
     if (!isAuthenticated) return;
     setIsProjectLoading(true);
     try {
-      const res = await fetch('/dashboard/api/projects', { credentials: 'include' });
+      const res = await fetch("/dashboard/api/projects", { credentials: "include" });
       if (!res.ok) return;
-      const data = await res.json() as ProjectsResponse;
+      const data = (await res.json()) as ProjectsResponse;
       setProjects(data.projects);
 
       const savedId = localStorage.getItem(SELECTED_PROJECT_KEY);
@@ -77,23 +61,16 @@ export function ProjectProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <ProjectContext.Provider value={{
-      projects,
-      selectedProject,
-      isProjectLoading,
-      setSelectedProject,
-      refreshProjects,
-    }}
+    <ProjectContext.Provider
+      value={{
+        projects,
+        selectedProject,
+        isProjectLoading,
+        setSelectedProject,
+        refreshProjects,
+      }}
     >
       {children}
     </ProjectContext.Provider>
   );
-}
-
-export function useProject() {
-  const context = useContext(ProjectContext);
-  if (!context) {
-    throw new Error('useProject must be used within a ProjectProvider');
-  }
-  return context;
 }

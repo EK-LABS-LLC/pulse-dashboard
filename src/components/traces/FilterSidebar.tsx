@@ -1,4 +1,4 @@
-import type { TracesFilters } from '../../pages/Traces';
+import type { TracesFilters } from "../../pages/Traces";
 
 interface FilterSidebarProps {
   filters: TracesFilters;
@@ -6,7 +6,11 @@ interface FilterSidebarProps {
   onClearFilters: () => void;
 }
 
-export default function FilterSidebar({ filters, onApplyFilters, onClearFilters }: FilterSidebarProps) {
+export default function FilterSidebar({
+  filters,
+  onApplyFilters,
+  onClearFilters,
+}: FilterSidebarProps) {
   const updateFilter = (key: keyof TracesFilters, value: string) => {
     onApplyFilters({ ...filters, [key]: value });
   };
@@ -29,7 +33,7 @@ export default function FilterSidebar({ filters, onApplyFilters, onClearFilters 
           <label className="block text-xs text-neutral-500 mb-1.5">Provider</label>
           <select
             value={filters.provider}
-            onChange={(e) => updateFilter('provider', e.target.value)}
+            onChange={(e) => updateFilter("provider", e.target.value)}
             className="w-full bg-neutral-900 border border-neutral-800 rounded px-3 py-2 text-sm text-neutral-300 focus:outline-none focus:border-neutral-700"
           >
             <option value="">All providers</option>
@@ -49,7 +53,7 @@ export default function FilterSidebar({ filters, onApplyFilters, onClearFilters 
           <input
             type="text"
             value={filters.model}
-            onChange={(e) => updateFilter('model', e.target.value)}
+            onChange={(e) => updateFilter("model", e.target.value)}
             placeholder="e.g., gpt-4-turbo"
             className="w-full bg-neutral-900 border border-neutral-800 rounded px-3 py-2 text-sm text-neutral-300 placeholder:text-neutral-600 focus:outline-none focus:border-neutral-700"
           />
@@ -60,7 +64,7 @@ export default function FilterSidebar({ filters, onApplyFilters, onClearFilters 
           <label className="block text-xs text-neutral-500 mb-1.5">Status</label>
           <select
             value={filters.status}
-            onChange={(e) => updateFilter('status', e.target.value)}
+            onChange={(e) => updateFilter("status", e.target.value)}
             className="w-full bg-neutral-900 border border-neutral-800 rounded px-3 py-2 text-sm text-neutral-300 focus:outline-none focus:border-neutral-700"
           >
             <option value="">All statuses</option>
@@ -75,7 +79,7 @@ export default function FilterSidebar({ filters, onApplyFilters, onClearFilters 
           <input
             type="date"
             value={filters.date_from}
-            onChange={(e) => updateFilter('date_from', e.target.value)}
+            onChange={(e) => updateFilter("date_from", e.target.value)}
             className="w-full bg-neutral-900 border border-neutral-800 rounded px-3 py-2 text-sm text-neutral-300 focus:outline-none focus:border-neutral-700"
           />
         </div>
@@ -86,7 +90,7 @@ export default function FilterSidebar({ filters, onApplyFilters, onClearFilters 
           <input
             type="date"
             value={filters.date_to}
-            onChange={(e) => updateFilter('date_to', e.target.value)}
+            onChange={(e) => updateFilter("date_to", e.target.value)}
             className="w-full bg-neutral-900 border border-neutral-800 rounded px-3 py-2 text-sm text-neutral-300 focus:outline-none focus:border-neutral-700"
           />
         </div>
@@ -97,7 +101,7 @@ export default function FilterSidebar({ filters, onApplyFilters, onClearFilters 
           <input
             type="text"
             value={filters.session_id}
-            onChange={(e) => updateFilter('session_id', e.target.value)}
+            onChange={(e) => updateFilter("session_id", e.target.value)}
             placeholder="e.g., ses_abc123"
             className="w-full bg-neutral-900 border border-neutral-800 rounded px-3 py-2 text-sm text-neutral-300 placeholder:text-neutral-600 focus:outline-none focus:border-neutral-700"
           />

@@ -1,4 +1,4 @@
-const SELECTED_PROJECT_KEY = 'pulse_selected_project';
+const SELECTED_PROJECT_KEY = "pulse_selected_project";
 
 const getBaseUrl = (): string => {
   return import.meta.env.VITE_API_BASE_URL || window.location.origin;
@@ -6,7 +6,7 @@ const getBaseUrl = (): string => {
 
 const getProjectHeaders = (): HeadersInit => {
   const projectId = localStorage.getItem(SELECTED_PROJECT_KEY);
-  return projectId ? { 'X-Project-Id': projectId } : {};
+  return projectId ? { "X-Project-Id": projectId } : {};
 };
 
 const handleResponse = async <T>(response: Response): Promise<T> => {
@@ -42,7 +42,7 @@ export interface Trace {
   modelRequested: string;
   modelUsed: string;
   latencyMs: number;
-  status: 'success' | 'error';
+  status: "success" | "error";
   costCents: number;
   sessionId?: string;
   metadata?: Record<string, unknown>;
@@ -68,7 +68,7 @@ export interface Session {
 export interface GetAnalyticsParams {
   date_from?: string;
   date_to?: string;
-  group_by?: 'day' | 'hour' | 'model' | 'provider';
+  group_by?: "day" | "hour" | "model" | "provider";
 }
 
 export interface CostOverTimeByProvider {
@@ -157,7 +157,7 @@ export interface ProjectUserInfo {
   userId: string;
   name: string;
   email: string;
-  role: 'admin' | 'user';
+  role: "admin" | "user";
   createdAt: string;
 }
 
@@ -169,19 +169,19 @@ export interface CreateProjectUserInput {
   name?: string;
   email: string;
   password?: string;
-  role?: 'admin' | 'user';
+  role?: "admin" | "user";
 }
 
 export const getTraces = async (params: GetTracesParams = {}): Promise<TracesResponse> => {
   const url = new URL(`${getBaseUrl()}/dashboard/api/traces`);
   Object.entries(params).forEach(([key, value]) => {
-    if (value !== undefined && value !== '') {
+    if (value !== undefined && value !== "") {
       url.searchParams.set(key, String(value));
     }
   });
 
   const response = await fetch(url.toString(), {
-    credentials: 'include',
+    credentials: "include",
     headers: getProjectHeaders(),
   });
   return handleResponse<TracesResponse>(response);
@@ -189,7 +189,7 @@ export const getTraces = async (params: GetTracesParams = {}): Promise<TracesRes
 
 export const getTrace = async (id: string): Promise<Trace> => {
   const response = await fetch(`${getBaseUrl()}/dashboard/api/traces/${id}`, {
-    credentials: 'include',
+    credentials: "include",
     headers: getProjectHeaders(),
   });
   return handleResponse<Trace>(response);
@@ -197,7 +197,7 @@ export const getTrace = async (id: string): Promise<Trace> => {
 
 export const getSession = async (id: string): Promise<Session> => {
   const response = await fetch(`${getBaseUrl()}/dashboard/api/sessions/${id}`, {
-    credentials: 'include',
+    credentials: "include",
     headers: getProjectHeaders(),
   });
   return handleResponse<Session>(response);
@@ -206,13 +206,13 @@ export const getSession = async (id: string): Promise<Session> => {
 export const getAnalytics = async (params: GetAnalyticsParams = {}): Promise<AnalyticsResponse> => {
   const url = new URL(`${getBaseUrl()}/dashboard/api/analytics`);
   Object.entries(params).forEach(([key, value]) => {
-    if (value !== undefined && value !== '') {
+    if (value !== undefined && value !== "") {
       url.searchParams.set(key, String(value));
     }
   });
 
   const response = await fetch(url.toString(), {
-    credentials: 'include',
+    credentials: "include",
     headers: getProjectHeaders(),
   });
   return handleResponse<AnalyticsResponse>(response);
@@ -220,10 +220,10 @@ export const getAnalytics = async (params: GetAnalyticsParams = {}): Promise<Ana
 
 export const createProject = async (name: string): Promise<CreateProjectResult> => {
   const response = await fetch(`${getBaseUrl()}/dashboard/api/projects`, {
-    method: 'POST',
-    credentials: 'include',
+    method: "POST",
+    credentials: "include",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
     body: JSON.stringify({ name }),
   });
@@ -232,7 +232,7 @@ export const createProject = async (name: string): Promise<CreateProjectResult> 
 
 export const getApiKeys = async (): Promise<ApiKeysResponse> => {
   const response = await fetch(`${getBaseUrl()}/dashboard/api/api-keys`, {
-    credentials: 'include',
+    credentials: "include",
     headers: getProjectHeaders(),
   });
   return handleResponse<ApiKeysResponse>(response);
@@ -240,19 +240,22 @@ export const getApiKeys = async (): Promise<ApiKeysResponse> => {
 
 export const deleteApiKey = async (keyId: string): Promise<{ success: boolean }> => {
   const response = await fetch(`${getBaseUrl()}/dashboard/api/api-keys/${keyId}`, {
-    method: 'DELETE',
-    credentials: 'include',
+    method: "DELETE",
+    credentials: "include",
     headers: getProjectHeaders(),
   });
   return handleResponse<{ success: boolean }>(response);
 };
 
-export const updateApiKeyName = async (keyId: string, name: string): Promise<{ success: boolean }> => {
+export const updateApiKeyName = async (
+  keyId: string,
+  name: string
+): Promise<{ success: boolean }> => {
   const response = await fetch(`${getBaseUrl()}/dashboard/api/api-keys/${keyId}`, {
-    method: 'PATCH',
-    credentials: 'include',
+    method: "PATCH",
+    credentials: "include",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
       ...getProjectHeaders(),
     },
     body: JSON.stringify({ name }),
@@ -262,10 +265,10 @@ export const updateApiKeyName = async (keyId: string, name: string): Promise<{ s
 
 export const createApiKey = async (): Promise<{ apiKey: string }> => {
   const response = await fetch(`${getBaseUrl()}/dashboard/api/api-keys`, {
-    method: 'POST',
-    credentials: 'include',
+    method: "POST",
+    credentials: "include",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
       ...getProjectHeaders(),
     },
   });
@@ -274,7 +277,7 @@ export const createApiKey = async (): Promise<{ apiKey: string }> => {
 
 export const getProjectUsers = async (): Promise<ProjectUsersResponse> => {
   const response = await fetch(`${getBaseUrl()}/dashboard/api/users`, {
-    credentials: 'include',
+    credentials: "include",
     headers: getProjectHeaders(),
   });
   return handleResponse<ProjectUsersResponse>(response);
@@ -284,10 +287,10 @@ export const createProjectUser = async (
   input: CreateProjectUserInput
 ): Promise<{ user: ProjectUserInfo }> => {
   const response = await fetch(`${getBaseUrl()}/dashboard/api/users`, {
-    method: 'POST',
-    credentials: 'include',
+    method: "POST",
+    credentials: "include",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
       ...getProjectHeaders(),
     },
     body: JSON.stringify(input),

@@ -1,5 +1,5 @@
-import { Link } from 'react-router-dom';
-import type { Trace } from '../../lib/apiClient';
+import { Link } from "react-router-dom";
+import type { Trace } from "../../lib/apiClient";
 
 function formatLatency(ms: number): string {
   if (ms >= 1000) {
@@ -19,13 +19,13 @@ interface TraceMetadataProps {
 export default function TraceMetadata({ trace }: TraceMetadataProps) {
   const totalTokens = (trace.inputTokens || 0) + (trace.outputTokens || 0);
   const items = [
-    { label: 'Latency', value: formatLatency(trace.latencyMs) },
-    { label: 'Input Tokens', value: trace.inputTokens?.toLocaleString() ?? '--' },
-    { label: 'Output Tokens', value: trace.outputTokens?.toLocaleString() ?? '--' },
-    { label: 'Total Tokens', value: totalTokens > 0 ? totalTokens.toLocaleString() : '--' },
-    { label: 'Cost', value: formatCost(trace.costCents) },
-    { label: 'Finish Reason', value: trace.finishReason ?? '--' },
-    { label: 'Session ID', value: trace.sessionId ?? '--', isSessionLink: !!trace.sessionId },
+    { label: "Latency", value: formatLatency(trace.latencyMs) },
+    { label: "Input Tokens", value: trace.inputTokens?.toLocaleString() ?? "--" },
+    { label: "Output Tokens", value: trace.outputTokens?.toLocaleString() ?? "--" },
+    { label: "Total Tokens", value: totalTokens > 0 ? totalTokens.toLocaleString() : "--" },
+    { label: "Cost", value: formatCost(trace.costCents) },
+    { label: "Finish Reason", value: trace.finishReason ?? "--" },
+    { label: "Session ID", value: trace.sessionId ?? "--", isSessionLink: !!trace.sessionId },
   ];
 
   return (

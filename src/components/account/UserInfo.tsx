@@ -20,7 +20,7 @@ export default function UserInfo({ name, email }: UserInfoProps) {
               {initial}
             </div>
             <div>
-              <div className="text-sm font-medium text-neutral-100">{name || 'User'}</div>
+              <div className="text-sm font-medium text-neutral-100">{name || "User"}</div>
               <div className="text-sm text-neutral-500">{email}</div>
             </div>
           </div>

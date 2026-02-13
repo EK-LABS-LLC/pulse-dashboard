@@ -1,25 +1,40 @@
-import { useState } from 'react';
-import type { Trace } from '../lib/apiClient';
-import SessionsTable from '../components/sessions/SessionsTable';
-import type { SessionSummary } from '../components/sessions/SessionsTable';
-import { TableSkeleton } from '../components/ui/TableSkeleton';
-import { useTracesQuery } from '../api';
-import { useProject } from '../contexts/ProjectContext';
+import { useState } from "react";
+import type { Trace } from "../lib/apiClient";
+import SessionsTable from "../components/sessions/SessionsTable";
+import type { SessionSummary } from "../components/sessions/SessionsTable";
+import { TableSkeleton } from "../components/ui/TableSkeleton";
+import { useTracesQuery } from "../api";
+import { useProject } from "../hooks/useProject";
 
 const CalendarIcon = () => (
   <svg className="w-4 h-4 text-neutral-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={1.5}
+      d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+    />
   </svg>
 );
 
 const SearchIcon = () => (
   <svg className="w-4 h-4 text-neutral-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={1.5}
+      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+    />
   </svg>
 );
 
 const ChevronDownIcon = () => (
-  <svg className="w-3.5 h-3.5 text-neutral-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+  <svg
+    className="w-3.5 h-3.5 text-neutral-500"
+    fill="none"
+    stroke="currentColor"
+    viewBox="0 0 24 24"
+  >
     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
   </svg>
 );
@@ -39,9 +54,12 @@ function groupTracesIntoSessions(traces: Trace[]): SessionSummary[] {
     const sorted = sessionTraces.sort(
       (a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
     );
-    const totalTokens = sorted.reduce((sum, t) => sum + (t.inputTokens || 0) + (t.outputTokens || 0), 0);
+    const totalTokens = sorted.reduce(
+      (sum, t) => sum + (t.inputTokens || 0) + (t.outputTokens || 0),
+      0
+    );
     const totalCost = sorted.reduce((sum, t) => sum + (t.costCents || 0), 0);
-    const errorCount = sorted.filter(t => t.status === 'error').length;
+    const errorCount = sorted.filter((t) => t.status === "error").length;
 
     const first = sorted[0];
     const last = sorted[sorted.length - 1];
@@ -66,9 +84,9 @@ function groupTracesIntoSessions(traces: Trace[]): SessionSummary[] {
 
 export default function Sessions() {
   const { selectedProject } = useProject();
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
 
-  const sessionsQuery = useTracesQuery('sessions-source-traces', selectedProject?.id, {
+  const sessionsQuery = useTracesQuery("sessions-source-traces", selectedProject?.id, {
     limit: 500,
   });
 
@@ -79,7 +97,7 @@ export default function Sessions() {
 
   const filteredSessions = searchQuery
     ? sessions.filter(
-        s =>
+        (s) =>
           s.session_id.toLowerCase().includes(searchQuery.toLowerCase()) ||
           (s.user && s.user.toLowerCase().includes(searchQuery.toLowerCase()))
       )
@@ -117,14 +135,19 @@ export default function Sessions() {
                 type="text"
                 placeholder="Search by session ID or user..."
                 value={searchQuery}
-                onChange={e => setSearchQuery(e.target.value)}
+                onChange={(e) => setSearchQuery(e.target.value)}
                 className="flex-1 bg-transparent text-sm text-neutral-300 placeholder:text-neutral-500 outline-none"
               />
             </div>
           </div>
           <button className="flex items-center gap-1.5 px-3 py-1.5 text-sm text-neutral-400 rounded border border-neutral-700 hover:bg-neutral-850 hover:border-neutral-600 transition-colors">
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={1.5}
+                d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"
+              />
             </svg>
             Sort: Recent
           </button>

@@ -1,9 +1,9 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 interface TraceHeaderProps {
   traceId: string;
-  status: 'success' | 'error';
+  status: "success" | "error";
   timestamp: string;
   provider: string;
   model: string;
@@ -11,13 +11,23 @@ interface TraceHeaderProps {
 
 const ArrowLeftIcon = () => (
   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={1.5}
+      d="M10 19l-7-7m0 0l7-7m-7 7h18"
+    />
   </svg>
 );
 
 const CopyIcon = () => (
   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={1.5}
+      d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
+    />
   </svg>
 );
 
@@ -29,25 +39,25 @@ const CheckIcon = () => (
 
 function formatTimestamp(timestamp: string): string {
   const date = new Date(timestamp);
-  return date.toLocaleDateString('en-US', {
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric',
-    hour: 'numeric',
-    minute: '2-digit',
+  return date.toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
     hour12: true,
   });
 }
 
-function StatusBadge({ status }: { status: 'success' | 'error' }) {
-  const isSuccess = status === 'success';
+function StatusBadge({ status }: { status: "success" | "error" }) {
+  const isSuccess = status === "success";
   return (
     <span
       className={`text-sm px-2.5 py-1 rounded font-medium ${
-        isSuccess ? 'bg-success/10 text-success' : 'bg-error/10 text-error'
+        isSuccess ? "bg-success/10 text-success" : "bg-error/10 text-error"
       }`}
     >
-      {isSuccess ? 'Success' : 'Error'}
+      {isSuccess ? "Success" : "Error"}
     </span>
   );
 }
@@ -68,7 +78,13 @@ function ModelBadge({ model }: { model: string }) {
   );
 }
 
-export default function TraceHeader({ traceId, status, timestamp, provider, model }: TraceHeaderProps) {
+export default function TraceHeader({
+  traceId,
+  status,
+  timestamp,
+  provider,
+  model,
+}: TraceHeaderProps) {
   const navigate = useNavigate();
   const [copied, setCopied] = useState(false);
 
@@ -84,7 +100,7 @@ export default function TraceHeader({ traceId, status, timestamp, provider, mode
       <div className="h-14 flex items-center justify-between px-6">
         <div className="flex items-center gap-4">
           <button
-            onClick={() => navigate('/dashboard/traces')}
+            onClick={() => navigate("/dashboard/traces")}
             className="flex items-center gap-2 px-3 py-1.5 text-sm text-neutral-400 hover:text-white hover:bg-neutral-850 rounded transition-colors"
           >
             <ArrowLeftIcon />

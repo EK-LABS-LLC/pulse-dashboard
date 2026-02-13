@@ -1,6 +1,6 @@
-import { useEffect } from 'react';
+import { useEffect } from "react";
 
-export type ToastType = 'success' | 'error' | 'info';
+export type ToastType = "success" | "error" | "info";
 
 interface ToastProps {
   message: string;
@@ -10,9 +10,9 @@ interface ToastProps {
 }
 
 const styles = {
-  success: 'bg-success/10 border-success text-success',
-  error: 'bg-error/10 border-error text-error',
-  info: 'bg-accent/10 border-accent text-accent',
+  success: "bg-success/10 border-success text-success",
+  error: "bg-error/10 border-error text-error",
+  info: "bg-accent/10 border-accent text-accent",
 };
 
 export function Toast({ message, type, duration = 3000, onClose }: ToastProps) {

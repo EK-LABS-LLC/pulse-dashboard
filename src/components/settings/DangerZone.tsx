@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState } from "react";
 
 interface DangerZoneProps {
   projectName: string;
@@ -6,8 +6,18 @@ interface DangerZoneProps {
 }
 
 const WarningIcon = () => (
-  <svg className="w-5 h-5 text-error flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+  <svg
+    className="w-5 h-5 text-error flex-shrink-0"
+    fill="none"
+    stroke="currentColor"
+    viewBox="0 0 24 24"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={1.5}
+      d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+    />
   </svg>
 );
 
@@ -19,7 +29,7 @@ const CloseIcon = () => (
 
 export default function DangerZone({ projectName, onDeleteProject }: DangerZoneProps) {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [confirmText, setConfirmText] = useState('');
+  const [confirmText, setConfirmText] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
 
   const handleDelete = async () => {
@@ -29,7 +39,7 @@ export default function DangerZone({ projectName, onDeleteProject }: DangerZoneP
     try {
       await onDeleteProject();
     } catch (err) {
-      console.error('Failed to delete project:', err);
+      console.error("Failed to delete project:", err);
       setIsDeleting(false);
     }
   };
@@ -71,7 +81,7 @@ export default function DangerZone({ projectName, onDeleteProject }: DangerZoneP
               <button
                 onClick={() => {
                   setShowDeleteModal(false);
-                  setConfirmText('');
+                  setConfirmText("");
                 }}
                 className="p-1 hover:bg-neutral-800 rounded"
               >
@@ -86,14 +96,19 @@ export default function DangerZone({ projectName, onDeleteProject }: DangerZoneP
                   <div>
                     <p className="text-sm text-error font-medium">This action cannot be undone</p>
                     <p className="text-xs text-neutral-500 mt-1">
-                      All traces, sessions, API keys, and analytics data will be permanently deleted.
+                      All traces, sessions, API keys, and analytics data will be permanently
+                      deleted.
                     </p>
                   </div>
                 </div>
               </div>
 
               <p className="text-sm text-neutral-400 mb-4">
-                To confirm, type <span className="text-white font-mono bg-neutral-800 px-1.5 py-0.5 rounded">{projectName}</span> below:
+                To confirm, type{" "}
+                <span className="text-white font-mono bg-neutral-800 px-1.5 py-0.5 rounded">
+                  {projectName}
+                </span>{" "}
+                below:
               </p>
 
               <input
@@ -109,7 +124,7 @@ export default function DangerZone({ projectName, onDeleteProject }: DangerZoneP
               <button
                 onClick={() => {
                   setShowDeleteModal(false);
-                  setConfirmText('');
+                  setConfirmText("");
                 }}
                 className="px-4 py-2 text-sm text-neutral-400 border border-neutral-700 hover:bg-neutral-850 rounded transition-colors"
               >
@@ -120,7 +135,7 @@ export default function DangerZone({ projectName, onDeleteProject }: DangerZoneP
                 disabled={!canDelete || isDeleting}
                 className="px-4 py-2 text-sm text-white bg-error hover:bg-error/80 rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {isDeleting ? 'Deleting...' : 'Delete Project'}
+                {isDeleting ? "Deleting..." : "Delete Project"}
               </button>
             </div>
           </div>

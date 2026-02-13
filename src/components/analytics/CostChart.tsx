@@ -7,8 +7,8 @@ import {
   Tooltip,
   ResponsiveContainer,
   Legend,
-} from 'recharts';
-import { getProviderColor } from '../../lib/providerUtils';
+} from "recharts";
+import { getProviderColor } from "../../lib/providerUtils";
 
 export interface CostDataPoint {
   period: string;
@@ -18,32 +18,35 @@ export interface CostDataPoint {
 
 interface CostChartProps {
   data: CostDataPoint[];
-  groupBy?: 'day' | 'hour' | 'provider';
+  groupBy?: "day" | "hour" | "provider";
 }
 
 function formatCurrency(value: number): string {
   if (value >= 1000) {
-    return '$' + (value / 1000).toFixed(1) + 'K';
+    return "$" + (value / 1000).toFixed(1) + "K";
   }
-  return '$' + value.toFixed(2);
+  return "$" + value.toFixed(2);
 }
 
 function formatPeriodLabel(period: string): string {
   // Handle ISO date strings
-  if (period.includes('T') || period.includes('-')) {
+  if (period.includes("T") || period.includes("-")) {
     const date = new Date(period);
-    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    return date.toLocaleDateString("en-US", { month: "short", day: "numeric" });
   }
   return period;
 }
 
 // Group data by provider for multi-line chart
-function groupDataByProvider(data: CostDataPoint[]): { periods: string[]; series: Record<string, number[]> } {
+function groupDataByProvider(data: CostDataPoint[]): {
+  periods: string[];
+  series: Record<string, number[]>;
+} {
   const periodMap = new Map<string, Record<string, number>>();
   const providers = new Set<string>();
 
   for (const point of data) {
-    const provider = point.provider || 'Unknown';
+    const provider = point.provider || "Unknown";
     providers.add(provider);
 
     if (!periodMap.has(point.period)) {
@@ -56,19 +59,27 @@ function groupDataByProvider(data: CostDataPoint[]): { periods: string[]; series
   const series: Record<string, number[]> = {};
 
   for (const provider of providers) {
-    series[provider] = periods.map(p => periodMap.get(p)?.[provider] || 0);
+    series[provider] = periods.map((p) => periodMap.get(p)?.[provider] || 0);
   }
 
   return { periods, series };
 }
 
 // Custom tooltip component
-function CustomTooltip({ active, payload, label }: { active?: boolean; payload?: Array<{ value: number; dataKey: string; color: string }>; label?: string }) {
+function CustomTooltip({
+  active,
+  payload,
+  label,
+}: {
+  active?: boolean;
+  payload?: Array<{ value: number; dataKey: string; color: string }>;
+  label?: string;
+}) {
   if (!active || !payload || !payload.length) return null;
 
   return (
     <div className="bg-neutral-850 border border-neutral-700 rounded px-3 py-2 shadow-xl">
-      <p className="text-xs text-neutral-400 mb-1">{formatPeriodLabel(label || '')}</p>
+      <p className="text-xs text-neutral-400 mb-1">{formatPeriodLabel(label || "")}</p>
       {payload.map((entry, index) => (
         <div key={index} className="flex items-center gap-2 text-sm">
           <div className="w-2 h-2 rounded-sm" style={{ backgroundColor: entry.color }} />
@@ -80,7 +91,7 @@ function CustomTooltip({ active, payload, label }: { active?: boolean; payload?:
   );
 }
 
-export default function CostChart({ data, groupBy = 'day' }: CostChartProps) {
+export default function CostChart({ data, groupBy = "day" }: CostChartProps) {
   if (!data || data.length === 0) {
     return (
       <div className="h-[280px] flex items-center justify-center text-neutral-500 border border-dashed border-neutral-800 rounded">
@@ -90,9 +101,9 @@ export default function CostChart({ data, groupBy = 'day' }: CostChartProps) {
   }
 
   // Check if data has provider information
-  const hasProviders = data.some(d => d.provider);
+  const hasProviders = data.some((d) => d.provider);
 
-  if (hasProviders && groupBy !== 'provider') {
+  if (hasProviders && groupBy !== "provider") {
     // Multi-line chart by provider
     const { periods, series } = groupDataByProvider(data);
     const chartData = periods.map((period, i) => {
@@ -115,8 +126,8 @@ export default function CostChart({ data, groupBy = 'day' }: CostChartProps) {
               stroke="#525252"
               fontSize={10}
               tickLine={false}
-              axisLine={{ stroke: '#1f1f1f' }}
-              tick={{ fill: '#525252' }}
+              axisLine={{ stroke: "#1f1f1f" }}
+              tick={{ fill: "#525252" }}
             />
             <YAxis
               stroke="#525252"
@@ -124,14 +135,16 @@ export default function CostChart({ data, groupBy = 'day' }: CostChartProps) {
               tickLine={false}
               axisLine={false}
               tickFormatter={formatCurrency}
-              tick={{ fill: '#525252' }}
+              tick={{ fill: "#525252" }}
             />
             <Tooltip content={<CustomTooltip />} />
             <Legend
               align="right"
               verticalAlign="top"
               wrapperStyle={{ paddingBottom: 10 }}
-              formatter={(value) => <span className="text-neutral-500 text-xs capitalize">{value}</span>}
+              formatter={(value) => (
+                <span className="text-neutral-500 text-xs capitalize">{value}</span>
+              )}
             />
             {providers.map((provider) => (
               <Line
@@ -151,7 +164,7 @@ export default function CostChart({ data, groupBy = 'day' }: CostChartProps) {
   }
 
   // Single line chart (aggregated or provider-grouped)
-  const chartData = data.map(d => ({
+  const chartData = data.map((d) => ({
     period: formatPeriodLabel(d.period),
     cost: d.cost,
   }));
@@ -166,8 +179,8 @@ export default function CostChart({ data, groupBy = 'day' }: CostChartProps) {
             stroke="#525252"
             fontSize={10}
             tickLine={false}
-            axisLine={{ stroke: '#1f1f1f' }}
-            tick={{ fill: '#525252' }}
+            axisLine={{ stroke: "#1f1f1f" }}
+            tick={{ fill: "#525252" }}
           />
           <YAxis
             stroke="#525252"
@@ -175,7 +188,7 @@ export default function CostChart({ data, groupBy = 'day' }: CostChartProps) {
             tickLine={false}
             axisLine={false}
             tickFormatter={formatCurrency}
-            tick={{ fill: '#525252' }}
+            tick={{ fill: "#525252" }}
           />
           <Tooltip content={<CustomTooltip />} />
           <defs>
@@ -190,7 +203,7 @@ export default function CostChart({ data, groupBy = 'day' }: CostChartProps) {
             stroke="#34d399"
             strokeWidth={1.5}
             dot={false}
-            activeDot={{ r: 4, fill: '#34d399' }}
+            activeDot={{ r: 4, fill: "#34d399" }}
             fill="url(#costGradient)"
           />
         </LineChart>

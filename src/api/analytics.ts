@@ -1,5 +1,5 @@
-import { useQuery } from '@tanstack/react-query';
-import { getAnalytics, type GetAnalyticsParams } from '../lib/apiClient';
+import { useQuery } from "@tanstack/react-query";
+import { getAnalytics, type GetAnalyticsParams } from "../lib/apiClient";
 
 export function useAnalyticsQuery(
   scope: string,
@@ -12,4 +12,3 @@ export function useAnalyticsQuery(
     queryFn: () => getAnalytics(params),
   });
 }
-

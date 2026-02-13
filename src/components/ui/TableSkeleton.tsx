@@ -12,7 +12,7 @@ export function TableSkeleton({ rows = 10, columns = 6 }: TableSkeletonProps) {
           <div
             key={`header-${i}`}
             className="h-4 bg-neutral-800 rounded animate-pulse"
-            style={{ width: i === 0 ? '25%' : '15%' }}
+            style={{ width: i === 0 ? "25%" : "15%" }}
           />
         ))}
       </div>
@@ -28,7 +28,7 @@ export function TableSkeleton({ rows = 10, columns = 6 }: TableSkeletonProps) {
               key={`cell-${rowIndex}-${colIndex}`}
               className="h-4 bg-neutral-800/50 rounded animate-pulse"
               style={{
-                width: colIndex === 0 ? '25%' : '15%',
+                width: colIndex === 0 ? "25%" : "15%",
                 animationDelay: `${(rowIndex * columns + colIndex) * 50}ms`,
               }}
             />

@@ -1,19 +1,29 @@
-import { useState } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
-import type { Trace } from '../lib/apiClient';
-import { LoadingSpinner } from '../components/ui/LoadingSpinner';
-import { useSessionDetailQuery } from '../api';
-import { useProject } from '../contexts/ProjectContext';
+import { useState } from "react";
+import { useParams, useNavigate, Link } from "react-router-dom";
+import type { Trace } from "../lib/apiClient";
+import { LoadingSpinner } from "../components/ui/LoadingSpinner";
+import { useSessionDetailQuery } from "../api";
+import { useProject } from "../hooks/useProject";
 
 const BackIcon = () => (
   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={1.5}
+      d="M10 19l-7-7m0 0l7-7m-7 7h18"
+    />
   </svg>
 );
 
 const CopyIcon = () => (
   <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={1.5}
+      d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
+    />
   </svg>
 );
 
@@ -25,28 +35,33 @@ const CheckIcon = () => (
 
 const ExternalLinkIcon = () => (
   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={1.5}
+      d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+    />
   </svg>
 );
 
 function formatDate(dateStr: string): string {
   const date = new Date(dateStr);
-  return date.toLocaleDateString('en-US', {
-    month: 'short',
-    day: 'numeric',
-    hour: 'numeric',
-    minute: '2-digit',
-    second: '2-digit',
+  return date.toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+    second: "2-digit",
     hour12: true,
   });
 }
 
 function formatTime(dateStr: string): string {
   const date = new Date(dateStr);
-  return date.toLocaleTimeString('en-US', {
-    hour: 'numeric',
-    minute: '2-digit',
-    second: '2-digit',
+  return date.toLocaleTimeString("en-US", {
+    hour: "numeric",
+    minute: "2-digit",
+    second: "2-digit",
     hour12: true,
   });
 }
@@ -95,12 +110,16 @@ function calculateSessionStats(traces: Trace[]): SessionStats {
     (a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
   );
 
-  const totalTokens = sorted.reduce((sum, t) => sum + (t.inputTokens || 0) + (t.outputTokens || 0), 0);
+  const totalTokens = sorted.reduce(
+    (sum, t) => sum + (t.inputTokens || 0) + (t.outputTokens || 0),
+    0
+  );
   const totalCost = sorted.reduce((sum, t) => sum + (t.costCents || 0), 0);
-  const errorCount = sorted.filter(t => t.status === 'error').length;
-  const duration = sorted.length >= 2
-    ? formatDuration(sorted[0].timestamp, sorted[sorted.length - 1].timestamp)
-    : '0s';
+  const errorCount = sorted.filter((t) => t.status === "error").length;
+  const duration =
+    sorted.length >= 2
+      ? formatDuration(sorted[0].timestamp, sorted[sorted.length - 1].timestamp)
+      : "0s";
 
   return {
     traceCount: sorted.length,
@@ -116,7 +135,7 @@ interface CopyButtonProps {
   className?: string;
 }
 
-function CopyButton({ text, className = '' }: CopyButtonProps) {
+function CopyButton({ text, className = "" }: CopyButtonProps) {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = async () => {
@@ -143,21 +162,23 @@ interface TraceCardProps {
 }
 
 function TraceCard({ trace, isLatest, onClick }: TraceCardProps) {
-  const isError = trace.status === 'error';
+  const isError = trace.status === "error";
 
   return (
     <div
       onClick={onClick}
       className={`bg-neutral-900 border rounded-lg p-3 hover:bg-neutral-850 cursor-pointer transition-colors ${
-        isLatest ? 'border-accent/30' : 'border-neutral-800'
+        isLatest ? "border-accent/30" : "border-neutral-800"
       }`}
     >
       <div className="flex items-center justify-between mb-2">
         <div className="flex items-center gap-2">
-          <span className={`w-2 h-2 rounded-full ${isError ? 'bg-error' : 'bg-success'}`}></span>
+          <span className={`w-2 h-2 rounded-full ${isError ? "bg-error" : "bg-success"}`}></span>
           <span className="text-xs font-mono text-neutral-300">{trace.traceId.slice(0, 8)}</span>
           {isLatest && (
-            <span className="text-[10px] px-1.5 py-0.5 bg-accent/10 text-accent rounded">Latest</span>
+            <span className="text-[10px] px-1.5 py-0.5 bg-accent/10 text-accent rounded">
+              Latest
+            </span>
           )}
         </div>
         <span className="text-xs text-neutral-500">{formatTime(trace.timestamp)}</span>
@@ -216,10 +237,7 @@ export default function SessionDetail() {
         <div className="text-center">
           <h1 className="text-2xl font-semibold text-neutral-100 mb-2">Session not found</h1>
           <p className="text-neutral-500 mb-6">The session you're looking for doesn't exist.</p>
-          <Link
-            to="/dashboard/sessions"
-            className="text-accent hover:underline"
-          >
+          <Link to="/dashboard/sessions" className="text-accent hover:underline">
             Back to Sessions
           </Link>
         </div>
@@ -227,7 +245,7 @@ export default function SessionDetail() {
     );
   }
 
-  const sessionId = session.sessionId || id || '';
+  const sessionId = session.sessionId || id || "";
   const traces = [...session.traces].sort(
     (a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
   );
@@ -243,7 +261,7 @@ export default function SessionDetail() {
       <header className="h-14 flex items-center justify-between px-6 border-b border-neutral-800 flex-shrink-0 bg-neutral-950">
         <div className="flex items-center gap-3">
           <button
-            onClick={() => navigate('/dashboard/sessions')}
+            onClick={() => navigate("/dashboard/sessions")}
             className="p-1.5 hover:bg-neutral-800 rounded text-neutral-500 hover:text-white transition-colors"
             title="Back to Sessions"
           >
@@ -253,7 +271,7 @@ export default function SessionDetail() {
           <CopyButton text={sessionId} />
           {stats.errorCount > 0 ? (
             <span className="text-xs px-1.5 py-0.5 bg-error/10 text-error rounded">
-              {stats.errorCount} Error{stats.errorCount > 1 ? 's' : ''}
+              {stats.errorCount} Error{stats.errorCount > 1 ? "s" : ""}
             </span>
           ) : (
             <span className="text-xs px-1.5 py-0.5 bg-success/10 text-success rounded">OK</span>
@@ -287,7 +305,9 @@ export default function SessionDetail() {
                 <div className="text-xs text-neutral-500">Tokens</div>
               </div>
               <div className="text-center">
-                <div className="text-lg font-semibold text-accent">{formatCost(stats.totalCost)}</div>
+                <div className="text-lg font-semibold text-accent">
+                  {formatCost(stats.totalCost)}
+                </div>
                 <div className="text-xs text-neutral-500">Cost</div>
               </div>
               <div className="text-center">
@@ -337,10 +357,22 @@ export default function SessionDetail() {
 
             {traces.length === 0 ? (
               <div className="flex flex-col items-center justify-center py-12 text-center bg-neutral-900 border border-neutral-800 rounded-xl">
-                <svg className="w-12 h-12 text-neutral-700 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 6h16M4 12h16M4 18h7" />
+                <svg
+                  className="w-12 h-12 text-neutral-700 mb-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={1.5}
+                    d="M4 6h16M4 12h16M4 18h7"
+                  />
                 </svg>
-                <h3 className="text-sm font-medium text-neutral-400 mb-1">No traces in this session</h3>
+                <h3 className="text-sm font-medium text-neutral-400 mb-1">
+                  No traces in this session
+                </h3>
                 <p className="text-xs text-neutral-500">Traces will appear here once recorded</p>
               </div>
             ) : (
@@ -352,11 +384,13 @@ export default function SessionDetail() {
                   {traces.map((trace, index) => (
                     <div key={trace.traceId} className="relative pl-6">
                       {/* Timeline dot */}
-                      <div className={`absolute left-0 top-4 w-4 h-4 rounded-full border-2 ${
-                        trace.status === 'error'
-                          ? 'bg-error/20 border-error'
-                          : 'bg-success/20 border-success'
-                      }`}></div>
+                      <div
+                        className={`absolute left-0 top-4 w-4 h-4 rounded-full border-2 ${
+                          trace.status === "error"
+                            ? "bg-error/20 border-error"
+                            : "bg-success/20 border-success"
+                        }`}
+                      ></div>
 
                       <TraceCard
                         trace={trace}

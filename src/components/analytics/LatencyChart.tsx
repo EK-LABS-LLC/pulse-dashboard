@@ -7,7 +7,7 @@ import {
   Tooltip,
   ResponsiveContainer,
   Legend,
-} from 'recharts';
+} from "recharts";
 
 export interface LatencyDataPoint {
   period: string;
@@ -22,26 +22,34 @@ interface LatencyChartProps {
 
 function formatLatency(value: number): string {
   if (value >= 1000) {
-    return (value / 1000).toFixed(1) + 's';
+    return (value / 1000).toFixed(1) + "s";
   }
-  return value + 'ms';
+  return value + "ms";
 }
 
 function formatPeriodLabel(period: string): string {
-  if (period.includes('T') || period.includes('-')) {
+  if (period.includes("T") || period.includes("-")) {
     const date = new Date(period);
-    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    return date.toLocaleDateString("en-US", { month: "short", day: "numeric" });
   }
   return period;
 }
 
 // Custom tooltip component
-function CustomTooltip({ active, payload, label }: { active?: boolean; payload?: Array<{ value: number; dataKey: string; color: string; name: string }>; label?: string }) {
+function CustomTooltip({
+  active,
+  payload,
+  label,
+}: {
+  active?: boolean;
+  payload?: Array<{ value: number; dataKey: string; color: string; name: string }>;
+  label?: string;
+}) {
   if (!active || !payload || !payload.length) return null;
 
   return (
     <div className="bg-neutral-850 border border-neutral-700 rounded px-3 py-2 shadow-xl">
-      <p className="text-xs text-neutral-400 mb-1">{formatPeriodLabel(label || '')}</p>
+      <p className="text-xs text-neutral-400 mb-1">{formatPeriodLabel(label || "")}</p>
       {payload.map((entry, index) => (
         <div key={index} className="flex items-center gap-2 text-sm">
           <div className="w-2 h-2 rounded-sm" style={{ backgroundColor: entry.color }} />
@@ -54,9 +62,9 @@ function CustomTooltip({ active, payload, label }: { active?: boolean; payload?:
 }
 
 const PERCENTILE_COLORS = {
-  p50: '#22c55e', // success green
-  p95: '#f97316', // orange
-  p99: '#ef4444', // error red
+  p50: "#22c55e", // success green
+  p95: "#f97316", // orange
+  p99: "#ef4444", // error red
 };
 
 export default function LatencyChart({ data }: LatencyChartProps) {
@@ -68,7 +76,7 @@ export default function LatencyChart({ data }: LatencyChartProps) {
     );
   }
 
-  const chartData = data.map(d => ({
+  const chartData = data.map((d) => ({
     period: formatPeriodLabel(d.period),
     P50: d.p50,
     P95: d.p95,
@@ -85,8 +93,8 @@ export default function LatencyChart({ data }: LatencyChartProps) {
             stroke="#525252"
             fontSize={10}
             tickLine={false}
-            axisLine={{ stroke: '#1f1f1f' }}
-            tick={{ fill: '#525252' }}
+            axisLine={{ stroke: "#1f1f1f" }}
+            tick={{ fill: "#525252" }}
           />
           <YAxis
             stroke="#525252"
@@ -94,7 +102,7 @@ export default function LatencyChart({ data }: LatencyChartProps) {
             tickLine={false}
             axisLine={false}
             tickFormatter={formatLatency}
-            tick={{ fill: '#525252' }}
+            tick={{ fill: "#525252" }}
           />
           <Tooltip content={<CustomTooltip />} />
           <Legend

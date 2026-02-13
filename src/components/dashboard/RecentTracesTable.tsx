@@ -1,6 +1,6 @@
-import { useNavigate } from 'react-router-dom';
-import type { Trace } from '../../lib/apiClient';
-import { getProviderBadgeClasses, getProviderLabel } from '../../lib/providerUtils';
+import { useNavigate } from "react-router-dom";
+import type { Trace } from "../../lib/apiClient";
+import { getProviderBadgeClasses, getProviderLabel } from "../../lib/providerUtils";
 
 interface RecentTracesTableProps {
   traces: Trace[];
@@ -15,7 +15,7 @@ function formatTimeAgo(timestamp: string): string {
   const diffHours = Math.floor(diffMins / 60);
   const diffDays = Math.floor(diffHours / 24);
 
-  if (diffMins < 1) return 'just now';
+  if (diffMins < 1) return "just now";
   if (diffMins < 60) return `${diffMins}m ago`;
   if (diffHours < 24) return `${diffHours}h ago`;
   if (diffDays < 7) return `${diffDays}d ago`;
@@ -24,19 +24,19 @@ function formatTimeAgo(timestamp: string): string {
 
 function formatLatency(ms: number): string {
   if (ms >= 1000) {
-    return (ms / 1000).toFixed(2) + 's';
+    return (ms / 1000).toFixed(2) + "s";
   }
-  return Math.round(ms) + 'ms';
+  return Math.round(ms) + "ms";
 }
 
 function formatCost(cents: number): string {
-  return '$' + (cents / 100).toFixed(4);
+  return "$" + (cents / 100).toFixed(4);
 }
 
 function formatTokens(input?: number, output?: number): { input: string; output: string } {
   const formatNum = (n: number | undefined) => {
-    if (n === undefined) return '-';
-    if (n >= 1000) return (n / 1000).toFixed(1) + 'K';
+    if (n === undefined) return "-";
+    if (n >= 1000) return (n / 1000).toFixed(1) + "K";
     return n.toLocaleString();
   };
   return { input: formatNum(input), output: formatNum(output) };
@@ -49,7 +49,7 @@ function getProviderBadgeColor(provider: string): string {
 
 function truncateTraceId(traceId: string): string {
   if (traceId.length <= 12) return traceId;
-  return traceId.substring(0, 10) + '...';
+  return traceId.substring(0, 10) + "...";
 }
 
 export function RecentTracesTable({ traces, loading }: RecentTracesTableProps) {
@@ -67,7 +67,7 @@ export function RecentTracesTable({ traces, loading }: RecentTracesTableProps) {
           <span className="text-sm font-medium">Recent Traces</span>
         </div>
         <button
-          onClick={() => navigate('/dashboard/traces')}
+          onClick={() => navigate("/dashboard/traces")}
           className="text-xs text-neutral-400 hover:text-neutral-300"
         >
           View all
@@ -80,10 +80,14 @@ export function RecentTracesTable({ traces, loading }: RecentTracesTableProps) {
             <tr className="border-b border-neutral-800">
               <th className="text-left py-2.5 px-4 text-xs font-medium text-neutral-500">ID</th>
               <th className="text-left py-2.5 px-4 text-xs font-medium text-neutral-500">Time</th>
-              <th className="text-left py-2.5 px-4 text-xs font-medium text-neutral-500">Provider</th>
+              <th className="text-left py-2.5 px-4 text-xs font-medium text-neutral-500">
+                Provider
+              </th>
               <th className="text-left py-2.5 px-4 text-xs font-medium text-neutral-500">Model</th>
               <th className="text-left py-2.5 px-4 text-xs font-medium text-neutral-500">Tokens</th>
-              <th className="text-left py-2.5 px-4 text-xs font-medium text-neutral-500">Latency</th>
+              <th className="text-left py-2.5 px-4 text-xs font-medium text-neutral-500">
+                Latency
+              </th>
               <th className="text-left py-2.5 px-4 text-xs font-medium text-neutral-500">Cost</th>
               <th className="text-left py-2.5 px-4 text-xs font-medium text-neutral-500">Status</th>
             </tr>
@@ -94,8 +98,20 @@ export function RecentTracesTable({ traces, loading }: RecentTracesTableProps) {
                 <td colSpan={8} className="py-8 text-center text-neutral-500 text-sm">
                   <div className="flex items-center justify-center gap-2">
                     <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                        fill="none"
+                      />
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                      />
                     </svg>
                     Loading traces...
                   </div>
@@ -110,12 +126,12 @@ export function RecentTracesTable({ traces, loading }: RecentTracesTableProps) {
             ) : (
               traces.map((trace) => {
                 const tokens = formatTokens(trace.inputTokens, trace.outputTokens);
-                const isError = trace.status === 'error';
+                const isError = trace.status === "error";
                 return (
                   <tr
                     key={trace.traceId}
                     onClick={() => handleRowClick(trace.traceId)}
-                    className={`border-b border-neutral-800 cursor-pointer hover:bg-neutral-850 transition-colors ${isError ? 'bg-rose-500/5' : ''}`}
+                    className={`border-b border-neutral-800 cursor-pointer hover:bg-neutral-850 transition-colors ${isError ? "bg-rose-500/5" : ""}`}
                   >
                     <td className="py-2.5 px-4">
                       <span className="text-sm font-mono text-neutral-400">
@@ -123,10 +139,14 @@ export function RecentTracesTable({ traces, loading }: RecentTracesTableProps) {
                       </span>
                     </td>
                     <td className="py-2.5 px-4">
-                      <span className="text-sm text-neutral-500">{formatTimeAgo(trace.timestamp)}</span>
+                      <span className="text-sm text-neutral-500">
+                        {formatTimeAgo(trace.timestamp)}
+                      </span>
                     </td>
                     <td className="py-2.5 px-4">
-                      <span className={`text-xs px-1.5 py-0.5 rounded font-medium ${getProviderBadgeColor(trace.provider)}`}>
+                      <span
+                        className={`text-xs px-1.5 py-0.5 rounded font-medium ${getProviderBadgeColor(trace.provider)}`}
+                      >
                         {getProviderLabel(trace.provider)}
                       </span>
                     </td>
@@ -146,13 +166,19 @@ export function RecentTracesTable({ traces, loading }: RecentTracesTableProps) {
                       </span>
                     </td>
                     <td className="py-2.5 px-4">
-                      <span className="text-sm text-neutral-300">{formatCost(trace.costCents)}</span>
+                      <span className="text-sm text-neutral-300">
+                        {formatCost(trace.costCents)}
+                      </span>
                     </td>
                     <td className="py-2.5 px-4">
                       {isError ? (
-                        <span className="text-xs px-1.5 py-0.5 bg-rose-500/10 text-rose-400 rounded font-medium">Error</span>
+                        <span className="text-xs px-1.5 py-0.5 bg-rose-500/10 text-rose-400 rounded font-medium">
+                          Error
+                        </span>
                       ) : (
-                        <span className="text-xs px-1.5 py-0.5 bg-success/10 text-success rounded font-medium">OK</span>
+                        <span className="text-xs px-1.5 py-0.5 bg-success/10 text-success rounded font-medium">
+                          OK
+                        </span>
                       )}
                     </td>
                   </tr>

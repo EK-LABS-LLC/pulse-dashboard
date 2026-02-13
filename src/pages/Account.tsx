@@ -1,54 +1,73 @@
-import { useState, useEffect } from 'react';
-import { useAuth } from '../contexts/AuthContext';
-import UserInfo from '../components/account/UserInfo';
-import AccountActions from '../components/account/AccountActions';
+import { useState } from "react";
+import { useAuth } from "../hooks/useAuth";
+import UserInfo from "../components/account/UserInfo";
+import AccountActions from "../components/account/AccountActions";
 
-type AccountSection = 'profile' | 'security' | 'preferences';
+type AccountSection = "profile" | "security" | "preferences";
+
+const USER_PREFS_KEY = "pulse_user_preferences";
+
+interface UserPreferences {
+  emailNotifications: boolean;
+  marketingEmails: boolean;
+  theme: string;
+  timezone: string;
+}
+
+const defaultPreferences: UserPreferences = {
+  emailNotifications: true,
+  marketingEmails: false,
+  theme: "dark",
+  timezone: "America/New_York",
+};
+
+function loadPreferences(): UserPreferences {
+  if (typeof window === "undefined") {
+    return defaultPreferences;
+  }
+
+  try {
+    const storedPrefs = window.localStorage.getItem(USER_PREFS_KEY);
+    if (!storedPrefs) {
+      return defaultPreferences;
+    }
+
+    const prefs = JSON.parse(storedPrefs);
+    return {
+      emailNotifications: prefs.emailNotifications ?? defaultPreferences.emailNotifications,
+      marketingEmails: prefs.marketingEmails ?? defaultPreferences.marketingEmails,
+      theme: prefs.theme ?? defaultPreferences.theme,
+      timezone: prefs.timezone ?? defaultPreferences.timezone,
+    };
+  } catch {
+    return defaultPreferences;
+  }
+}
 
 export default function Account() {
   const { user } = useAuth();
-  const [activeSection, setActiveSection] = useState<AccountSection>('profile');
+  const [activeSection, setActiveSection] = useState<AccountSection>("profile");
 
-  const userEmail = user?.email || 'user@pulse.dev';
-  const userName = user?.name || '';
+  const [preferences, setPreferences] = useState<UserPreferences>(loadPreferences);
+  const { emailNotifications, marketingEmails, theme, timezone } = preferences;
 
-  // Preferences state
-  const [emailNotifications, setEmailNotifications] = useState(true);
-  const [marketingEmails, setMarketingEmails] = useState(false);
-  const [theme, setTheme] = useState('dark');
-  const [timezone, setTimezone] = useState('America/New_York');
+  const userEmail = user?.email || "user@pulse.dev";
+  const userName = user?.name || "";
 
-  useEffect(() => {
-    const storedPrefs = localStorage.getItem('pulse_user_preferences');
-    if (storedPrefs) {
-      const prefs = JSON.parse(storedPrefs);
-      setEmailNotifications(prefs.emailNotifications ?? true);
-      setMarketingEmails(prefs.marketingEmails ?? false);
-      setTheme(prefs.theme ?? 'dark');
-      setTimezone(prefs.timezone ?? 'America/New_York');
-    }
-  }, []);
-
-  const savePreferences = (newPrefs: Partial<{
-    emailNotifications: boolean;
-    marketingEmails: boolean;
-    theme: string;
-    timezone: string;
-  }>) => {
-    const prefs = {
-      emailNotifications,
-      marketingEmails,
-      theme,
-      timezone,
-      ...newPrefs,
-    };
-    localStorage.setItem('pulse_user_preferences', JSON.stringify(prefs));
+  const updatePreferences = (newPrefs: Partial<UserPreferences>) => {
+    setPreferences((prev) => {
+      const next = { ...prev, ...newPrefs };
+      if (typeof window !== "undefined") {
+        window.localStorage.setItem(USER_PREFS_KEY, JSON.stringify(next));
+      }
+      return next;
+    });
   };
 
   const navItems: { key: AccountSection; label: string }[] = [
-    { key: 'profile', label: 'Profile' },
-    { key: 'security', label: 'Security' },
-    { key: 'preferences', label: 'Preferences' },
+    { key: "profile", label: "Profile" },
+    { key: "security", label: "Security" },
+    { key: "preferences", label: "Preferences" },
   ];
 
   return (
@@ -62,8 +81,8 @@ export default function Account() {
               onClick={() => setActiveSection(item.key)}
               className={`w-full text-left px-3 py-2 text-sm rounded transition-colors ${
                 activeSection === item.key
-                  ? 'bg-accent/10 text-white'
-                  : 'text-neutral-400 hover:bg-neutral-850 hover:text-white'
+                  ? "bg-accent/10 text-white"
+                  : "text-neutral-400 hover:bg-neutral-850 hover:text-white"
               }`}
             >
               {item.label}
@@ -76,18 +95,15 @@ export default function Account() {
       <div className="flex-1 overflow-y-auto">
         <div className="max-w-2xl p-6">
           {/* Profile Section */}
-          {activeSection === 'profile' && (
+          {activeSection === "profile" && (
             <>
-              <UserInfo
-                name={userName}
-                email={userEmail}
-              />
+              <UserInfo name={userName} email={userEmail} />
               <AccountActions />
             </>
           )}
 
           {/* Security Section */}
-          {activeSection === 'security' && (
+          {activeSection === "security" && (
             <section className="mb-10">
               <h2 className="text-lg font-medium mb-1">Security</h2>
               <p className="text-sm text-neutral-500 mb-6">Manage your account security</p>
@@ -128,7 +144,7 @@ export default function Account() {
           )}
 
           {/* Preferences Section */}
-          {activeSection === 'preferences' && (
+          {activeSection === "preferences" && (
             <section className="mb-10">
               <h2 className="text-lg font-medium mb-1">Preferences</h2>
               <p className="text-sm text-neutral-500 mb-6">Customize your experience</p>
@@ -143,17 +159,14 @@ export default function Account() {
                     </p>
                   </div>
                   <button
-                    onClick={() => {
-                      setEmailNotifications(!emailNotifications);
-                      savePreferences({ emailNotifications: !emailNotifications });
-                    }}
+                    onClick={() => updatePreferences({ emailNotifications: !emailNotifications })}
                     className={`relative w-10 h-[22px] rounded-full transition-colors ${
-                      emailNotifications ? 'bg-accent' : 'bg-neutral-700'
+                      emailNotifications ? "bg-accent" : "bg-neutral-700"
                     }`}
                   >
                     <div
                       className={`absolute top-0.5 w-[18px] h-[18px] bg-white rounded-full transition-transform ${
-                        emailNotifications ? 'translate-x-[22px]' : 'translate-x-0.5'
+                        emailNotifications ? "translate-x-[22px]" : "translate-x-0.5"
                       }`}
                     />
                   </button>
@@ -168,17 +181,14 @@ export default function Account() {
                     </p>
                   </div>
                   <button
-                    onClick={() => {
-                      setMarketingEmails(!marketingEmails);
-                      savePreferences({ marketingEmails: !marketingEmails });
-                    }}
+                    onClick={() => updatePreferences({ marketingEmails: !marketingEmails })}
                     className={`relative w-10 h-[22px] rounded-full transition-colors ${
-                      marketingEmails ? 'bg-accent' : 'bg-neutral-700'
+                      marketingEmails ? "bg-accent" : "bg-neutral-700"
                     }`}
                   >
                     <div
                       className={`absolute top-0.5 w-[18px] h-[18px] bg-white rounded-full transition-transform ${
-                        marketingEmails ? 'translate-x-[22px]' : 'translate-x-0.5'
+                        marketingEmails ? "translate-x-[22px]" : "translate-x-0.5"
                       }`}
                     />
                   </button>
@@ -192,10 +202,7 @@ export default function Account() {
                   </div>
                   <select
                     value={theme}
-                    onChange={(e) => {
-                      setTheme(e.target.value);
-                      savePreferences({ theme: e.target.value });
-                    }}
+                    onChange={(e) => updatePreferences({ theme: e.target.value })}
                     className="bg-neutral-800 border border-neutral-700 rounded px-3 py-1.5 text-sm text-neutral-300 focus:outline-none focus:border-accent"
                   >
                     <option value="dark">Dark</option>
@@ -214,10 +221,7 @@ export default function Account() {
                   </div>
                   <select
                     value={timezone}
-                    onChange={(e) => {
-                      setTimezone(e.target.value);
-                      savePreferences({ timezone: e.target.value });
-                    }}
+                    onChange={(e) => updatePreferences({ timezone: e.target.value })}
                     className="bg-neutral-800 border border-neutral-700 rounded px-3 py-1.5 text-sm text-neutral-300 focus:outline-none focus:border-accent"
                   >
                     <option value="UTC">UTC</option>

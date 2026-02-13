@@ -1,28 +1,28 @@
-import { QueryClientProvider } from '@tanstack/react-query';
-import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
-import { AuthProvider } from './contexts/AuthContext';
-import { ProjectProvider } from './contexts/ProjectContext';
-import { ToastProvider } from './contexts/ToastContext';
-import { Layout } from './components/layout/Layout';
-import { ProtectedRoute } from './components/layout/ProtectedRoute';
-import { queryClient } from './lib/queryClient';
-import Login from './pages/Login';
-import Dashboard from './pages/Dashboard';
-import Traces from './pages/Traces';
-import TraceDetail from './pages/TraceDetail';
-import Sessions from './pages/Sessions';
-import SessionDetail from './pages/SessionDetail';
-import Analytics from './pages/Analytics';
-import ApiKeys from './pages/ApiKeys';
-import Settings from './pages/Settings';
-import Account from './pages/Account';
-import LandingPage from './pages/landing/LandingPage';
-import DocsLayout from './pages/docs/DocsLayout';
-import Quickstart from './pages/docs/Quickstart';
-import Configuration from './pages/docs/Configuration';
-import Providers from './pages/docs/Providers';
-import DocsSessions from './pages/docs/Sessions';
-import ApiReference from './pages/docs/ApiReference';
+import { QueryClientProvider } from "@tanstack/react-query";
+import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+import { AuthProvider } from "./contexts/AuthContext";
+import { ProjectProvider } from "./contexts/ProjectContext";
+import { ToastProvider } from "./contexts/ToastContext";
+import { Layout } from "./components/layout/Layout";
+import { ProtectedRoute } from "./components/layout/ProtectedRoute";
+import { queryClient } from "./lib/queryClient";
+import Login from "./pages/Login";
+import Dashboard from "./pages/Dashboard";
+import Traces from "./pages/Traces";
+import TraceDetail from "./pages/TraceDetail";
+import Sessions from "./pages/Sessions";
+import SessionDetail from "./pages/SessionDetail";
+import Analytics from "./pages/Analytics";
+import ApiKeys from "./pages/ApiKeys";
+import Settings from "./pages/Settings";
+import Account from "./pages/Account";
+import LandingPage from "./pages/landing/LandingPage";
+import DocsLayout from "./pages/docs/DocsLayout";
+import Quickstart from "./pages/docs/Quickstart";
+import Configuration from "./pages/docs/Configuration";
+import Providers from "./pages/docs/Providers";
+import DocsSessions from "./pages/docs/Sessions";
+import ApiReference from "./pages/docs/ApiReference";
 
 function NotFound() {
   return (
@@ -30,7 +30,9 @@ function NotFound() {
       <div className="text-center">
         <h1 className="text-4xl font-bold text-neutral-100 mb-4">404</h1>
         <p className="text-neutral-400 mb-6">Page not found</p>
-        <Link to="/" className="text-accent hover:underline">Go home</Link>
+        <Link to="/" className="text-accent hover:underline">
+          Go home
+        </Link>
       </div>
     </div>
   );

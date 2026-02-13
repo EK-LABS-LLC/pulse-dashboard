@@ -1,11 +1,5 @@
-import {
-  ResponsiveContainer,
-  PieChart,
-  Pie,
-  Cell,
-  Tooltip,
-} from 'recharts';
-import { getProviderColor, getProviderLabel } from '../../lib/providerUtils';
+import { ResponsiveContainer, PieChart, Pie, Cell, Tooltip } from "recharts";
+import { getProviderColor, getProviderLabel } from "../../lib/providerUtils";
 
 export interface ProviderDataPoint {
   provider: string;
@@ -18,22 +12,30 @@ interface ProviderSplitChartProps {
 }
 
 function formatCurrency(value: number): string {
-  return '$' + value.toFixed(2);
+  return "$" + value.toFixed(2);
 }
 
 // Custom tooltip
-function CustomTooltip({ active, payload }: { active?: boolean; payload?: Array<{ value: number; name: string; payload: ProviderDataPoint }> }) {
+function CustomTooltip({
+  active,
+  payload,
+}: {
+  active?: boolean;
+  payload?: Array<{ value: number; name: string; payload: ProviderDataPoint }>;
+}) {
   if (!active || !payload || !payload.length) return null;
 
   const entry = payload[0];
   const data = entry.payload;
   const total = payload.reduce((sum, entry) => sum + entry.value, 0);
-  const percentage = total > 0 ? ((data.costCents / total) * 100).toFixed(0) : '0';
+  const percentage = total > 0 ? ((data.costCents / total) * 100).toFixed(0) : "0";
 
   return (
     <div className="bg-neutral-850 border border-neutral-700 rounded px-3 py-2 shadow-xl">
       <p className="text-xs text-neutral-400 mb-1">{getProviderLabel(entry.name)}</p>
-      <p className="text-sm font-medium text-white">{formatCurrency(entry.value)} <span className="text-neutral-500">({percentage}%)</span></p>
+      <p className="text-sm font-medium text-white">
+        {formatCurrency(entry.value)} <span className="text-neutral-500">({percentage}%)</span>
+      </p>
     </div>
   );
 }
@@ -91,10 +93,7 @@ export default function ProviderSplitChart({ data }: ProviderSplitChartProps) {
           return (
             <div key={item.provider} className="flex items-center justify-between text-sm">
               <div className="flex items-center gap-2">
-                <div
-                  className="w-2.5 h-2.5 rounded-sm"
-                  style={{ backgroundColor: color }}
-                />
+                <div className="w-2.5 h-2.5 rounded-sm" style={{ backgroundColor: color }} />
                 <span className="text-neutral-300">{getProviderLabel(item.provider)}</span>
               </div>
               <span className="font-medium text-white">{formatCurrency(cost)}</span>

@@ -1,11 +1,11 @@
-import { useMemo } from 'react';
-import { useParams, Link } from 'react-router-dom';
-import TraceHeader from '../components/traces/TraceHeader';
-import TraceMetadata from '../components/traces/TraceMetadata';
-import JsonViewer from '../components/traces/JsonViewer';
-import { LoadingSpinner } from '../components/ui/LoadingSpinner';
-import { useTraceDetailQuery } from '../api';
-import { useProject } from '../contexts/ProjectContext';
+import { useMemo } from "react";
+import { useParams, Link } from "react-router-dom";
+import TraceHeader from "../components/traces/TraceHeader";
+import TraceMetadata from "../components/traces/TraceMetadata";
+import JsonViewer from "../components/traces/JsonViewer";
+import { LoadingSpinner } from "../components/ui/LoadingSpinner";
+import { useTraceDetailQuery } from "../api";
+import { useProject } from "../hooks/useProject";
 
 function NotFoundState() {
   return (
@@ -59,7 +59,7 @@ export default function TraceDetail() {
     if (!id) return true;
     if (!errorMessage) return false;
     const message = errorMessage.toLowerCase();
-    return message.includes('404') || message.includes('not found');
+    return message.includes("404") || message.includes("not found");
   }, [id, errorMessage]);
 
   if (loading) {
@@ -94,13 +94,15 @@ export default function TraceDetail() {
 
           {trace.metadata && Object.keys(trace.metadata).length > 0 && (
             <div className="bg-neutral-900 border border-neutral-800 rounded-lg p-4">
-              <h3 className="text-xs text-neutral-500 uppercase tracking-wide mb-4">Custom Metadata</h3>
+              <h3 className="text-xs text-neutral-500 uppercase tracking-wide mb-4">
+                Custom Metadata
+              </h3>
               <div className="grid grid-cols-2 gap-4">
                 {Object.entries(trace.metadata).map(([key, value]) => (
                   <div key={key}>
                     <dt className="text-xs text-neutral-500 mb-1">{key}</dt>
                     <dd className="text-sm text-neutral-100 font-mono">
-                      {typeof value === 'string' ? value : JSON.stringify(value)}
+                      {typeof value === "string" ? value : JSON.stringify(value)}
                     </dd>
                   </div>
                 ))}
@@ -110,7 +112,7 @@ export default function TraceDetail() {
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <JsonViewer data={trace.requestBody || {}} title="Request" />
-            {trace.status === 'error' && trace.error ? (
+            {trace.status === "error" && trace.error ? (
               <JsonViewer data={trace.error} title="Error" />
             ) : (
               <JsonViewer data={trace.responseBody || {}} title="Response" />

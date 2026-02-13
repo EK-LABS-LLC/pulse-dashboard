@@ -7,7 +7,7 @@ import {
   Tooltip,
   ResponsiveContainer,
   ReferenceLine,
-} from 'recharts';
+} from "recharts";
 
 export interface ErrorRateDataPoint {
   period: string;
@@ -22,25 +22,33 @@ interface ErrorRateChartProps {
 }
 
 function formatPercentage(value: number): string {
-  return value.toFixed(1) + '%';
+  return value.toFixed(1) + "%";
 }
 
 function formatPeriodLabel(period: string): string {
-  if (period.includes('T') || period.includes('-')) {
+  if (period.includes("T") || period.includes("-")) {
     const date = new Date(period);
-    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    return date.toLocaleDateString("en-US", { month: "short", day: "numeric" });
   }
   return period;
 }
 
-function CustomTooltip({ active, payload, label }: { active?: boolean; payload?: Array<{ value: number; payload: ErrorRateDataPoint }>; label?: string }) {
+function CustomTooltip({
+  active,
+  payload,
+  label,
+}: {
+  active?: boolean;
+  payload?: Array<{ value: number; payload: ErrorRateDataPoint }>;
+  label?: string;
+}) {
   if (!active || !payload || !payload.length) return null;
 
   const data = payload[0].payload;
 
   return (
     <div className="bg-neutral-850 border border-neutral-700 rounded px-3 py-2 shadow-xl">
-      <p className="text-xs text-neutral-400 mb-1">{formatPeriodLabel(label || '')}</p>
+      <p className="text-xs text-neutral-400 mb-1">{formatPeriodLabel(label || "")}</p>
       <div className="flex items-center gap-2 text-sm">
         <div className="w-2 h-2 rounded-sm bg-error" />
         <span className="text-neutral-300">Error Rate:</span>
@@ -49,7 +57,9 @@ function CustomTooltip({ active, payload, label }: { active?: boolean; payload?:
       <div className="flex items-center gap-2 text-sm mt-1">
         <div className="w-2 h-2 rounded-sm bg-neutral-600" />
         <span className="text-neutral-300">Errors:</span>
-        <span className="font-medium text-white">{data.errorCount} / {data.totalRequests}</span>
+        <span className="font-medium text-white">
+          {data.errorCount} / {data.totalRequests}
+        </span>
       </div>
     </div>
   );
@@ -64,12 +74,12 @@ export default function ErrorRateChart({ data, threshold = 5 }: ErrorRateChartPr
     );
   }
 
-  const chartData = data.map(d => ({
+  const chartData = data.map((d) => ({
     ...d,
     period: formatPeriodLabel(d.period),
   }));
 
-  const maxErrorRate = Math.max(...data.map(d => d.errorRate), threshold);
+  const maxErrorRate = Math.max(...data.map((d) => d.errorRate), threshold);
   const yAxisMax = Math.ceil(maxErrorRate * 1.2);
 
   return (
@@ -82,8 +92,8 @@ export default function ErrorRateChart({ data, threshold = 5 }: ErrorRateChartPr
             stroke="#525252"
             fontSize={10}
             tickLine={false}
-            axisLine={{ stroke: '#1f1f1f' }}
-            tick={{ fill: '#525252' }}
+            axisLine={{ stroke: "#1f1f1f" }}
+            tick={{ fill: "#525252" }}
           />
           <YAxis
             stroke="#525252"
@@ -91,7 +101,7 @@ export default function ErrorRateChart({ data, threshold = 5 }: ErrorRateChartPr
             tickLine={false}
             axisLine={false}
             tickFormatter={formatPercentage}
-            tick={{ fill: '#525252' }}
+            tick={{ fill: "#525252" }}
             domain={[0, yAxisMax]}
           />
           <Tooltip content={<CustomTooltip />} />
@@ -102,8 +112,8 @@ export default function ErrorRateChart({ data, threshold = 5 }: ErrorRateChartPr
             strokeWidth={1}
             label={{
               value: `${threshold}% threshold`,
-              position: 'right',
-              fill: '#f97316',
+              position: "right",
+              fill: "#f97316",
               fontSize: 10,
             }}
           />
@@ -134,7 +144,7 @@ export default function ErrorRateChart({ data, threshold = 5 }: ErrorRateChartPr
                 />
               );
             }}
-            activeDot={{ r: 4, fill: '#ef4444', stroke: '#0a0a0a', strokeWidth: 2 }}
+            activeDot={{ r: 4, fill: "#ef4444", stroke: "#0a0a0a", strokeWidth: 2 }}
             fill="url(#errorGradient)"
           />
         </LineChart>

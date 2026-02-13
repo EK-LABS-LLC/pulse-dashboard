@@ -1,4 +1,4 @@
-import { Component, type ErrorInfo, type ReactNode } from 'react';
+import { Component, type ErrorInfo, type ReactNode } from "react";
 
 interface Props {
   children: ReactNode;
@@ -20,7 +20,7 @@ export class ErrorBoundary extends Component<Props, State> {
   }
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    console.error('ErrorBoundary caught an error:', error, errorInfo);
+    console.error("ErrorBoundary caught an error:", error, errorInfo);
   }
 
   handleRetry = () => {
@@ -35,7 +35,7 @@ export class ErrorBoundary extends Component<Props, State> {
             <div className="mb-4 text-6xl">⚠️</div>
             <h1 className="mb-2 text-2xl font-semibold text-neutral-100">Something went wrong</h1>
             <p className="mb-6 text-neutral-400">
-              {this.state.error?.message || 'An unexpected error occurred'}
+              {this.state.error?.message || "An unexpected error occurred"}
             </p>
             <button
               onClick={this.handleRetry}
