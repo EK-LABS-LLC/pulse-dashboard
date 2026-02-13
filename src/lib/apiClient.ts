@@ -143,6 +143,9 @@ export interface ApiKeyInfo {
   id: string;
   projectId: string;
   projectName: string;
+  key: string;
+  name: string;
+  lastUsedAt?: string;
   createdAt: string;
 }
 
@@ -240,6 +243,19 @@ export const deleteApiKey = async (keyId: string): Promise<{ success: boolean }>
     method: 'DELETE',
     credentials: 'include',
     headers: getProjectHeaders(),
+  });
+  return handleResponse<{ success: boolean }>(response);
+};
+
+export const updateApiKeyName = async (keyId: string, name: string): Promise<{ success: boolean }> => {
+  const response = await fetch(`${getBaseUrl()}/dashboard/api/api-keys/${keyId}`, {
+    method: 'PATCH',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+      ...getProjectHeaders(),
+    },
+    body: JSON.stringify({ name }),
   });
   return handleResponse<{ success: boolean }>(response);
 };

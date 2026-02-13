@@ -4,6 +4,7 @@ import {
   deleteApiKey,
   getApiKeys,
   getProjectUsers,
+  updateApiKeyName,
   type CreateProjectUserInput,
 } from '../lib/apiClient';
 
@@ -27,6 +28,16 @@ export function useDeleteApiKeyMutation(projectId: string | undefined) {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: deleteApiKey,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['api-keys', projectId] });
+    },
+  });
+}
+
+export function useUpdateApiKeyNameMutation(projectId: string | undefined) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ keyId, name }: { keyId: string; name: string }) => updateApiKeyName(keyId, name),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['api-keys', projectId] });
     },

@@ -11,6 +11,7 @@ import {
   useCreateProjectUserMutation,
   useDeleteApiKeyMutation,
   useProjectUsersQuery,
+  useUpdateApiKeyNameMutation,
 } from '../api';
 import { useProject } from '../contexts/ProjectContext';
 
@@ -49,14 +50,16 @@ export default function ApiKeys() {
   const usersQuery = useProjectUsersQuery(selectedProject?.id);
   const deleteApiKeyMutation = useDeleteApiKeyMutation(selectedProject?.id);
   const createUserMutation = useCreateProjectUserMutation(selectedProject?.id);
+  const updateApiKeyNameMutation = useUpdateApiKeyNameMutation(selectedProject?.id);
 
   const keys: ApiKey[] = useMemo(() => {
     return (apiKeysQuery.data?.keys ?? []).map((k) => ({
       id: k.id,
-      name: k.projectName,
-      key: `pulse_sk_****${k.id.slice(-4)}`,
+      name: k.name,
+      key: k.key,
       created_at: k.createdAt,
-      status: 'active' as const,
+      last_used_at: k.lastUsedAt,
+      status: k.lastUsedAt ? 'active' as const : 'never_used' as const,
     }));
   }, [apiKeysQuery.data]);
 
@@ -92,8 +95,12 @@ export default function ApiKeys() {
     await navigator.clipboard.writeText(keyValue);
   };
 
-  const handleNameChange = async (_keyId: string, _newName: string) => {
-    // TODO: implement rename endpoint
+  const handleNameChange = async (keyId: string, newName: string) => {
+    try {
+      await updateApiKeyNameMutation.mutateAsync({ keyId, name: newName });
+    } catch (err) {
+      console.error('Failed to update key name:', err);
+    }
   };
 
   const handleCreateUser = async () => {
