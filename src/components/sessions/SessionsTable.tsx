@@ -72,7 +72,7 @@ export default function SessionsTable({ sessions, onRowClick }: SessionsTablePro
     if (onRowClick) {
       onRowClick(sessionId);
     } else {
-      navigate(`/sessions/${sessionId}`);
+      navigate(`/dashboard/sessions/${sessionId}`);
     }
   };
 

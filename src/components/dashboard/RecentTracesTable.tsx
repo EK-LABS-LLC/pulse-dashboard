@@ -56,7 +56,7 @@ export function RecentTracesTable({ traces, loading }: RecentTracesTableProps) {
   const navigate = useNavigate();
 
   const handleRowClick = (traceId: string) => {
-    navigate(`/traces/${traceId}`);
+    navigate(`/dashboard/traces/${traceId}`);
   };
 
   return (
@@ -67,7 +67,7 @@ export function RecentTracesTable({ traces, loading }: RecentTracesTableProps) {
           <span className="text-sm font-medium">Recent Traces</span>
         </div>
         <button
-          onClick={() => navigate('/traces')}
+          onClick={() => navigate('/dashboard/traces')}
           className="text-xs text-neutral-400 hover:text-neutral-300"
         >
           View all

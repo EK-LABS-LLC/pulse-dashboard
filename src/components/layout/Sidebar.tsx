@@ -5,7 +5,7 @@ import { useProject } from '../../contexts/ProjectContext';
 
 const navItems = [
   {
-    to: '/',
+    to: '/dashboard',
     label: 'Overview',
     icon: (
       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -14,7 +14,7 @@ const navItems = [
     ),
   },
   {
-    to: '/traces',
+    to: '/dashboard/traces',
     label: 'Traces',
     icon: (
       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -23,7 +23,7 @@ const navItems = [
     ),
   },
   {
-    to: '/sessions',
+    to: '/dashboard/sessions',
     label: 'Sessions',
     icon: (
       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -32,7 +32,7 @@ const navItems = [
     ),
   },
   {
-    to: '/analytics',
+    to: '/dashboard/analytics',
     label: 'Analytics',
     icon: (
       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -44,7 +44,7 @@ const navItems = [
 
 const settingsItems = [
   {
-    to: '/api-keys',
+    to: '/dashboard/api-keys',
     label: 'API Keys',
     icon: (
       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -53,7 +53,7 @@ const settingsItems = [
     ),
   },
   {
-    to: '/settings',
+    to: '/dashboard/settings',
     label: 'Settings',
     icon: (
       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -90,7 +90,7 @@ export function Sidebar() {
     <aside className="w-56 h-full border-r border-neutral-800 flex flex-col flex-shrink-0">
       {/* Logo */}
       <div className="h-14 flex items-center px-4 border-b border-neutral-800">
-        <span className="font-semibold text-sm text-neutral-100">Pulse</span>
+        <NavLink to="/dashboard" className="font-semibold text-sm text-neutral-100">Pulse</NavLink>
       </div>
 
       {/* Project Selector */}
@@ -134,7 +134,7 @@ export function Sidebar() {
       {/* Navigation */}
       <nav className="flex-1 py-2 px-2 overflow-y-auto">
         {navItems.map((item) => (
-          <NavLink key={item.to} to={item.to} className={navLinkClass} end={item.to === '/'}>
+          <NavLink key={item.to} to={item.to} className={navLinkClass} end={item.to === '/dashboard'}>
             {item.icon}
             {item.label}
           </NavLink>
@@ -170,7 +170,7 @@ export function Sidebar() {
           <div className="absolute bottom-full left-3 right-3 mb-1 bg-neutral-900 border border-neutral-800 rounded-lg shadow-xl overflow-hidden z-50">
             <div className="py-1">
               <NavLink
-                to="/account"
+                to="/dashboard/account"
                 onClick={() => setUserMenuOpen(false)}
                 className="flex items-center gap-2 px-3 py-2 text-sm text-neutral-400 hover:text-white hover:bg-neutral-850"
               >

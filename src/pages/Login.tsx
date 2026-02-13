@@ -15,7 +15,7 @@ export default function Login() {
   const navigate = useNavigate();
 
   if (!authLoading && isAuthenticated) {
-    navigate('/', { replace: true });
+    navigate('/dashboard', { replace: true });
     return null;
   }
 
@@ -85,7 +85,7 @@ export default function Login() {
           return;
         }
       }
-      navigate('/');
+      navigate('/dashboard');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Authentication failed. Please try again.');
     } finally {

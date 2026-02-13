@@ -16,6 +16,13 @@ import Analytics from './pages/Analytics';
 import ApiKeys from './pages/ApiKeys';
 import Settings from './pages/Settings';
 import Account from './pages/Account';
+import LandingPage from './pages/landing/LandingPage';
+import DocsLayout from './pages/docs/DocsLayout';
+import Quickstart from './pages/docs/Quickstart';
+import Configuration from './pages/docs/Configuration';
+import Providers from './pages/docs/Providers';
+import DocsSessions from './pages/docs/Sessions';
+import ApiReference from './pages/docs/ApiReference';
 
 function NotFound() {
   return (
@@ -23,7 +30,7 @@ function NotFound() {
       <div className="text-center">
         <h1 className="text-4xl font-bold text-neutral-100 mb-4">404</h1>
         <p className="text-neutral-400 mb-6">Page not found</p>
-        <Link to="/" className="text-accent hover:underline">Go to Dashboard</Link>
+        <Link to="/" className="text-accent hover:underline">Go home</Link>
       </div>
     </div>
   );
@@ -38,25 +45,36 @@ function App() {
             <BrowserRouter>
               <Routes>
                 {/* Public routes */}
+                <Route path="/" element={<LandingPage />} />
                 <Route path="/login" element={<Login />} />
 
-                {/* Protected routes with Layout */}
+                {/* Docs routes */}
+                <Route path="/docs" element={<DocsLayout />}>
+                  <Route index element={<Quickstart />} />
+                  <Route path="config" element={<Configuration />} />
+                  <Route path="providers" element={<Providers />} />
+                  <Route path="sessions" element={<DocsSessions />} />
+                  <Route path="api" element={<ApiReference />} />
+                </Route>
+
+                {/* Protected dashboard routes */}
                 <Route
+                  path="/dashboard"
                   element={
                     <ProtectedRoute>
                       <Layout />
                     </ProtectedRoute>
                   }
                 >
-                  <Route path="/" element={<Dashboard />} />
-                  <Route path="/traces" element={<Traces />} />
-                  <Route path="/traces/:id" element={<TraceDetail />} />
-                  <Route path="/sessions" element={<Sessions />} />
-                  <Route path="/sessions/:id" element={<SessionDetail />} />
-                  <Route path="/analytics" element={<Analytics />} />
-                  <Route path="/api-keys" element={<ApiKeys />} />
-                  <Route path="/settings" element={<Settings />} />
-                  <Route path="/account" element={<Account />} />
+                  <Route index element={<Dashboard />} />
+                  <Route path="traces" element={<Traces />} />
+                  <Route path="traces/:id" element={<TraceDetail />} />
+                  <Route path="sessions" element={<Sessions />} />
+                  <Route path="sessions/:id" element={<SessionDetail />} />
+                  <Route path="analytics" element={<Analytics />} />
+                  <Route path="api-keys" element={<ApiKeys />} />
+                  <Route path="settings" element={<Settings />} />
+                  <Route path="account" element={<Account />} />
                 </Route>
 
                 {/* Catch-all for 404 */}

@@ -243,7 +243,7 @@ export default function TracesTable({ traces, onRowClick, pagination }: TracesTa
     if (onRowClick) {
       onRowClick(trace);
     } else {
-      navigate(`/traces/${trace.traceId}`);
+      navigate(`/dashboard/traces/${trace.traceId}`);
     }
   };
 

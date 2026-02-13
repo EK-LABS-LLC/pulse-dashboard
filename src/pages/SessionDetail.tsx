@@ -217,7 +217,7 @@ export default function SessionDetail() {
           <h1 className="text-2xl font-semibold text-neutral-100 mb-2">Session not found</h1>
           <p className="text-neutral-500 mb-6">The session you're looking for doesn't exist.</p>
           <Link
-            to="/sessions"
+            to="/dashboard/sessions"
             className="text-accent hover:underline"
           >
             Back to Sessions
@@ -243,7 +243,7 @@ export default function SessionDetail() {
       <header className="h-14 flex items-center justify-between px-6 border-b border-neutral-800 flex-shrink-0 bg-neutral-950">
         <div className="flex items-center gap-3">
           <button
-            onClick={() => navigate('/sessions')}
+            onClick={() => navigate('/dashboard/sessions')}
             className="p-1.5 hover:bg-neutral-800 rounded text-neutral-500 hover:text-white transition-colors"
             title="Back to Sessions"
           >
@@ -262,7 +262,7 @@ export default function SessionDetail() {
         <div className="flex items-center gap-2">
           {sessionId ? (
             <Link
-              to={`/traces?session_id=${sessionId}`}
+              to={`/dashboard/traces?session_id=${sessionId}`}
               className="flex items-center gap-1.5 px-3 py-1.5 text-sm text-accent hover:text-accent/80 transition-colors"
             >
               <ExternalLinkIcon />
@@ -361,7 +361,7 @@ export default function SessionDetail() {
                       <TraceCard
                         trace={trace}
                         isLatest={index === traces.length - 1}
-                        onClick={() => navigate(`/traces/${trace.traceId}`)}
+                        onClick={() => navigate(`/dashboard/traces/${trace.traceId}`)}
                       />
                     </div>
                   ))}

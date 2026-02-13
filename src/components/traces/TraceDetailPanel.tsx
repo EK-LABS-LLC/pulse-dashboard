@@ -129,12 +129,12 @@ export default function TraceDetailPanel({
   };
 
   const openInNewTab = () => {
-    navigate(`/traces/${trace.traceId}`);
+    navigate(`/dashboard/traces/${trace.traceId}`);
   };
 
   const viewSession = () => {
     if (trace.sessionId) {
-      navigate(`/sessions/${trace.sessionId}`);
+      navigate(`/dashboard/sessions/${trace.sessionId}`);
     }
   };
 
