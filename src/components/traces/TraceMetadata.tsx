@@ -37,7 +37,7 @@ export default function TraceMetadata({ trace }: TraceMetadataProps) {
             <dt className="text-xs text-neutral-500 mb-1">{label}</dt>
             {isSessionLink && trace.sessionId ? (
               <Link
-                to={`/sessions/${trace.sessionId}`}
+                to={`/dashboard/sessions/${trace.sessionId}`}
                 className="text-sm font-mono text-accent hover:underline"
               >
                 {value}
