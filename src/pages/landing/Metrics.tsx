@@ -16,11 +16,16 @@ export function Metrics() {
           >
             <h3
               className="text-3xl font-bold text-white"
-              style={{ fontFamily: "'Space Grotesk', sans-serif", letterSpacing: "-0.03em" }}
+              style={{
+                fontFamily: "'Space Grotesk', sans-serif",
+                letterSpacing: "-0.03em",
+              }}
             >
               {m.value}
             </h3>
-            <p className="text-xs text-neutral-600 uppercase tracking-widest mt-1">{m.label}</p>
+            <p className="text-xs text-neutral-600 uppercase tracking-widest mt-1">
+              {m.label}
+            </p>
           </div>
         ))}
       </div>

@@ -10,7 +10,10 @@ export function HowItWorks() {
           </div>
           <h2
             className="text-[clamp(1.8rem,3vw,2.6rem)] font-bold leading-tight text-white mb-4"
-            style={{ fontFamily: "'Space Grotesk', sans-serif", letterSpacing: "-0.03em" }}
+            style={{
+              fontFamily: "'Space Grotesk', sans-serif",
+              letterSpacing: "-0.03em",
+            }}
           >
             Instrument in minutes, not days
           </h2>
@@ -29,12 +32,16 @@ export function HowItWorks() {
             </div>
             <h3
               className="text-base font-semibold text-white mb-2.5"
-              style={{ fontFamily: "'Space Grotesk', sans-serif", letterSpacing: "-0.02em" }}
+              style={{
+                fontFamily: "'Space Grotesk', sans-serif",
+                letterSpacing: "-0.02em",
+              }}
             >
               Install the SDK
             </h3>
             <p className="text-sm text-neutral-500 leading-relaxed mb-4">
-              Add the SDK to your project. Works with any TypeScript/JavaScript or Python runtime.
+              Add the SDK to your project. Works with any TypeScript/JavaScript
+              or Python runtime.
             </p>
             <div className="border border-neutral-800 bg-[#080808]">
               <CodeTabs
@@ -64,13 +71,16 @@ export function HowItWorks() {
             </div>
             <h3
               className="text-base font-semibold text-white mb-2.5"
-              style={{ fontFamily: "'Space Grotesk', sans-serif", letterSpacing: "-0.02em" }}
+              style={{
+                fontFamily: "'Space Grotesk', sans-serif",
+                letterSpacing: "-0.02em",
+              }}
             >
               Wrap your LLM client
             </h3>
             <p className="text-sm text-neutral-500 leading-relaxed mb-4">
-              Call <code className="font-mono text-[0.9em]">observe()</code> on your existing
-              client. No other code changes needed.
+              Call <code className="font-mono text-[0.9em]">observe()</code> on
+              your existing client. No other code changes needed.
             </p>
             <div className="border border-neutral-800 bg-[#080808]">
               <CodeTabs
@@ -78,7 +88,10 @@ export function HowItWorks() {
                   <div className="p-4 font-mono text-xs text-neutral-500 leading-relaxed">
                     <span className="text-violet-300">const</span> client ={" "}
                     <span className="text-neutral-300">observe</span>(<br />
-                    &nbsp;&nbsp;<span className="text-violet-300">new</span> OpenAI({"{...}"}),
+                    &nbsp;&nbsp;<span className="text-violet-300">
+                      new
+                    </span>{" "}
+                    OpenAI({"{...}"}),
                     <br />
                     &nbsp;&nbsp;Provider.OpenAI
                     <br />
@@ -87,7 +100,8 @@ export function HowItWorks() {
                 }
                 py={
                   <div className="p-4 font-mono text-xs text-neutral-500 leading-relaxed">
-                    client = <span className="text-neutral-300">observe</span>(<br />
+                    client = <span className="text-neutral-300">observe</span>(
+                    <br />
                     &nbsp;&nbsp;OpenAI(...),
                     <br />
                     &nbsp;&nbsp;Provider.OPENAI
@@ -108,12 +122,16 @@ export function HowItWorks() {
             </div>
             <h3
               className="text-base font-semibold text-white mb-2.5"
-              style={{ fontFamily: "'Space Grotesk', sans-serif", letterSpacing: "-0.02em" }}
+              style={{
+                fontFamily: "'Space Grotesk', sans-serif",
+                letterSpacing: "-0.02em",
+              }}
             >
               Open the dashboard
             </h3>
             <p className="text-sm text-neutral-500 leading-relaxed mb-4">
-              Traces flow in automatically. Search, filter, and analyze from the Pulse dashboard.
+              Traces flow in automatically. Search, filter, and analyze from the
+              Pulse dashboard.
             </p>
             <div className="border border-neutral-800 bg-[#080808] p-4 font-mono text-xs text-neutral-500 leading-relaxed">
               142 traces captured

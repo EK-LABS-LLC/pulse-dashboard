@@ -8,13 +8,17 @@ export function Hero() {
         <div>
           <h1
             className="text-[clamp(2.8rem,4.5vw,4rem)] font-bold leading-[1.05] text-white mb-6"
-            style={{ fontFamily: "'Space Grotesk', sans-serif", letterSpacing: "-0.03em" }}
+            style={{
+              fontFamily: "'Space Grotesk', sans-serif",
+              letterSpacing: "-0.03em",
+            }}
           >
             Observability for every LLM call your app makes
           </h1>
           <p className="text-base text-neutral-500 max-w-[440px] mb-8 leading-relaxed">
-            Trace prompts, completions, latency, tokens, and cost across OpenAI, Anthropic, and
-            OpenRouter with a single SDK for TypeScript and Python.
+            Trace prompts, completions, latency, tokens, and cost across OpenAI,
+            Anthropic, and OpenRouter with a single SDK for TypeScript and
+            Python.
           </p>
           <div className="flex flex-col sm:flex-row gap-3">
             <a
@@ -53,8 +57,8 @@ export function Hero() {
                 </div>
                 <br />
                 <div>
-                  <span className="text-neutral-300">initPulse</span>({"{ "}apiKey:{" "}
-                  <span className="text-green-300">'pulse_sk_...'</span>
+                  <span className="text-neutral-300">initPulse</span>({"{ "}
+                  apiKey: <span className="text-green-300">'pulse_sk_...'</span>
                   {" }"});
                 </div>
                 <br />
@@ -70,7 +74,8 @@ export function Hero() {
                   {" }"}),
                 </div>
                 <div>
-                  &nbsp;&nbsp;<span className="text-blue-300">Provider</span>.OpenAI
+                  &nbsp;&nbsp;<span className="text-blue-300">Provider</span>
+                  .OpenAI
                 </div>
                 <div>);</div>
                 <br />
@@ -110,11 +115,13 @@ export function Hero() {
                   <span className="text-neutral-300">observe</span>(
                 </div>
                 <div>
-                  &nbsp;&nbsp;<span className="text-blue-300">OpenAI</span>(api_key=
+                  &nbsp;&nbsp;<span className="text-blue-300">OpenAI</span>
+                  (api_key=
                   <span className="text-green-300">"..."</span>),
                 </div>
                 <div>
-                  &nbsp;&nbsp;<span className="text-blue-300">Provider</span>.OPENAI
+                  &nbsp;&nbsp;<span className="text-blue-300">Provider</span>
+                  .OPENAI
                 </div>
                 <div>)</div>
                 <br />

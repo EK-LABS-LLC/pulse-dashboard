@@ -45,7 +45,9 @@ function truncateId(id: string): string {
   return id.substring(0, 12) + "...";
 }
 
-export default function AgentSessionsTable({ sessions }: AgentSessionsTableProps) {
+export default function AgentSessionsTable({
+  sessions,
+}: AgentSessionsTableProps) {
   const navigate = useNavigate();
 
   const handleRowClick = (sessionId: string) => {
@@ -65,12 +67,24 @@ export default function AgentSessionsTable({ sessions }: AgentSessionsTableProps
       <table className="w-full">
         <thead>
           <tr className="border-b border-neutral-800">
-            <th className="text-left py-3 px-4 text-xs font-medium text-neutral-500">Session ID</th>
-            <th className="text-left py-3 px-4 text-xs font-medium text-neutral-500">Time</th>
-            <th className="text-left py-3 px-4 text-xs font-medium text-neutral-500">Status</th>
-            <th className="text-left py-3 px-4 text-xs font-medium text-neutral-500">Duration</th>
-            <th className="text-left py-3 px-4 text-xs font-medium text-neutral-500">Agent Runs</th>
-            <th className="text-left py-3 px-4 text-xs font-medium text-neutral-500">Tool Calls</th>
+            <th className="text-left py-3 px-4 text-xs font-medium text-neutral-500">
+              Session ID
+            </th>
+            <th className="text-left py-3 px-4 text-xs font-medium text-neutral-500">
+              Time
+            </th>
+            <th className="text-left py-3 px-4 text-xs font-medium text-neutral-500">
+              Status
+            </th>
+            <th className="text-left py-3 px-4 text-xs font-medium text-neutral-500">
+              Duration
+            </th>
+            <th className="text-left py-3 px-4 text-xs font-medium text-neutral-500">
+              Agent Runs
+            </th>
+            <th className="text-left py-3 px-4 text-xs font-medium text-neutral-500">
+              Tool Calls
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -107,10 +121,14 @@ export default function AgentSessionsTable({ sessions }: AgentSessionsTableProps
                 </span>
               </td>
               <td className="py-3 px-4">
-                <span className="text-sm text-neutral-300">{session.agentRuns}</span>
+                <span className="text-sm text-neutral-300">
+                  {session.agentRuns}
+                </span>
               </td>
               <td className="py-3 px-4">
-                <span className="text-sm text-neutral-300">{session.toolCalls}</span>
+                <span className="text-sm text-neutral-300">
+                  {session.toolCalls}
+                </span>
               </td>
             </tr>
           ))}

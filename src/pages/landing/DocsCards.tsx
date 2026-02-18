@@ -43,12 +43,16 @@ export function DocsCards() {
           </div>
           <h2
             className="text-[clamp(1.8rem,3vw,2.6rem)] font-bold leading-tight text-white mb-4"
-            style={{ fontFamily: "'Space Grotesk', sans-serif", letterSpacing: "-0.03em" }}
+            style={{
+              fontFamily: "'Space Grotesk', sans-serif",
+              letterSpacing: "-0.03em",
+            }}
           >
             Everything you need to track your agent usage
           </h2>
           <p className="text-neutral-500 text-[15px] leading-relaxed">
-            Guides, API reference, and examples to get you from zero to production.
+            Guides, API reference, and examples to get you from zero to
+            production.
           </p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3">
@@ -63,11 +67,16 @@ export function DocsCards() {
               </div>
               <h3
                 className="text-base font-semibold text-white"
-                style={{ fontFamily: "'Space Grotesk', sans-serif", letterSpacing: "-0.02em" }}
+                style={{
+                  fontFamily: "'Space Grotesk', sans-serif",
+                  letterSpacing: "-0.02em",
+                }}
               >
                 {d.title}
               </h3>
-              <p className="text-[13px] text-neutral-500 flex-1 leading-relaxed">{d.desc}</p>
+              <p className="text-[13px] text-neutral-500 flex-1 leading-relaxed">
+                {d.desc}
+              </p>
               <div className="text-[13px] font-medium text-neutral-600 group-hover:text-neutral-300 transition-colors">
                 Read guide &rarr;
               </div>

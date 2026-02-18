@@ -16,10 +16,21 @@ interface TracesTableProps {
   pagination?: PaginationProps;
 }
 
-type SortField = "timestamp" | "latencyMs" | "inputTokens" | "outputTokens" | "costCents";
+type SortField =
+  | "timestamp"
+  | "latencyMs"
+  | "inputTokens"
+  | "outputTokens"
+  | "costCents";
 type SortDirection = "asc" | "desc";
 
-const SortIcon = ({ active, direction }: { active: boolean; direction: SortDirection }) => (
+const SortIcon = ({
+  active,
+  direction,
+}: {
+  active: boolean;
+  direction: SortDirection;
+}) => (
   <svg
     className={`w-3 h-3 ${active ? "text-accent" : ""}`}
     fill="none"
@@ -27,9 +38,19 @@ const SortIcon = ({ active, direction }: { active: boolean; direction: SortDirec
     viewBox="0 0 24 24"
   >
     {active && direction === "desc" ? (
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+        d="M19 9l-7 7-7-7"
+      />
     ) : active && direction === "asc" ? (
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+        d="M5 15l7-7 7 7"
+      />
     ) : (
       <path
         strokeLinecap="round"
@@ -63,8 +84,10 @@ const getRelativeTime = (date: Date) => {
   const diffDays = Math.floor(diffMs / 86400000);
 
   if (diffMins < 1) return "just now";
-  if (diffMins < 60) return `${diffMins} minute${diffMins === 1 ? "" : "s"} ago`;
-  if (diffHours < 24) return `${diffHours} hour${diffHours === 1 ? "" : "s"} ago`;
+  if (diffMins < 60)
+    return `${diffMins} minute${diffMins === 1 ? "" : "s"} ago`;
+  if (diffHours < 24)
+    return `${diffHours} hour${diffHours === 1 ? "" : "s"} ago`;
   return `${diffDays} day${diffDays === 1 ? "" : "s"} ago`;
 };
 
@@ -87,19 +110,44 @@ const formatTokens = (tokens: number | null | undefined) => {
 const PAGE_SIZE_OPTIONS = [25, 50, 100] as const;
 
 const ChevronLeftIcon = () => (
-  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+  <svg
+    className="w-4 h-4"
+    fill="none"
+    stroke="currentColor"
+    viewBox="0 0 24 24"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={2}
+      d="M15 19l-7-7 7-7"
+    />
   </svg>
 );
 
 const ChevronRightIcon = () => (
-  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+  <svg
+    className="w-4 h-4"
+    fill="none"
+    stroke="currentColor"
+    viewBox="0 0 24 24"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={2}
+      d="M9 5l7 7-7 7"
+    />
   </svg>
 );
 
 const ChevronDoubleLeftIcon = () => (
-  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+  <svg
+    className="w-4 h-4"
+    fill="none"
+    stroke="currentColor"
+    viewBox="0 0 24 24"
+  >
     <path
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -110,7 +158,12 @@ const ChevronDoubleLeftIcon = () => (
 );
 
 const ChevronDoubleRightIcon = () => (
-  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+  <svg
+    className="w-4 h-4"
+    fill="none"
+    stroke="currentColor"
+    viewBox="0 0 24 24"
+  >
     <path
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -120,7 +173,13 @@ const ChevronDoubleRightIcon = () => (
   </svg>
 );
 
-function Pagination({ page, pageSize, total, onPageChange, onPageSizeChange }: PaginationProps) {
+function Pagination({
+  page,
+  pageSize,
+  total,
+  onPageChange,
+  onPageSizeChange,
+}: PaginationProps) {
   const totalPages = Math.ceil(total / pageSize);
   const startItem = (page - 1) * pageSize + 1;
   const endItem = Math.min(page * pageSize, total);
@@ -132,7 +191,9 @@ function Pagination({ page, pageSize, total, onPageChange, onPageSizeChange }: P
     <div className="bg-neutral-900 border-t border-neutral-800 px-4 py-3 flex items-center justify-between">
       <div className="flex items-center gap-4">
         <span className="text-sm text-neutral-500">
-          {total > 0 ? `${startItem}-${endItem} of ${total.toLocaleString()}` : "0 results"}
+          {total > 0
+            ? `${startItem}-${endItem} of ${total.toLocaleString()}`
+            : "0 results"}
         </span>
         <div className="flex items-center gap-2">
           <span className="text-sm text-neutral-500">Rows:</span>
@@ -216,7 +277,11 @@ function SortableHeader({
   );
 }
 
-export default function TracesTable({ traces, onRowClick, pagination }: TracesTableProps) {
+export default function TracesTable({
+  traces,
+  onRowClick,
+  pagination,
+}: TracesTableProps) {
   const navigate = useNavigate();
   const [sortField, setSortField] = useState<SortField>("timestamp");
   const [sortDirection, setSortDirection] = useState<SortDirection>("desc");
@@ -278,7 +343,9 @@ export default function TracesTable({ traces, onRowClick, pagination }: TracesTa
       <table className="w-full">
         <thead className="bg-neutral-900">
           <tr className="border-b border-neutral-800">
-            <th className="text-left py-2.5 px-4 text-xs font-medium text-neutral-500">Trace ID</th>
+            <th className="text-left py-2.5 px-4 text-xs font-medium text-neutral-500">
+              Trace ID
+            </th>
             <th className="text-left py-2.5 px-4 text-xs font-medium text-neutral-500">
               <SortableHeader
                 field="timestamp"
@@ -289,8 +356,12 @@ export default function TracesTable({ traces, onRowClick, pagination }: TracesTa
                 Timestamp
               </SortableHeader>
             </th>
-            <th className="text-left py-2.5 px-4 text-xs font-medium text-neutral-500">Provider</th>
-            <th className="text-left py-2.5 px-4 text-xs font-medium text-neutral-500">Model</th>
+            <th className="text-left py-2.5 px-4 text-xs font-medium text-neutral-500">
+              Provider
+            </th>
+            <th className="text-left py-2.5 px-4 text-xs font-medium text-neutral-500">
+              Model
+            </th>
             <th className="text-left py-2.5 px-4 text-xs font-medium text-neutral-500">
               <SortableHeader
                 field="inputTokens"
@@ -331,8 +402,12 @@ export default function TracesTable({ traces, onRowClick, pagination }: TracesTa
                 Cost
               </SortableHeader>
             </th>
-            <th className="text-left py-2.5 px-4 text-xs font-medium text-neutral-500">Status</th>
-            <th className="text-left py-2.5 px-4 text-xs font-medium text-neutral-500">Session</th>
+            <th className="text-left py-2.5 px-4 text-xs font-medium text-neutral-500">
+              Status
+            </th>
+            <th className="text-left py-2.5 px-4 text-xs font-medium text-neutral-500">
+              Session
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -353,7 +428,9 @@ export default function TracesTable({ traces, onRowClick, pagination }: TracesTa
               >
                 <td className="py-2.5 px-4">
                   <span className="text-sm font-mono text-accent/80 truncate max-w-[100px] inline-block">
-                    {trace.traceId.length > 12 ? `${trace.traceId.slice(0, 12)}` : trace.traceId}
+                    {trace.traceId.length > 12
+                      ? `${trace.traceId.slice(0, 12)}`
+                      : trace.traceId}
                   </span>
                 </td>
                 <td className="py-2.5 px-4">
@@ -384,10 +461,14 @@ export default function TracesTable({ traces, onRowClick, pagination }: TracesTa
                   </span>
                 </td>
                 <td className="py-2.5 px-4">
-                  <span className="text-sm">{isError ? "--" : formatLatency(trace.latencyMs)}</span>
+                  <span className="text-sm">
+                    {isError ? "--" : formatLatency(trace.latencyMs)}
+                  </span>
                 </td>
                 <td className="py-2.5 px-4">
-                  <span className="text-sm">{isError ? "--" : formatCost(trace.costCents)}</span>
+                  <span className="text-sm">
+                    {isError ? "--" : formatCost(trace.costCents)}
+                  </span>
                 </td>
                 <td className="py-2.5 px-4">
                   {isError ? (

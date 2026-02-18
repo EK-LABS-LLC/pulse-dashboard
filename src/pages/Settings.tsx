@@ -11,7 +11,9 @@ export interface ProjectInfo {
 
 export default function Settings() {
   const { selectedProject } = useProject();
-  const [projectNameOverrides, setProjectNameOverrides] = useState<Record<string, string>>({});
+  const [projectNameOverrides, setProjectNameOverrides] = useState<
+    Record<string, string>
+  >({});
 
   const project = selectedProject
     ? {
@@ -22,7 +24,9 @@ export default function Settings() {
     : null;
 
   const [error] = useState<string | null>(null);
-  const [saveStatus, setSaveStatus] = useState<"idle" | "saving" | "saved" | "error">("idle");
+  const [saveStatus, setSaveStatus] = useState<
+    "idle" | "saving" | "saved" | "error"
+  >("idle");
 
   const handleSaveProject = async (name: string) => {
     setSaveStatus("saving");
@@ -90,12 +94,19 @@ export default function Settings() {
 
           {/* Project Settings Section */}
           {project && (
-            <ProjectSettings project={project} saveStatus={saveStatus} onSave={handleSaveProject} />
+            <ProjectSettings
+              project={project}
+              saveStatus={saveStatus}
+              onSave={handleSaveProject}
+            />
           )}
 
           {/* Danger Zone Section */}
           {project && (
-            <DangerZone projectName={project.name} onDeleteProject={handleDeleteProject} />
+            <DangerZone
+              projectName={project.name}
+              onDeleteProject={handleDeleteProject}
+            />
           )}
         </div>
       </div>

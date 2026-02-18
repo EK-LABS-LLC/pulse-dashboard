@@ -18,5 +18,9 @@ const statusConfig = {
 export function StatusBadge({ status }: StatusBadgeProps) {
   const config = statusConfig[status];
 
-  return <span className={`text-xs px-1.5 py-0.5 rounded ${config.className}`}>{config.text}</span>;
+  return (
+    <span className={`text-xs px-1.5 py-0.5 rounded ${config.className}`}>
+      {config.text}
+    </span>
+  );
 }

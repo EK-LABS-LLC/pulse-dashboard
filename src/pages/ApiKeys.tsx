@@ -2,7 +2,10 @@ import { useMemo, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import ApiKeyList, { type ApiKey } from "../components/api-keys/ApiKeyList";
 import CreateApiKeyModal from "../components/api-keys/CreateApiKeyModal";
-import { type CreateProjectUserInput, type ProjectUserInfo } from "../lib/apiClient";
+import {
+  type CreateProjectUserInput,
+  type ProjectUserInfo,
+} from "../lib/apiClient";
 import {
   useApiKeysQuery,
   useCreateProjectUserMutation,
@@ -13,8 +16,18 @@ import {
 import { useProject } from "../hooks/useProject";
 
 const PlusIcon = () => (
-  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+  <svg
+    className="w-4 h-4"
+    fill="none"
+    stroke="currentColor"
+    viewBox="0 0 24 24"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={2}
+      d="M12 4v16m8-8H4"
+    />
   </svg>
 );
 
@@ -57,7 +70,9 @@ export default function ApiKeys() {
   const usersQuery = useProjectUsersQuery(selectedProject?.id);
   const deleteApiKeyMutation = useDeleteApiKeyMutation(selectedProject?.id);
   const createUserMutation = useCreateProjectUserMutation(selectedProject?.id);
-  const updateApiKeyNameMutation = useUpdateApiKeyNameMutation(selectedProject?.id);
+  const updateApiKeyNameMutation = useUpdateApiKeyNameMutation(
+    selectedProject?.id,
+  );
 
   const keys: ApiKey[] = useMemo(() => {
     return (apiKeysQuery.data?.keys ?? []).map((k) => ({
@@ -72,8 +87,10 @@ export default function ApiKeys() {
 
   const users: ProjectUserInfo[] = usersQuery.data?.users ?? [];
 
-  const error = apiKeysQuery.error instanceof Error ? apiKeysQuery.error.message : null;
-  const usersError = usersQuery.error instanceof Error ? usersQuery.error.message : null;
+  const error =
+    apiKeysQuery.error instanceof Error ? apiKeysQuery.error.message : null;
+  const usersError =
+    usersQuery.error instanceof Error ? usersQuery.error.message : null;
 
   const resetCreateUserState = () => {
     setCreateUserError(null);
@@ -86,7 +103,9 @@ export default function ApiKeys() {
   };
 
   const handleKeyCreated = () => {
-    queryClient.invalidateQueries({ queryKey: ["api-keys", selectedProject?.id] });
+    queryClient.invalidateQueries({
+      queryKey: ["api-keys", selectedProject?.id],
+    });
   };
 
   const handleRevokeKey = async (keyId: string) => {
@@ -130,7 +149,9 @@ export default function ApiKeys() {
       setShowCreateUserModal(false);
       resetCreateUserState();
     } catch (err) {
-      setCreateUserError(err instanceof Error ? err.message : "Failed to create user");
+      setCreateUserError(
+        err instanceof Error ? err.message : "Failed to create user",
+      );
     }
   };
 
@@ -158,10 +179,13 @@ export default function ApiKeys() {
               <InfoIcon />
               <div>
                 <p className="text-sm text-neutral-300">
-                  API keys are used to authenticate requests to the Pulse API. Keep your keys secure
-                  and never share them publicly.
+                  API keys are used to authenticate requests to the Pulse API.
+                  Keep your keys secure and never share them publicly.
                 </p>
-                <a href="#" className="text-sm text-accent hover:underline mt-1 inline-block">
+                <a
+                  href="#"
+                  className="text-sm text-accent hover:underline mt-1 inline-block"
+                >
                   View API documentation
                 </a>
               </div>
@@ -246,23 +270,36 @@ export default function ApiKeys() {
                 <tbody>
                   {usersQuery.isPending && (
                     <tr>
-                      <td colSpan={4} className="px-4 py-8 text-center text-neutral-500">
+                      <td
+                        colSpan={4}
+                        className="px-4 py-8 text-center text-neutral-500"
+                      >
                         Loading users...
                       </td>
                     </tr>
                   )}
                   {!usersQuery.isPending && users.length === 0 && (
                     <tr>
-                      <td colSpan={4} className="px-4 py-8 text-center text-neutral-500">
+                      <td
+                        colSpan={4}
+                        className="px-4 py-8 text-center text-neutral-500"
+                      >
                         No users in this project yet.
                       </td>
                     </tr>
                   )}
                   {!usersQuery.isPending &&
                     users.map((projectUser) => (
-                      <tr key={projectUser.userId} className="border-t border-neutral-800">
-                        <td className="px-4 py-3 text-neutral-200">{projectUser.name}</td>
-                        <td className="px-4 py-3 text-neutral-300">{projectUser.email}</td>
+                      <tr
+                        key={projectUser.userId}
+                        className="border-t border-neutral-800"
+                      >
+                        <td className="px-4 py-3 text-neutral-200">
+                          {projectUser.name}
+                        </td>
+                        <td className="px-4 py-3 text-neutral-300">
+                          {projectUser.email}
+                        </td>
                         <td className="px-4 py-3">
                           <span className="inline-flex items-center rounded px-2 py-0.5 text-xs bg-neutral-800 text-neutral-300">
                             {projectUser.role}
@@ -327,13 +364,17 @@ export default function ApiKeys() {
                     />
                   </svg>
                   <p className="text-xs text-error">
-                    This action cannot be undone. Any applications using this key will stop working.
+                    This action cannot be undone. Any applications using this
+                    key will stop working.
                   </p>
                 </div>
               </div>
               <p className="text-sm text-neutral-400">
                 Are you sure you want to revoke{" "}
-                <span className="text-white font-medium">{keyToRevoke.name}</span>?
+                <span className="text-white font-medium">
+                  {keyToRevoke.name}
+                </span>
+                ?
               </p>
             </div>
             <div className="flex justify-end gap-2 px-4 py-3 border-t border-neutral-800">
@@ -381,12 +422,17 @@ export default function ApiKeys() {
 
             <div className="p-4 space-y-3">
               <div>
-                <label className="block text-xs text-neutral-400 mb-1">Email</label>
+                <label className="block text-xs text-neutral-400 mb-1">
+                  Email
+                </label>
                 <input
                   type="email"
                   value={newUser.email}
                   onChange={(e) =>
-                    setNewUser((prev) => ({ ...prev, email: e.currentTarget.value }))
+                    setNewUser((prev) => ({
+                      ...prev,
+                      email: e.currentTarget.value,
+                    }))
                   }
                   className="w-full px-3 py-2 text-sm bg-neutral-950 border border-neutral-700 rounded focus:border-accent focus:outline-none"
                   placeholder="user@company.com"
@@ -400,7 +446,12 @@ export default function ApiKeys() {
                 <input
                   type="text"
                   value={newUser.name}
-                  onChange={(e) => setNewUser((prev) => ({ ...prev, name: e.currentTarget.value }))}
+                  onChange={(e) =>
+                    setNewUser((prev) => ({
+                      ...prev,
+                      name: e.currentTarget.value,
+                    }))
+                  }
                   className="w-full px-3 py-2 text-sm bg-neutral-950 border border-neutral-700 rounded focus:border-accent focus:outline-none"
                   placeholder="Jane Doe"
                 />
@@ -414,7 +465,10 @@ export default function ApiKeys() {
                   type="password"
                   value={newUser.password}
                   onChange={(e) =>
-                    setNewUser((prev) => ({ ...prev, password: e.currentTarget.value }))
+                    setNewUser((prev) => ({
+                      ...prev,
+                      password: e.currentTarget.value,
+                    }))
                   }
                   className="w-full px-3 py-2 text-sm bg-neutral-950 border border-neutral-700 rounded focus:border-accent focus:outline-none"
                   placeholder="At least 8 characters"
@@ -422,7 +476,9 @@ export default function ApiKeys() {
               </div>
 
               <div>
-                <label className="block text-xs text-neutral-400 mb-1">Role</label>
+                <label className="block text-xs text-neutral-400 mb-1">
+                  Role
+                </label>
                 <select
                   value={newUser.role}
                   onChange={(e) =>
@@ -439,7 +495,8 @@ export default function ApiKeys() {
               </div>
 
               <p className="text-xs text-neutral-500">
-                If the email already exists, this adds that account to the selected project.
+                If the email already exists, this adds that account to the
+                selected project.
               </p>
 
               {createUserError && (

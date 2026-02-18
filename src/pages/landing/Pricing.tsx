@@ -7,7 +7,12 @@ const tiers = [
     price: "$0",
     period: "/ mo",
     desc: "For individuals and side projects exploring LLM observability.",
-    features: ["10,000 traces / month", "1 project", "7-day retention", "Community support"],
+    features: [
+      "10,000 traces / month",
+      "1 project",
+      "7-day retention",
+      "Community support",
+    ],
     cta: "Get started",
     featured: false,
     action: "signup",
@@ -80,7 +85,10 @@ export function Pricing() {
           </div>
           <h2
             className="text-[clamp(1.8rem,3vw,2.6rem)] font-bold leading-tight text-white mb-4"
-            style={{ fontFamily: "'Space Grotesk', sans-serif", letterSpacing: "-0.03em" }}
+            style={{
+              fontFamily: "'Space Grotesk', sans-serif",
+              letterSpacing: "-0.03em",
+            }}
           >
             Start free, scale when ready
           </h2>
@@ -101,10 +109,20 @@ export function Pricing() {
               </div>
               <div
                 className="mb-1"
-                style={{ fontFamily: "'Space Grotesk', sans-serif", letterSpacing: "-0.03em" }}
+                style={{
+                  fontFamily: "'Space Grotesk', sans-serif",
+                  letterSpacing: "-0.03em",
+                }}
               >
-                <span className="text-[2.8rem] font-bold text-white">{tier.price}</span>
-                {tier.period && <span className="text-sm text-neutral-600"> {tier.period}</span>}
+                <span className="text-[2.8rem] font-bold text-white">
+                  {tier.price}
+                </span>
+                {tier.period && (
+                  <span className="text-sm text-neutral-600">
+                    {" "}
+                    {tier.period}
+                  </span>
+                )}
               </div>
               <p className="text-sm text-neutral-500 mb-7 pb-7 border-b border-neutral-800">
                 {tier.desc}

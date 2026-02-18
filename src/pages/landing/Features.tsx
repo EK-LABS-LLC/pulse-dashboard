@@ -41,13 +41,16 @@ export function Features() {
           </div>
           <h2
             className="text-[clamp(1.8rem,3vw,2.6rem)] font-bold leading-tight text-white mb-4"
-            style={{ fontFamily: "'Space Grotesk', sans-serif", letterSpacing: "-0.03em" }}
+            style={{
+              fontFamily: "'Space Grotesk', sans-serif",
+              letterSpacing: "-0.03em",
+            }}
           >
             Everything you need to understand your LLM stack
           </h2>
           <p className="text-neutral-500 text-[15px] leading-relaxed">
-            From individual traces to full session timelines, Pulse gives your team the visibility
-            to ship with confidence.
+            From individual traces to full session timelines, Pulse gives your
+            team the visibility to ship with confidence.
           </p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3">
@@ -61,11 +64,16 @@ export function Features() {
               </div>
               <h3
                 className="text-[1.1rem] font-semibold text-white mb-2.5"
-                style={{ fontFamily: "'Space Grotesk', sans-serif", letterSpacing: "-0.02em" }}
+                style={{
+                  fontFamily: "'Space Grotesk', sans-serif",
+                  letterSpacing: "-0.02em",
+                }}
               >
                 {f.title}
               </h3>
-              <p className="text-sm text-neutral-500 leading-relaxed">{f.desc}</p>
+              <p className="text-sm text-neutral-500 leading-relaxed">
+                {f.desc}
+              </p>
             </div>
           ))}
         </div>

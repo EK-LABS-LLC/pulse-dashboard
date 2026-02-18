@@ -6,7 +6,10 @@ export function Cta() {
       <div className="max-w-[1100px] mx-auto px-8">
         <h2
           className="text-[clamp(2rem,3.5vw,3.2rem)] font-bold text-white mb-4 leading-tight"
-          style={{ fontFamily: "'Space Grotesk', sans-serif", letterSpacing: "-0.03em" }}
+          style={{
+            fontFamily: "'Space Grotesk', sans-serif",
+            letterSpacing: "-0.03em",
+          }}
         >
           Start tracking your agents
         </h2>

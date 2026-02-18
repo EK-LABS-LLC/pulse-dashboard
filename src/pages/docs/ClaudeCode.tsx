@@ -9,12 +9,16 @@ export default function ClaudeCode() {
         </div>
         <h1
           className="text-3xl font-bold text-white mb-3"
-          style={{ fontFamily: "'Space Grotesk', sans-serif", letterSpacing: "-0.03em" }}
+          style={{
+            fontFamily: "'Space Grotesk', sans-serif",
+            letterSpacing: "-0.03em",
+          }}
         >
           Claude Code
         </h1>
         <p className="text-neutral-500 text-[15px]">
-          Capture tool calls, sessions, and agent events from Claude Code automatically.
+          Capture tool calls, sessions, and agent events from Claude Code
+          automatically.
         </p>
       </div>
 
@@ -26,21 +30,35 @@ export default function ClaudeCode() {
           Overview
         </h2>
         <p className="text-sm text-neutral-500 mb-4">
-          The Pulse CLI hooks into Claude Code to capture tool and session events as structured
-          spans, then ships them to your Pulse trace service. This gives you full visibility into
-          your agentic workflows — every tool call, reasoning step, and session state change.
+          The Pulse CLI hooks into Claude Code to capture tool and session
+          events as structured spans, then ships them to your Pulse trace
+          service. This gives you full visibility into your agentic workflows —
+          every tool call, reasoning step, and session state change.
         </p>
         <div className="bg-neutral-900/50 border border-neutral-800 rounded p-4">
           <div className="flex items-start gap-3">
             <div className="w-8 h-8 rounded bg-violet-500/10 flex items-center justify-center flex-shrink-0">
-              <svg className="w-4 h-4 text-violet-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+              <svg
+                className="w-4 h-4 text-violet-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M13 10V3L4 14h7v7l9-11h-7z"
+                />
               </svg>
             </div>
             <div>
-              <div className="text-sm font-medium text-neutral-300 mb-1">Non-blocking hooks</div>
+              <div className="text-sm font-medium text-neutral-300 mb-1">
+                Non-blocking hooks
+              </div>
               <p className="text-xs text-neutral-500">
-                Hooks are async and non-blocking — Claude Code never waits for Pulse. Zero impact on your workflow.
+                Hooks are async and non-blocking — Claude Code never waits for
+                Pulse. Zero impact on your workflow.
               </p>
             </div>
           </div>
@@ -60,24 +78,31 @@ export default function ClaudeCode() {
 
         <div className="space-y-4">
           <div>
-            <div className="text-xs text-neutral-500 mb-2">1. Install the CLI</div>
+            <div className="text-xs text-neutral-500 mb-2">
+              1. Install the CLI
+            </div>
             <BashCode>cargo install --path .</BashCode>
           </div>
 
           <div>
-            <div className="text-xs text-neutral-500 mb-2">2. Initialize with your trace service</div>
+            <div className="text-xs text-neutral-500 mb-2">
+              2. Initialize with your trace service
+            </div>
             <BashCode>pulse init</BashCode>
             <p className="text-xs text-neutral-600 mt-2">
-              Prompts for your trace service URL, API key, and project ID. Saves to{" "}
-              <InlineCode variant="muted">~/.pulse/config.toml</InlineCode>.
+              Prompts for your trace service URL, API key, and project ID. Saves
+              to <InlineCode variant="muted">~/.pulse/config.toml</InlineCode>.
             </p>
           </div>
 
           <div>
-            <div className="text-xs text-neutral-500 mb-2">3. Connect hooks to Claude Code</div>
+            <div className="text-xs text-neutral-500 mb-2">
+              3. Connect hooks to Claude Code
+            </div>
             <BashCode>pulse connect</BashCode>
             <p className="text-xs text-neutral-600 mt-2">
-              That's it. Every Claude Code session now sends spans to your trace service.
+              That's it. Every Claude Code session now sends spans to your trace
+              service.
             </p>
           </div>
         </div>
@@ -91,8 +116,9 @@ export default function ClaudeCode() {
           Hooks Installed
         </h2>
         <p className="text-sm text-neutral-500 mb-4">
-          <InlineCode variant="muted">pulse connect</InlineCode> installs 10 async hooks
-          into <InlineCode variant="muted">~/.claude/settings.json</InlineCode>:
+          <InlineCode variant="muted">pulse connect</InlineCode> installs 10
+          async hooks into{" "}
+          <InlineCode variant="muted">~/.claude/settings.json</InlineCode>:
         </p>
         <div className="bg-[#111111] border border-neutral-800 rounded p-4">
           <div className="grid grid-cols-2 gap-2 text-sm font-mono">
@@ -123,8 +149,12 @@ export default function ClaudeCode() {
         <table className="w-full text-sm border border-neutral-800">
           <thead>
             <tr className="border-b border-neutral-800">
-              <th className="p-3 text-left text-neutral-400 font-medium">Field</th>
-              <th className="p-3 text-left text-neutral-400 font-medium">Description</th>
+              <th className="p-3 text-left text-neutral-400 font-medium">
+                Field
+              </th>
+              <th className="p-3 text-left text-neutral-400 font-medium">
+                Description
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -133,8 +163,14 @@ export default function ClaudeCode() {
               ["session_id", "Claude Code session identifier"],
               ["timestamp", "ISO 8601 timestamp"],
               ["source", "Always 'claude_code'"],
-              ["kind", "tool_use, session, agent_run, user_prompt, or notification"],
-              ["event_type", "The specific event (e.g. post_tool_use, session_start)"],
+              [
+                "kind",
+                "tool_use, session, agent_run, user_prompt, or notification",
+              ],
+              [
+                "event_type",
+                "The specific event (e.g. post_tool_use, session_start)",
+              ],
               ["status", "success or error"],
               ["tool_name", "Tool name (for tool events)"],
               ["tool_input", "Tool input payload"],
@@ -146,7 +182,9 @@ export default function ClaudeCode() {
               ["metadata", "cli_version, project_id, and event-specific data"],
             ].map(([key, val]) => (
               <tr key={key} className="border-b border-neutral-800">
-                <td className="p-3 text-neutral-300 font-mono text-xs">{key}</td>
+                <td className="p-3 text-neutral-300 font-mono text-xs">
+                  {key}
+                </td>
                 <td className="p-3 text-neutral-500">{val}</td>
               </tr>
             ))}
@@ -164,8 +202,12 @@ export default function ClaudeCode() {
         <table className="w-full text-sm border border-neutral-800">
           <thead>
             <tr className="border-b border-neutral-800">
-              <th className="p-3 text-left text-neutral-400 font-medium">Command</th>
-              <th className="p-3 text-left text-neutral-400 font-medium">Description</th>
+              <th className="p-3 text-left text-neutral-400 font-medium">
+                Command
+              </th>
+              <th className="p-3 text-left text-neutral-400 font-medium">
+                Description
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -177,7 +219,9 @@ export default function ClaudeCode() {
               ["pulse emit <type>", "Send a span (called by hooks)"],
             ].map(([cmd, desc]) => (
               <tr key={cmd} className="border-b border-neutral-800">
-                <td className="p-3 text-neutral-300 font-mono text-xs">{cmd}</td>
+                <td className="p-3 text-neutral-300 font-mono text-xs">
+                  {cmd}
+                </td>
                 <td className="p-3 text-neutral-500">{desc}</td>
               </tr>
             ))}
@@ -210,12 +254,15 @@ export default function ClaudeCode() {
           Debugging
         </h2>
         <p className="text-sm text-neutral-500 mb-4">
-          Set <InlineCode variant="muted">PULSE_DEBUG=1</InlineCode> to log raw payloads:
+          Set <InlineCode variant="muted">PULSE_DEBUG=1</InlineCode> to log raw
+          payloads:
         </p>
         <BashCode>{`export PULSE_DEBUG=1`}</BashCode>
         <p className="text-xs text-neutral-600 mt-2">
-          Writes to <InlineCode variant="muted">~/.pulse/debug.log</InlineCode>. Override
-          with <InlineCode variant="muted">PULSE_DEBUG_LOG=/path/to/file</InlineCode>.
+          Writes to <InlineCode variant="muted">~/.pulse/debug.log</InlineCode>.
+          Override with{" "}
+          <InlineCode variant="muted">PULSE_DEBUG_LOG=/path/to/file</InlineCode>
+          .
         </p>
       </section>
 
@@ -233,22 +280,26 @@ export default function ClaudeCode() {
           <li className="flex items-start gap-2">
             <span className="text-violet-400 mt-0.5">→</span>
             <span>
-              <strong className="text-neutral-300">Sessions → Agents tab</strong> — See all your
-              Claude Code sessions with agent runs, tool calls, and duration
+              <strong className="text-neutral-300">
+                Sessions → Agents tab
+              </strong>{" "}
+              — See all your Claude Code sessions with agent runs, tool calls,
+              and duration
             </span>
           </li>
           <li className="flex items-start gap-2">
             <span className="text-violet-400 mt-0.5">→</span>
             <span>
-              <strong className="text-neutral-300">Click a session</strong> — View the waterfall
-              timeline showing every tool call, input, and response
+              <strong className="text-neutral-300">Click a session</strong> —
+              View the waterfall timeline showing every tool call, input, and
+              response
             </span>
           </li>
           <li className="flex items-start gap-2">
             <span className="text-violet-400 mt-0.5">→</span>
             <span>
-              <strong className="text-neutral-300">Click a span</strong> — See full tool input,
-              response, errors, and metadata
+              <strong className="text-neutral-300">Click a span</strong> — See
+              full tool input, response, errors, and metadata
             </span>
           </li>
         </ul>

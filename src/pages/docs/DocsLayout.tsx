@@ -10,9 +10,7 @@ const sidebarGroups = [
   },
   {
     label: "Integrations",
-    links: [
-      { to: "/docs/claude-code", label: "Claude Code" },
-    ],
+    links: [{ to: "/docs/claude-code", label: "Claude Code" }],
   },
   {
     label: "SDK",
@@ -55,7 +53,10 @@ export default function DocsLayout() {
             <Link
               to="/"
               className="font-bold text-lg text-white"
-              style={{ fontFamily: "'Space Grotesk', sans-serif", letterSpacing: "-0.03em" }}
+              style={{
+                fontFamily: "'Space Grotesk', sans-serif",
+                letterSpacing: "-0.03em",
+              }}
             >
               Pulse
             </Link>
@@ -64,7 +65,12 @@ export default function DocsLayout() {
           </div>
           <div className="hidden md:flex gap-0">
             {topLinks.map((link) => (
-              <NavLink key={link.to} to={link.to} end={link.end} className={linkClass}>
+              <NavLink
+                key={link.to}
+                to={link.to}
+                end={link.end}
+                className={linkClass}
+              >
                 <span className="px-4 py-2">{link.label}</span>
               </NavLink>
             ))}
@@ -82,7 +88,12 @@ export default function DocsLayout() {
                 {group.label}
               </div>
               {group.links.map((link) => (
-                <NavLink key={link.to} to={link.to} end={link.end} className={sidebarLinkClass}>
+                <NavLink
+                  key={link.to}
+                  to={link.to}
+                  end={link.end}
+                  className={sidebarLinkClass}
+                >
                   {link.label}
                 </NavLink>
               ))}

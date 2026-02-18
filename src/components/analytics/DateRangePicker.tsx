@@ -14,7 +14,12 @@ interface DateRangePickerProps {
 }
 
 const CalendarIcon = () => (
-  <svg className="w-4 h-4 text-neutral-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+  <svg
+    className="w-4 h-4 text-neutral-500"
+    fill="none"
+    stroke="currentColor"
+    viewBox="0 0 24 24"
+  >
     <path
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -31,7 +36,12 @@ const ChevronDownIcon = () => (
     stroke="currentColor"
     viewBox="0 0 24 24"
   >
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={2}
+      d="M19 9l-7 7-7-7"
+    />
   </svg>
 );
 
@@ -74,7 +84,10 @@ function getPresetDates(preset: DateRangePreset): { from: Date; to: Date } {
   return { from, to };
 }
 
-export default function DateRangePicker({ value, onChange }: DateRangePickerProps) {
+export default function DateRangePicker({
+  value,
+  onChange,
+}: DateRangePickerProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [showCustom, setShowCustom] = useState(value.preset === "custom");
   const [customFrom, setCustomFrom] = useState(formatDateForInput(value.from));
@@ -83,7 +96,10 @@ export default function DateRangePicker({ value, onChange }: DateRangePickerProp
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
         setIsOpen(false);
       }
     }
@@ -179,7 +195,9 @@ export default function DateRangePicker({ value, onChange }: DateRangePickerProp
           {showCustom && (
             <div className="p-3 space-y-3">
               <div>
-                <label className="block text-xs text-neutral-500 mb-1">From</label>
+                <label className="block text-xs text-neutral-500 mb-1">
+                  From
+                </label>
                 <input
                   type="date"
                   value={customFrom}
@@ -188,7 +206,9 @@ export default function DateRangePicker({ value, onChange }: DateRangePickerProp
                 />
               </div>
               <div>
-                <label className="block text-xs text-neutral-500 mb-1">To</label>
+                <label className="block text-xs text-neutral-500 mb-1">
+                  To
+                </label>
                 <input
                   type="date"
                   value={customTo}

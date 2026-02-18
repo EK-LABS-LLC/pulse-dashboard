@@ -8,7 +8,12 @@ interface ProjectSettingsProps {
 }
 
 const CopyIcon = () => (
-  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+  <svg
+    className="w-4 h-4"
+    fill="none"
+    stroke="currentColor"
+    viewBox="0 0 24 24"
+  >
     <path
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -19,12 +24,26 @@ const CopyIcon = () => (
 );
 
 const CheckIcon = () => (
-  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+  <svg
+    className="w-4 h-4"
+    fill="none"
+    stroke="currentColor"
+    viewBox="0 0 24 24"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={2}
+      d="M5 13l4 4L19 7"
+    />
   </svg>
 );
 
-export default function ProjectSettings({ project, saveStatus, onSave }: ProjectSettingsProps) {
+export default function ProjectSettings({
+  project,
+  saveStatus,
+  onSave,
+}: ProjectSettingsProps) {
   const [name, setName] = useState(project.name);
   const [copied, setCopied] = useState(false);
 
@@ -39,21 +58,29 @@ export default function ProjectSettings({ project, saveStatus, onSave }: Project
     onSave(name);
   };
 
-  const formattedDate = new Date(project.createdAt).toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
+  const formattedDate = new Date(project.createdAt).toLocaleDateString(
+    "en-US",
+    {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    },
+  );
 
   return (
     <section className="mb-10">
       <h2 className="text-lg font-medium mb-1">General</h2>
-      <p className="text-sm text-neutral-500 mb-6">Manage your project settings</p>
+      <p className="text-sm text-neutral-500 mb-6">
+        Manage your project settings
+      </p>
 
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Project Name */}
         <div>
-          <label htmlFor="projectName" className="block text-sm font-medium mb-2">
+          <label
+            htmlFor="projectName"
+            className="block text-sm font-medium mb-2"
+          >
             Project Name
           </label>
           <input
@@ -118,7 +145,9 @@ export default function ProjectSettings({ project, saveStatus, onSave }: Project
                 : "Save Changes"}
           </button>
           {saveStatus === "error" && (
-            <span className="ml-3 text-sm text-error">Failed to save changes</span>
+            <span className="ml-3 text-sm text-error">
+              Failed to save changes
+            </span>
           )}
         </div>
       </form>

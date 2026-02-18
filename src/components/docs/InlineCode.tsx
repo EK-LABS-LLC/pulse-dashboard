@@ -4,7 +4,8 @@ interface InlineCodeProps {
 }
 
 export function InlineCode({ children, variant = "default" }: InlineCodeProps) {
-  const baseClasses = "font-mono text-[0.9em] px-1.5 py-0.5 rounded bg-neutral-800/50 border border-neutral-700/50";
+  const baseClasses =
+    "font-mono text-[0.9em] px-1.5 py-0.5 rounded bg-neutral-800/50 border border-neutral-700/50";
 
   const variantClasses = {
     default: "text-neutral-300",

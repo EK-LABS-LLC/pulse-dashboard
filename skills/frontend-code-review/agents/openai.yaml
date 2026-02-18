@@ -1,0 +1,4 @@
+interface:
+  display_name: "Frontend Code Review"
+  short_description: "Review React and Vite frontend code quality."
+  default_prompt: "Use $frontend-code-review to review these frontend files for critical, important, and minor issues with file:line references and concise fixes."

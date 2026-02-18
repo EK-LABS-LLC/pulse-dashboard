@@ -66,7 +66,10 @@ function truncateId(id: string): string {
   return id.substring(0, 8) + "...";
 }
 
-export function RecentSessionsTable({ sessions, loading }: RecentSessionsTableProps) {
+export function RecentSessionsTable({
+  sessions,
+  loading,
+}: RecentSessionsTableProps) {
   const navigate = useNavigate();
 
   const handleRowClick = (sessionId: string) => {
@@ -92,20 +95,39 @@ export function RecentSessionsTable({ sessions, loading }: RecentSessionsTablePr
         <table className="w-full">
           <thead>
             <tr className="border-b border-neutral-800">
-              <th className="text-left py-2.5 px-4 text-xs font-medium text-neutral-500">ID</th>
-              <th className="text-left py-2.5 px-4 text-xs font-medium text-neutral-500">Time</th>
-              <th className="text-left py-2.5 px-4 text-xs font-medium text-neutral-500">Status</th>
-              <th className="text-left py-2.5 px-4 text-xs font-medium text-neutral-500">Duration</th>
-              <th className="text-left py-2.5 px-4 text-xs font-medium text-neutral-500">Runs</th>
-              <th className="text-left py-2.5 px-4 text-xs font-medium text-neutral-500">Tools</th>
-              <th className="text-left py-2.5 px-4 text-xs font-medium text-neutral-500">Tokens</th>
-              <th className="text-left py-2.5 px-4 text-xs font-medium text-neutral-500">Cost</th>
+              <th className="text-left py-2.5 px-4 text-xs font-medium text-neutral-500">
+                ID
+              </th>
+              <th className="text-left py-2.5 px-4 text-xs font-medium text-neutral-500">
+                Time
+              </th>
+              <th className="text-left py-2.5 px-4 text-xs font-medium text-neutral-500">
+                Status
+              </th>
+              <th className="text-left py-2.5 px-4 text-xs font-medium text-neutral-500">
+                Duration
+              </th>
+              <th className="text-left py-2.5 px-4 text-xs font-medium text-neutral-500">
+                Runs
+              </th>
+              <th className="text-left py-2.5 px-4 text-xs font-medium text-neutral-500">
+                Tools
+              </th>
+              <th className="text-left py-2.5 px-4 text-xs font-medium text-neutral-500">
+                Tokens
+              </th>
+              <th className="text-left py-2.5 px-4 text-xs font-medium text-neutral-500">
+                Cost
+              </th>
             </tr>
           </thead>
           <tbody>
             {loading && sessions.length === 0 ? (
               <tr>
-                <td colSpan={8} className="py-8 text-center text-neutral-500 text-sm">
+                <td
+                  colSpan={8}
+                  className="py-8 text-center text-neutral-500 text-sm"
+                >
                   <div className="flex items-center justify-center gap-2">
                     <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24">
                       <circle
@@ -129,7 +151,10 @@ export function RecentSessionsTable({ sessions, loading }: RecentSessionsTablePr
               </tr>
             ) : sessions.length === 0 ? (
               <tr>
-                <td colSpan={8} className="py-8 text-center text-neutral-500 text-sm">
+                <td
+                  colSpan={8}
+                  className="py-8 text-center text-neutral-500 text-sm"
+                >
                   No sessions found
                 </td>
               </tr>
@@ -173,10 +198,14 @@ export function RecentSessionsTable({ sessions, loading }: RecentSessionsTablePr
                       </span>
                     </td>
                     <td className="py-2.5 px-4">
-                      <span className="text-sm text-neutral-300">{session.agentRuns}</span>
+                      <span className="text-sm text-neutral-300">
+                        {session.agentRuns}
+                      </span>
                     </td>
                     <td className="py-2.5 px-4">
-                      <span className="text-sm text-neutral-300">{session.toolCalls}</span>
+                      <span className="text-sm text-neutral-300">
+                        {session.toolCalls}
+                      </span>
                     </td>
                     <td className="py-2.5 px-4">
                       <span className="text-sm text-neutral-300">

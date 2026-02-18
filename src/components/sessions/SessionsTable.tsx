@@ -36,8 +36,10 @@ function formatRelativeTime(dateStr: string): string {
   const diffDays = Math.floor(diffMs / 86400000);
 
   if (diffMins < 1) return "just now";
-  if (diffMins < 60) return `${diffMins} minute${diffMins !== 1 ? "s" : ""} ago`;
-  if (diffHours < 24) return `${diffHours} hour${diffHours !== 1 ? "s" : ""} ago`;
+  if (diffMins < 60)
+    return `${diffMins} minute${diffMins !== 1 ? "s" : ""} ago`;
+  if (diffHours < 24)
+    return `${diffHours} hour${diffHours !== 1 ? "s" : ""} ago`;
   return `${diffDays} day${diffDays !== 1 ? "s" : ""} ago`;
 }
 
@@ -65,7 +67,10 @@ function formatCost(cents: number): string {
   return `$${(cents / 100).toFixed(2)}`;
 }
 
-export default function SessionsTable({ sessions, onRowClick }: SessionsTableProps) {
+export default function SessionsTable({
+  sessions,
+  onRowClick,
+}: SessionsTableProps) {
   const navigate = useNavigate();
 
   const handleRowClick = (sessionId: string) => {
@@ -92,7 +97,9 @@ export default function SessionsTable({ sessions, onRowClick }: SessionsTablePro
             d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z"
           />
         </svg>
-        <h3 className="text-sm font-medium text-neutral-400 mb-1">No sessions found</h3>
+        <h3 className="text-sm font-medium text-neutral-400 mb-1">
+          No sessions found
+        </h3>
         <p className="text-xs text-neutral-500">
           Sessions will appear here once traces with session IDs are recorded
         </p>
@@ -105,14 +112,30 @@ export default function SessionsTable({ sessions, onRowClick }: SessionsTablePro
       <table className="w-full">
         <thead className="bg-neutral-900">
           <tr className="border-b border-neutral-800">
-            <th className="text-left py-3 px-4 text-xs font-medium text-neutral-500">Session ID</th>
-            <th className="text-left py-3 px-4 text-xs font-medium text-neutral-500">Started</th>
-            <th className="text-left py-3 px-4 text-xs font-medium text-neutral-500">Traces</th>
-            <th className="text-left py-3 px-4 text-xs font-medium text-neutral-500">Tokens</th>
-            <th className="text-left py-3 px-4 text-xs font-medium text-neutral-500">Cost</th>
-            <th className="text-left py-3 px-4 text-xs font-medium text-neutral-500">Duration</th>
-            <th className="text-left py-3 px-4 text-xs font-medium text-neutral-500">User</th>
-            <th className="text-left py-3 px-4 text-xs font-medium text-neutral-500">Status</th>
+            <th className="text-left py-3 px-4 text-xs font-medium text-neutral-500">
+              Session ID
+            </th>
+            <th className="text-left py-3 px-4 text-xs font-medium text-neutral-500">
+              Started
+            </th>
+            <th className="text-left py-3 px-4 text-xs font-medium text-neutral-500">
+              Traces
+            </th>
+            <th className="text-left py-3 px-4 text-xs font-medium text-neutral-500">
+              Tokens
+            </th>
+            <th className="text-left py-3 px-4 text-xs font-medium text-neutral-500">
+              Cost
+            </th>
+            <th className="text-left py-3 px-4 text-xs font-medium text-neutral-500">
+              Duration
+            </th>
+            <th className="text-left py-3 px-4 text-xs font-medium text-neutral-500">
+              User
+            </th>
+            <th className="text-left py-3 px-4 text-xs font-medium text-neutral-500">
+              Status
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -121,14 +144,20 @@ export default function SessionsTable({ sessions, onRowClick }: SessionsTablePro
               key={session.session_id}
               onClick={() => handleRowClick(session.session_id)}
               className={`border-b border-neutral-800 cursor-pointer transition-colors hover:bg-neutral-850 ${
-                session.error_count > 0 ? "bg-rose-500/5 hover:bg-rose-500/8" : "bg-neutral-900"
+                session.error_count > 0
+                  ? "bg-rose-500/5 hover:bg-rose-500/8"
+                  : "bg-neutral-900"
               }`}
             >
               <td className="py-3 px-4">
-                <span className="text-sm font-mono text-accent">{session.session_id}</span>
+                <span className="text-sm font-mono text-accent">
+                  {session.session_id}
+                </span>
               </td>
               <td className="py-3 px-4">
-                <div className="text-sm">{formatDate(session.first_trace_time)}</div>
+                <div className="text-sm">
+                  {formatDate(session.first_trace_time)}
+                </div>
                 <div className="text-xs text-neutral-500">
                   {formatRelativeTime(session.first_trace_time)}
                 </div>
@@ -142,11 +171,16 @@ export default function SessionsTable({ sessions, onRowClick }: SessionsTablePro
                 </span>
               </td>
               <td className="py-3 px-4">
-                <span className="text-sm">{formatCost(session.total_cost_cents)}</span>
+                <span className="text-sm">
+                  {formatCost(session.total_cost_cents)}
+                </span>
               </td>
               <td className="py-3 px-4">
                 <span className="text-sm">
-                  {formatDuration(session.first_trace_time, session.last_trace_time)}
+                  {formatDuration(
+                    session.first_trace_time,
+                    session.last_trace_time,
+                  )}
                 </span>
               </td>
               <td className="py-3 px-4">
@@ -161,7 +195,8 @@ export default function SessionsTable({ sessions, onRowClick }: SessionsTablePro
               <td className="py-3 px-4">
                 {session.error_count > 0 ? (
                   <span className="text-xs px-1.5 py-0.5 bg-error/10 text-error rounded">
-                    {session.error_count} Error{session.error_count > 1 ? "s" : ""}
+                    {session.error_count} Error
+                    {session.error_count > 1 ? "s" : ""}
                   </span>
                 ) : (
                   <span className="text-xs px-1.5 py-0.5 bg-neutral-800 text-neutral-400 rounded">

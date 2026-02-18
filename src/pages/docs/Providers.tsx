@@ -9,7 +9,10 @@ export default function Providers() {
         </div>
         <h1
           className="text-3xl font-bold text-white mb-3"
-          style={{ fontFamily: "'Space Grotesk', sans-serif", letterSpacing: "-0.03em" }}
+          style={{
+            fontFamily: "'Space Grotesk', sans-serif",
+            letterSpacing: "-0.03em",
+          }}
         >
           Providers
         </h1>
@@ -27,8 +30,8 @@ export default function Providers() {
           observe(client, provider, options?)
         </h2>
         <p className="text-sm text-neutral-500 mb-4">
-          Wraps an LLM client and returns a traced version. The returned client has same type and
-          API as original.
+          Wraps an LLM client and returns a traced version. The returned client
+          has same type and API as original.
         </p>
         <HighlightedCodeTabs
           ts={`const traced = observe(client, Provider.OpenAI);
@@ -111,8 +114,8 @@ for chunk in stream:
   print(chunk.choices[0].delta.content or "", end="")`}
         />
         <p className="text-sm text-neutral-500 mt-3">
-          Both streaming and non-streaming calls are traced. For streams, trace is recorded after
-          stream completes.
+          Both streaming and non-streaming calls are traced. For streams, trace
+          is recorded after stream completes.
         </p>
       </section>
 
@@ -177,8 +180,9 @@ with client.messages.stream(
     print(text, end="")`}
         />
         <div className="mt-4 border border-neutral-800 bg-[#111111] p-4 text-sm text-neutral-500">
-          <strong className="text-neutral-300">Stop reason mapping.</strong> Anthropic stop reasons
-          are normalized: <InlineCode variant="muted">end_turn</InlineCode> &rarr;{" "}
+          <strong className="text-neutral-300">Stop reason mapping.</strong>{" "}
+          Anthropic stop reasons are normalized:{" "}
+          <InlineCode variant="muted">end_turn</InlineCode> &rarr;{" "}
           <InlineCode variant="muted">stop</InlineCode>,{" "}
           <InlineCode variant="muted">max_tokens</InlineCode> &rarr;{" "}
           <InlineCode variant="muted">length</InlineCode>,{" "}
@@ -198,8 +202,8 @@ with client.messages.stream(
         </h2>
         <p className="text-sm text-neutral-500 mb-4">
           OpenRouter uses OpenAI client library. Pass{" "}
-          <InlineCode>Provider.OpenRouter</InlineCode> so Pulse records
-          correct provider and extracts OpenRouter-specific cost data.
+          <InlineCode>Provider.OpenRouter</InlineCode> so Pulse records correct
+          provider and extracts OpenRouter-specific cost data.
         </p>
         <HighlightedCodeTabs
           ts={`import OpenAI from 'openai';
@@ -235,7 +239,8 @@ res = client.chat.completions.create(
         />
         <p className="text-sm text-neutral-500 mt-3">
           When OpenRouter includes a <InlineCode>cost</InlineCode> field in
-          response, Pulse uses that directly instead of calculating from token counts.
+          response, Pulse uses that directly instead of calculating from token
+          counts.
         </p>
       </section>
 
@@ -247,14 +252,21 @@ res = client.chat.completions.create(
           Pricing
         </h2>
         <p className="text-sm text-neutral-500 mb-4">
-          The SDK calculates cost automatically for known models. Pricing is built in for:
+          The SDK calculates cost automatically for known models. Pricing is
+          built in for:
         </p>
         <table className="w-full text-sm border border-neutral-800">
           <thead>
             <tr className="border-b border-neutral-800">
-              <th className="p-3 text-left text-neutral-400 font-medium">Model</th>
-              <th className="p-3 text-left text-neutral-400 font-medium">Input</th>
-              <th className="p-3 text-left text-neutral-400 font-medium">Output</th>
+              <th className="p-3 text-left text-neutral-400 font-medium">
+                Model
+              </th>
+              <th className="p-3 text-left text-neutral-400 font-medium">
+                Input
+              </th>
+              <th className="p-3 text-left text-neutral-400 font-medium">
+                Output
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -293,12 +305,13 @@ res = client.chat.completions.create(
         </h2>
         <p className="text-sm text-neutral-500 mb-3">
           If LLM call throws, SDK captures an error trace (with{" "}
-          <InlineCode>status: "error"</InlineCode> and error details) and
-          then re-throws original error. Your application error handling is unaffected.
+          <InlineCode>status: "error"</InlineCode> and error details) and then
+          re-throws original error. Your application error handling is
+          unaffected.
         </p>
         <p className="text-sm text-neutral-500">
-          If trace sending fails (network error, server down), SDK logs a warning and continues.
-          Tracing never breaks your application.
+          If trace sending fails (network error, server down), SDK logs a
+          warning and continues. Tracing never breaks your application.
         </p>
       </section>
     </div>

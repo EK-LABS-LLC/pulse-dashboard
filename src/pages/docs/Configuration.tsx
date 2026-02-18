@@ -9,7 +9,10 @@ export default function Configuration() {
         </div>
         <h1
           className="text-3xl font-bold text-white mb-3"
-          style={{ fontFamily: "'Space Grotesk', sans-serif", letterSpacing: "-0.03em" }}
+          style={{
+            fontFamily: "'Space Grotesk', sans-serif",
+            letterSpacing: "-0.03em",
+          }}
         >
           Configuration
         </h1>
@@ -95,9 +98,13 @@ init_pulse({
             <div key={p.name} className="border border-neutral-800 p-4">
               <div className="flex items-center gap-2 mb-1">
                 <code className="font-mono text-sm text-white">{p.name}</code>
-                <span className="text-xs text-neutral-600 font-mono">{p.type}</span>
+                <span className="text-xs text-neutral-600 font-mono">
+                  {p.type}
+                </span>
                 {p.required && (
-                  <span className="text-xs text-amber-500/80 font-medium">required</span>
+                  <span className="text-xs text-amber-500/80 font-medium">
+                    required
+                  </span>
                 )}
               </div>
               <p className="text-sm text-neutral-500">{p.desc}</p>
@@ -114,7 +121,8 @@ init_pulse({
           Batching behavior
         </h2>
         <p className="text-sm text-neutral-500 mb-3">
-          Traces are buffered in memory and sent to the server in two situations:
+          Traces are buffered in memory and sent to the server in two
+          situations:
         </p>
         <ul className="text-sm text-neutral-500 space-y-1.5 list-disc pl-5">
           <li>
@@ -128,9 +136,8 @@ init_pulse({
         </ul>
         <p className="text-sm text-neutral-500 mt-3">
           On process exit (<InlineCode>beforeExit</InlineCode>,{" "}
-          <InlineCode>SIGINT</InlineCode>,{" "}
-          <InlineCode>SIGTERM</InlineCode>), the SDK flushes all remaining
-          traces before shutdown.
+          <InlineCode>SIGINT</InlineCode>, <InlineCode>SIGTERM</InlineCode>),
+          the SDK flushes all remaining traces before shutdown.
         </p>
       </section>
 
@@ -147,12 +154,12 @@ init_pulse({
         </p>
         <ul className="text-sm text-neutral-500 space-y-1.5 list-disc pl-5">
           <li>
-            <InlineCode>apiKey</InlineCode> must be a non-empty string
-            starting with <InlineCode>pulse_sk_</InlineCode>
+            <InlineCode>apiKey</InlineCode> must be a non-empty string starting
+            with <InlineCode>pulse_sk_</InlineCode>
           </li>
           <li>
-            <InlineCode>batchSize</InlineCode> must be an integer between 1
-            and 100
+            <InlineCode>batchSize</InlineCode> must be an integer between 1 and
+            100
           </li>
           <li>
             <InlineCode>flushInterval</InlineCode> must be at least 1000ms
@@ -171,9 +178,9 @@ init_pulse({
           Disabling tracing
         </h2>
         <p className="text-sm text-neutral-500 mb-4">
-          Set <InlineCode>enabled: false</InlineCode> to turn off all
-          tracing. The <InlineCode>observe()</InlineCode> wrapper still
-          returns a working client — it just skips trace capture.
+          Set <InlineCode>enabled: false</InlineCode> to turn off all tracing.
+          The <InlineCode>observe()</InlineCode> wrapper still returns a working
+          client — it just skips trace capture.
         </p>
         <HighlightedCodeTabs
           ts={`initPulse({

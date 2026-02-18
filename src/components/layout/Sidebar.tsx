@@ -8,7 +8,12 @@ const navItems = [
     to: "/dashboard",
     label: "Overview",
     icon: (
-      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <svg
+        className="w-4 h-4"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
         <path
           strokeLinecap="round"
           strokeLinejoin="round"
@@ -22,7 +27,12 @@ const navItems = [
     to: "/dashboard/traces",
     label: "Traces",
     icon: (
-      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <svg
+        className="w-4 h-4"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
         <path
           strokeLinecap="round"
           strokeLinejoin="round"
@@ -36,7 +46,12 @@ const navItems = [
     to: "/dashboard/sessions",
     label: "Sessions",
     icon: (
-      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <svg
+        className="w-4 h-4"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
         <path
           strokeLinecap="round"
           strokeLinejoin="round"
@@ -50,7 +65,12 @@ const navItems = [
     to: "/dashboard/analytics",
     label: "Analytics",
     icon: (
-      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <svg
+        className="w-4 h-4"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
         <path
           strokeLinecap="round"
           strokeLinejoin="round"
@@ -67,7 +87,12 @@ const settingsItems = [
     to: "/dashboard/api-keys",
     label: "API Keys",
     icon: (
-      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <svg
+        className="w-4 h-4"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
         <path
           strokeLinecap="round"
           strokeLinejoin="round"
@@ -81,7 +106,12 @@ const settingsItems = [
     to: "/dashboard/settings",
     label: "Settings",
     icon: (
-      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <svg
+        className="w-4 h-4"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
         <path
           strokeLinecap="round"
           strokeLinejoin="round"
@@ -112,7 +142,9 @@ export function Sidebar() {
   };
 
   const userInitial =
-    user?.name?.charAt(0)?.toUpperCase() || user?.email?.charAt(0)?.toUpperCase() || "U";
+    user?.name?.charAt(0)?.toUpperCase() ||
+    user?.email?.charAt(0)?.toUpperCase() ||
+    "U";
   const displayName = user?.name || user?.email || "User";
 
   const navLinkClass = ({ isActive }: { isActive: boolean }) =>
@@ -126,7 +158,10 @@ export function Sidebar() {
     <aside className="w-56 h-full border-r border-neutral-800 flex flex-col flex-shrink-0">
       {/* Logo */}
       <div className="h-14 flex items-center px-4 border-b border-neutral-800">
-        <NavLink to="/dashboard" className="font-semibold text-sm text-neutral-100">
+        <NavLink
+          to="/dashboard"
+          className="font-semibold text-sm text-neutral-100"
+        >
           Pulse
         </NavLink>
       </div>
@@ -137,7 +172,9 @@ export function Sidebar() {
           onClick={() => setProjectMenuOpen(!projectMenuOpen)}
           className="w-full flex items-center justify-between px-2 py-1.5 text-sm text-neutral-300 hover:text-white hover:bg-neutral-850 rounded transition-colors"
         >
-          <span className="truncate">{selectedProject?.name || "No project"}</span>
+          <span className="truncate">
+            {selectedProject?.name || "No project"}
+          </span>
           <svg
             className="w-4 h-4 text-neutral-500 flex-shrink-0"
             fill="none"
@@ -172,7 +209,9 @@ export function Sidebar() {
                 </button>
               ))}
               {projects.length === 0 && (
-                <div className="px-3 py-2 text-sm text-neutral-500">No projects yet</div>
+                <div className="px-3 py-2 text-sm text-neutral-500">
+                  No projects yet
+                </div>
               )}
             </div>
           </div>
@@ -239,7 +278,12 @@ export function Sidebar() {
                 onClick={() => setUserMenuOpen(false)}
                 className="flex items-center gap-2 px-3 py-2 text-sm text-neutral-400 hover:text-white hover:bg-neutral-850"
               >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg
+                  className="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -255,7 +299,12 @@ export function Sidebar() {
                 onClick={handleLogout}
                 className="w-full flex items-center gap-2 px-3 py-2 text-sm text-rose-400/80 hover:text-rose-400 hover:bg-rose-500/5 transition-colors"
               >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg
+                  className="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"

@@ -19,7 +19,9 @@ export default function AccountActions() {
         <div className="flex items-center justify-between">
           <div>
             <div className="text-sm font-medium">Sign Out</div>
-            <p className="text-sm text-neutral-500 mt-0.5">Sign out of your current session</p>
+            <p className="text-sm text-neutral-500 mt-0.5">
+              Sign out of your current session
+            </p>
           </div>
           <button
             onClick={handleSignOut}

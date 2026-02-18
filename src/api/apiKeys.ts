@@ -37,7 +37,8 @@ export function useDeleteApiKeyMutation(projectId: string | undefined) {
 export function useUpdateApiKeyNameMutation(projectId: string | undefined) {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({ keyId, name }: { keyId: string; name: string }) => updateApiKeyName(keyId, name),
+    mutationFn: ({ keyId, name }: { keyId: string; name: string }) =>
+      updateApiKeyName(keyId, name),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["api-keys", projectId] });
     },

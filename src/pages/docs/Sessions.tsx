@@ -1,5 +1,9 @@
 import { Link } from "react-router-dom";
-import { HighlightedCodeTabs, CodeBlock, InlineCode } from "../../components/docs";
+import {
+  HighlightedCodeTabs,
+  CodeBlock,
+  InlineCode,
+} from "../../components/docs";
 
 export default function Sessions() {
   return (
@@ -10,7 +14,10 @@ export default function Sessions() {
         </div>
         <h1
           className="text-3xl font-bold text-white mb-3"
-          style={{ fontFamily: "'Space Grotesk', sans-serif", letterSpacing: "-0.03em" }}
+          style={{
+            fontFamily: "'Space Grotesk', sans-serif",
+            letterSpacing: "-0.03em",
+          }}
         >
           Sessions & Metadata
         </h1>
@@ -27,9 +34,9 @@ export default function Sessions() {
           Sessions
         </h2>
         <p className="text-sm text-neutral-500">
-          A session groups related LLM calls together — a user conversation, an agent run, a batch
-          job. Assign a session ID and all traces with that ID appear as a timeline in the
-          dashboard.
+          A session groups related LLM calls together — a user conversation, an
+          agent run, a batch job. Assign a session ID and all traces with that
+          ID appear as a timeline in the dashboard.
         </p>
       </section>
 
@@ -40,7 +47,9 @@ export default function Sessions() {
         >
           Setting a session ID
         </h2>
-        <h3 className="text-base font-medium text-neutral-300 mb-3">At observe-time</h3>
+        <h3 className="text-base font-medium text-neutral-300 mb-3">
+          At observe-time
+        </h3>
         <p className="text-sm text-neutral-500 mb-4">
           Pass <InlineCode>sessionId</InlineCode> in the options. All calls
           through this client use this session.
@@ -58,7 +67,9 @@ export default function Sessions() {
 )`}
         />
 
-        <h3 className="text-base font-medium text-neutral-300 mb-3 mt-6">Per-call override</h3>
+        <h3 className="text-base font-medium text-neutral-300 mb-3 mt-6">
+          Per-call override
+        </h3>
         <p className="text-sm text-neutral-500 mb-4">
           Pass <InlineCode>pulseSessionId</InlineCode> in the request body to
           override the observe-time session for a specific call.
@@ -76,9 +87,8 @@ export default function Sessions() {
 )`}
         />
         <p className="text-sm text-neutral-500 mt-3">
-          Per-call takes precedence. The{" "}
-          <InlineCode>pulseSessionId</InlineCode> param is stripped before
-          the request reaches the provider.
+          Per-call takes precedence. The <InlineCode>pulseSessionId</InlineCode>{" "}
+          param is stripped before the request reaches the provider.
         </p>
       </section>
 
@@ -90,11 +100,13 @@ export default function Sessions() {
           Metadata
         </h2>
         <p className="text-sm text-neutral-500 mb-4">
-          Attach arbitrary key-value data to traces. Useful for filtering by user, feature,
-          environment, or any dimension you care about.
+          Attach arbitrary key-value data to traces. Useful for filtering by
+          user, feature, environment, or any dimension you care about.
         </p>
 
-        <h3 className="text-base font-medium text-neutral-300 mb-3">At observe-time</h3>
+        <h3 className="text-base font-medium text-neutral-300 mb-3">
+          At observe-time
+        </h3>
         <HighlightedCodeTabs
           ts={`const client = observe(
   new OpenAI({ apiKey: 'sk-...' }),
@@ -118,10 +130,13 @@ export default function Sessions() {
 )`}
         />
 
-        <h3 className="text-base font-medium text-neutral-300 mb-3 mt-6">Per-call extension</h3>
+        <h3 className="text-base font-medium text-neutral-300 mb-3 mt-6">
+          Per-call extension
+        </h3>
         <p className="text-sm text-neutral-500 mb-4">
           Pass <InlineCode>pulseMetadata</InlineCode> in the request body. It
-          merges with the observe-time metadata — per-call values win on conflicts.
+          merges with the observe-time metadata — per-call values win on
+          conflicts.
         </p>
         <HighlightedCodeTabs
           ts={`await client.chat.completions.create({
@@ -191,27 +206,33 @@ export default function Sessions() {
           Per-call params
         </h2>
         <p className="text-sm text-neutral-500 mb-4">
-          These are passed in the request body alongside normal provider params. They are stripped
-          before the request is sent to the provider.
+          These are passed in the request body alongside normal provider params.
+          They are stripped before the request is sent to the provider.
         </p>
         <div className="space-y-4">
           <div className="border border-neutral-800 p-4">
             <div className="flex items-center gap-2 mb-1">
-              <code className="font-mono text-sm text-white">pulseSessionId</code>
+              <code className="font-mono text-sm text-white">
+                pulseSessionId
+              </code>
               <span className="text-xs text-neutral-600 font-mono">string</span>
             </div>
-            <p className="text-sm text-neutral-500">Override session ID for this call only.</p>
+            <p className="text-sm text-neutral-500">
+              Override session ID for this call only.
+            </p>
           </div>
           <div className="border border-neutral-800 p-4">
             <div className="flex items-center gap-2 mb-1">
-              <code className="font-mono text-sm text-white">pulseMetadata</code>
+              <code className="font-mono text-sm text-white">
+                pulseMetadata
+              </code>
               <span className="text-xs text-neutral-600 font-mono">
                 {"Record<string, unknown>"}
               </span>
             </div>
             <p className="text-sm text-neutral-500">
-              Additional metadata merged with observe-time metadata. Per-call values win on key
-              conflicts.
+              Additional metadata merged with observe-time metadata. Per-call
+              values win on key conflicts.
             </p>
           </div>
         </div>
@@ -225,16 +246,20 @@ export default function Sessions() {
           Viewing sessions
         </h2>
         <p className="text-sm text-neutral-500 mb-3">
-          In the dashboard, navigate to Sessions to see all sessions grouped by ID. Each session
-          shows a timeline of its traces ordered by timestamp.
+          In the dashboard, navigate to Sessions to see all sessions grouped by
+          ID. Each session shows a timeline of its traces ordered by timestamp.
         </p>
         <p className="text-sm text-neutral-500 mb-3">Via the API:</p>
         <CodeBlock language="bash">GET /v1/sessions/:id</CodeBlock>
         <p className="text-sm text-neutral-500 mt-3">
           Returns all traces for that session. See{" "}
-          <Link to="/docs/api" className="text-neutral-300 hover:text-white transition-colors">
+          <Link
+            to="/docs/api"
+            className="text-neutral-300 hover:text-white transition-colors"
+          >
             API reference
-          </Link>.
+          </Link>
+          .
         </p>
       </section>
     </div>

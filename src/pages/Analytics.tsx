@@ -26,9 +26,15 @@ interface AnalyticsSummary {
   totalOutputTokens: number;
 }
 
-function getDateRangeParams(range: DateRange): { date_from: string; date_to: string } {
+function getDateRangeParams(range: DateRange): {
+  date_from: string;
+  date_to: string;
+} {
   if (range.preset === "custom" && range.from && range.to) {
-    return { date_from: range.from.toISOString(), date_to: range.to.toISOString() };
+    return {
+      date_from: range.from.toISOString(),
+      date_to: range.to.toISOString(),
+    };
   }
 
   const now = new Date();
@@ -72,10 +78,15 @@ function calculateDays(range: DateRange): number {
   return getPresetDays(range.preset);
 }
 
-function calculateSummary(analytics: AnalyticsResponse, dateRange: DateRange): AnalyticsSummary {
+function calculateSummary(
+  analytics: AnalyticsResponse,
+  dateRange: DateRange,
+): AnalyticsSummary {
   const days = calculateDays(dateRange);
   const dailyAverage = analytics.totalCost / days;
-  const errorCount = Math.round(analytics.totalRequests * (analytics.errorRate / 100));
+  const errorCount = Math.round(
+    analytics.totalRequests * (analytics.errorRate / 100),
+  );
 
   return {
     totalCost: analytics.totalCost,
@@ -117,7 +128,12 @@ function formatLatency(ms: number): string {
 
 // Icons
 const TrendUpIcon = () => (
-  <svg className="w-4 h-4 text-neutral-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+  <svg
+    className="w-4 h-4 text-neutral-400"
+    fill="none"
+    stroke="currentColor"
+    viewBox="0 0 24 24"
+  >
     <path
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -128,7 +144,12 @@ const TrendUpIcon = () => (
 );
 
 const ClockIcon = () => (
-  <svg className="w-4 h-4 text-success" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+  <svg
+    className="w-4 h-4 text-success"
+    fill="none"
+    stroke="currentColor"
+    viewBox="0 0 24 24"
+  >
     <path
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -139,7 +160,12 @@ const ClockIcon = () => (
 );
 
 const CheckCircleIcon = () => (
-  <svg className="w-4 h-4 text-success" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+  <svg
+    className="w-4 h-4 text-success"
+    fill="none"
+    stroke="currentColor"
+    viewBox="0 0 24 24"
+  >
     <path
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -160,7 +186,10 @@ export default function Analytics() {
   const [activeTab, setActiveTab] = useState<Tab>("costs");
   const [dateRange, setDateRange] = useState<DateRange>(getInitialDateRange);
   const groupBy: GroupBy = "day";
-  const { date_from, date_to } = useMemo(() => getDateRangeParams(dateRange), [dateRange]);
+  const { date_from, date_to } = useMemo(
+    () => getDateRangeParams(dateRange),
+    [dateRange],
+  );
 
   const analyticsQuery = useAnalyticsQuery("analytics", selectedProject?.id, {
     date_from,
@@ -171,7 +200,8 @@ export default function Analytics() {
   const analytics = analyticsQuery.data ?? null;
   const summary = analytics ? calculateSummary(analytics, dateRange) : null;
   const loading = analyticsQuery.isPending;
-  const error = analyticsQuery.error instanceof Error ? analyticsQuery.error.message : null;
+  const error =
+    analyticsQuery.error instanceof Error ? analyticsQuery.error.message : null;
 
   const dateRangeLabel =
     dateRange.preset === "24h"
@@ -252,7 +282,9 @@ export default function Analytics() {
                   <div className="text-2xl font-semibold text-white">
                     {formatCurrency(summary.totalCost)}
                   </div>
-                  <div className="text-xs text-neutral-500 mt-1">{dateRangeLabel}</div>
+                  <div className="text-xs text-neutral-500 mt-1">
+                    {dateRangeLabel}
+                  </div>
                 </div>
                 <div className="bg-neutral-900 border border-neutral-800 rounded p-4">
                   <div className="text-xs text-neutral-500 uppercase tracking-wide mb-2">
@@ -273,7 +305,10 @@ export default function Analytics() {
                     {formatNumber(summary.totalRequests)}
                   </div>
                   <div className="text-xs text-neutral-500 mt-1">
-                    {formatNumber(summary.totalRequests / calculateDays(dateRange))}/day avg
+                    {formatNumber(
+                      summary.totalRequests / calculateDays(dateRange),
+                    )}
+                    /day avg
                   </div>
                 </div>
                 <div className="bg-neutral-900 border border-neutral-800 rounded p-4">
@@ -281,7 +316,9 @@ export default function Analytics() {
                     Total Tokens
                   </div>
                   <div className="text-2xl font-semibold text-white">
-                    {formatNumber(summary.totalInputTokens + summary.totalOutputTokens)}
+                    {formatNumber(
+                      summary.totalInputTokens + summary.totalOutputTokens,
+                    )}
                   </div>
                   <div className="text-xs text-neutral-500 mt-1">
                     In: {formatNumber(summary.totalInputTokens)} / Out:{" "}
@@ -295,7 +332,9 @@ export default function Analytics() {
                 <div className="flex items-center justify-between mb-4">
                   <div>
                     <h3 className="text-sm font-medium">Cost Over Time</h3>
-                    <p className="text-xs text-neutral-500 mt-0.5">Daily spending by provider</p>
+                    <p className="text-xs text-neutral-500 mt-0.5">
+                      Daily spending by provider
+                    </p>
                   </div>
                 </div>
                 <CostChart
@@ -316,14 +355,22 @@ export default function Analytics() {
                 <div className="bg-neutral-900 border border-neutral-800 rounded p-4">
                   <h3 className="text-sm font-medium mb-4">Cost by Provider</h3>
                   <div className="space-y-3">
-                    {analytics?.costByProvider && analytics.costByProvider.length > 0 ? (
+                    {analytics?.costByProvider &&
+                    analytics.costByProvider.length > 0 ? (
                       analytics.costByProvider.map((item, index) => {
                         const totalCost = analytics.costByProvider.reduce(
                           (sum, d) => sum + d.costCents,
-                          0
+                          0,
                         );
-                        const percentage = totalCost > 0 ? (item.costCents / totalCost) * 100 : 0;
-                        const colors = ["bg-neutral-400", "bg-neutral-500", "bg-neutral-600"];
+                        const percentage =
+                          totalCost > 0
+                            ? (item.costCents / totalCost) * 100
+                            : 0;
+                        const colors = [
+                          "bg-neutral-400",
+                          "bg-neutral-500",
+                          "bg-neutral-600",
+                        ];
                         return (
                           <div
                             key={item.provider || index}
@@ -349,7 +396,9 @@ export default function Analytics() {
                         );
                       })
                     ) : (
-                      <p className="text-sm text-neutral-500">No data available</p>
+                      <p className="text-sm text-neutral-500">
+                        No data available
+                      </p>
                     )}
                   </div>
                 </div>
@@ -362,9 +411,12 @@ export default function Analytics() {
                       analytics.topModels.slice(0, 5).map((item, index) => {
                         const totalCost = analytics.topModels.reduce(
                           (sum, d) => sum + d.costCents,
-                          0
+                          0,
                         );
-                        const percentage = totalCost > 0 ? (item.costCents / totalCost) * 100 : 0;
+                        const percentage =
+                          totalCost > 0
+                            ? (item.costCents / totalCost) * 100
+                            : 0;
                         const colors = [
                           "bg-neutral-400",
                           "bg-neutral-500",
@@ -390,7 +442,9 @@ export default function Analytics() {
                         );
                       })
                     ) : (
-                      <p className="text-sm text-neutral-500">No data available</p>
+                      <p className="text-sm text-neutral-500">
+                        No data available
+                      </p>
                     )}
                   </div>
                 </div>
@@ -466,11 +520,15 @@ export default function Analytics() {
                       </tr>
                     </thead>
                     <tbody>
-                      {analytics?.topModels && analytics.topModels.length > 0 ? (
+                      {analytics?.topModels &&
+                      analytics.topModels.length > 0 ? (
                         analytics.topModels.map((item, index) => {
-                          const errorRate = item.requests > 0 ? (0 / item.requests) * 100 : 0; // StatsByModel doesn't include error_count
+                          const errorRate =
+                            item.requests > 0 ? (0 / item.requests) * 100 : 0; // StatsByModel doesn't include error_count
                           const costPerReq =
-                            item.requests > 0 ? item.costCents / 100 / item.requests : 0;
+                            item.requests > 0
+                              ? item.costCents / 100 / item.requests
+                              : 0;
                           return (
                             <tr
                               key={item.model || index}
@@ -479,11 +537,15 @@ export default function Analytics() {
                               <td className="py-3 px-3 text-sm font-medium">
                                 {item.model || "Unknown"}
                               </td>
-                              <td className="py-3 px-3 text-sm">{formatNumber(item.requests)}</td>
+                              <td className="py-3 px-3 text-sm">
+                                {formatNumber(item.requests)}
+                              </td>
                               <td className="py-3 px-3 text-sm font-medium text-white">
                                 {formatCurrency(item.costCents / 100)}
                               </td>
-                              <td className="py-3 px-3 text-sm">{formatCurrency(costPerReq)}</td>
+                              <td className="py-3 px-3 text-sm">
+                                {formatCurrency(costPerReq)}
+                              </td>
                               <td className="py-3 px-3 text-sm">
                                 {formatLatency(item.avgLatency)}
                               </td>
@@ -497,7 +559,10 @@ export default function Analytics() {
                         })
                       ) : (
                         <tr>
-                          <td colSpan={6} className="py-6 text-center text-sm text-neutral-500">
+                          <td
+                            colSpan={6}
+                            className="py-6 text-center text-sm text-neutral-500"
+                          >
                             No data available
                           </td>
                         </tr>
@@ -520,17 +585,29 @@ export default function Analytics() {
                       </span>
                     </div>
                     {(() => {
-                      const sorted = [...(analytics?.topModels || [])].sort((a, b) => {
-                        const costPerReqA = a.requests > 0 ? a.costCents / a.requests : Infinity;
-                        const costPerReqB = b.requests > 0 ? b.costCents / b.requests : Infinity;
-                        return costPerReqA - costPerReqB;
-                      });
+                      const sorted = [...(analytics?.topModels || [])].sort(
+                        (a, b) => {
+                          const costPerReqA =
+                            a.requests > 0
+                              ? a.costCents / a.requests
+                              : Infinity;
+                          const costPerReqB =
+                            b.requests > 0
+                              ? b.costCents / b.requests
+                              : Infinity;
+                          return costPerReqA - costPerReqB;
+                        },
+                      );
                       const best = sorted[0];
                       const costPerReq =
-                        best && best.requests > 0 ? best.costCents / 100 / best.requests : 0;
+                        best && best.requests > 0
+                          ? best.costCents / 100 / best.requests
+                          : 0;
                       return (
                         <>
-                          <div className="text-lg font-medium">{best?.model || "N/A"}</div>
+                          <div className="text-lg font-medium">
+                            {best?.model || "N/A"}
+                          </div>
                           <div className="text-sm text-neutral-500 mt-1">
                             {formatCurrency(costPerReq)} per request
                           </div>
@@ -549,12 +626,14 @@ export default function Analytics() {
                     </div>
                     {(() => {
                       const sorted = [...(analytics?.topModels || [])].sort(
-                        (a, b) => a.avgLatency - b.avgLatency
+                        (a, b) => a.avgLatency - b.avgLatency,
                       );
                       const best = sorted[0];
                       return (
                         <>
-                          <div className="text-lg font-medium">{best?.model || "N/A"}</div>
+                          <div className="text-lg font-medium">
+                            {best?.model || "N/A"}
+                          </div>
                           <div className="text-sm text-neutral-500 mt-1">
                             {formatLatency(best?.avgLatency || 0)} average
                           </div>
@@ -580,10 +659,15 @@ export default function Analytics() {
                           return rateA - rateB;
                         });
                       const best = sorted[0];
-                      const errorRate = best && best.requests > 0 ? (0 / best.requests) * 100 : 0;
+                      const errorRate =
+                        best && best.requests > 0
+                          ? (0 / best.requests) * 100
+                          : 0;
                       return (
                         <>
-                          <div className="text-lg font-medium">{best?.model || "N/A"}</div>
+                          <div className="text-lg font-medium">
+                            {best?.model || "N/A"}
+                          </div>
                           <div className="text-sm text-neutral-500 mt-1">
                             {errorRate.toFixed(1)}% error rate
                           </div>

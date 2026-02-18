@@ -48,11 +48,15 @@ function CustomTooltip({
 
   return (
     <div className="bg-neutral-850 border border-neutral-700 rounded px-3 py-2 shadow-xl">
-      <p className="text-xs text-neutral-400 mb-1">{formatPeriodLabel(label || "")}</p>
+      <p className="text-xs text-neutral-400 mb-1">
+        {formatPeriodLabel(label || "")}
+      </p>
       <div className="flex items-center gap-2 text-sm">
         <div className="w-2 h-2 rounded-sm bg-error" />
         <span className="text-neutral-300">Error Rate:</span>
-        <span className="font-medium text-white">{formatPercentage(data.errorRate)}</span>
+        <span className="font-medium text-white">
+          {formatPercentage(data.errorRate)}
+        </span>
       </div>
       <div className="flex items-center gap-2 text-sm mt-1">
         <div className="w-2 h-2 rounded-sm bg-neutral-600" />
@@ -65,7 +69,10 @@ function CustomTooltip({
   );
 }
 
-export default function ErrorRateChart({ data, threshold = 5 }: ErrorRateChartProps) {
+export default function ErrorRateChart({
+  data,
+  threshold = 5,
+}: ErrorRateChartProps) {
   if (!data || data.length === 0) {
     return (
       <div className="h-[280px] flex items-center justify-center text-neutral-500 border border-dashed border-neutral-800 rounded">
@@ -85,8 +92,15 @@ export default function ErrorRateChart({ data, threshold = 5 }: ErrorRateChartPr
   return (
     <div className="h-[280px]">
       <ResponsiveContainer width="100%" height="100%">
-        <LineChart data={chartData} margin={{ top: 5, right: 20, left: 0, bottom: 5 }}>
-          <CartesianGrid strokeDasharray="3 3" stroke="#1f1f1f" vertical={false} />
+        <LineChart
+          data={chartData}
+          margin={{ top: 5, right: 20, left: 0, bottom: 5 }}
+        >
+          <CartesianGrid
+            strokeDasharray="3 3"
+            stroke="#1f1f1f"
+            vertical={false}
+          />
           <XAxis
             dataKey="period"
             stroke="#525252"
@@ -131,7 +145,8 @@ export default function ErrorRateChart({ data, threshold = 5 }: ErrorRateChartPr
             dot={(props) => {
               const { cx, cy, payload } = props;
               const isSpike = payload.errorRate > threshold;
-              if (!isSpike) return <circle key={`dot-${cx}-${cy}`} cx={cx} cy={cy} r={0} />;
+              if (!isSpike)
+                return <circle key={`dot-${cx}-${cy}`} cx={cx} cy={cy} r={0} />;
               return (
                 <circle
                   key={`dot-${cx}-${cy}`}
@@ -144,7 +159,12 @@ export default function ErrorRateChart({ data, threshold = 5 }: ErrorRateChartPr
                 />
               );
             }}
-            activeDot={{ r: 4, fill: "#ef4444", stroke: "#0a0a0a", strokeWidth: 2 }}
+            activeDot={{
+              r: 4,
+              fill: "#ef4444",
+              stroke: "#0a0a0a",
+              strokeWidth: 2,
+            }}
             fill="url(#errorGradient)"
           />
         </LineChart>

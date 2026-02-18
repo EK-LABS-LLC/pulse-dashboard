@@ -14,7 +14,11 @@ interface ApiKeyCardProps {
 
 function formatDate(dateString: string): string {
   const date = new Date(dateString);
-  return date.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+  return date.toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  });
 }
 
 function formatLastUsed(dateString?: string): string {
@@ -34,7 +38,12 @@ function formatLastUsed(dateString?: string): string {
 
 // Icons
 const CopyIcon = () => (
-  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+  <svg
+    className="w-4 h-4"
+    fill="none"
+    stroke="currentColor"
+    viewBox="0 0 24 24"
+  >
     <path
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -45,13 +54,28 @@ const CopyIcon = () => (
 );
 
 const CheckIcon = () => (
-  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+  <svg
+    className="w-4 h-4"
+    fill="none"
+    stroke="currentColor"
+    viewBox="0 0 24 24"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={2}
+      d="M5 13l4 4L19 7"
+    />
   </svg>
 );
 
 const EyeIcon = () => (
-  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+  <svg
+    className="w-4 h-4"
+    fill="none"
+    stroke="currentColor"
+    viewBox="0 0 24 24"
+  >
     <path
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -68,7 +92,12 @@ const EyeIcon = () => (
 );
 
 const EyeOffIcon = () => (
-  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+  <svg
+    className="w-4 h-4"
+    fill="none"
+    stroke="currentColor"
+    viewBox="0 0 24 24"
+  >
     <path
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -146,7 +175,9 @@ export default function ApiKeyCard({
           )}
           <span
             className={`text-xs px-1.5 py-0.5 rounded ${
-              status === "active" ? "bg-success/10 text-success" : "bg-warning/10 text-warning"
+              status === "active"
+                ? "bg-success/10 text-success"
+                : "bg-warning/10 text-warning"
             }`}
           >
             {status === "active" ? "Active" : "Never Used"}
@@ -154,7 +185,9 @@ export default function ApiKeyCard({
         </div>
         <div className="flex items-center gap-4 text-xs text-neutral-500">
           <div className="flex items-center gap-1.5">
-            <span className="font-mono truncate max-w-[280px]">{maskedKey}</span>
+            <span className="font-mono truncate max-w-[280px]">
+              {maskedKey}
+            </span>
             <button
               onClick={() => setIsRevealed(!isRevealed)}
               className="p-0.5 hover:text-neutral-300 transition-colors"
@@ -165,7 +198,9 @@ export default function ApiKeyCard({
           </div>
           <span>Created {formatDate(createdAt)}</span>
           <span className={!lastUsedAt ? "text-neutral-600" : ""}>
-            {lastUsedAt ? `Last used ${formatLastUsed(lastUsedAt)}` : "Never used"}
+            {lastUsedAt
+              ? `Last used ${formatLastUsed(lastUsedAt)}`
+              : "Never used"}
           </span>
         </div>
       </div>

@@ -8,13 +8,28 @@ interface CreateApiKeyModalProps {
 }
 
 const CloseIcon = () => (
-  <svg className="w-4 h-4 text-neutral-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6 18L18 6M6 6l12 12" />
+  <svg
+    className="w-4 h-4 text-neutral-500"
+    fill="none"
+    stroke="currentColor"
+    viewBox="0 0 24 24"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={1.5}
+      d="M6 18L18 6M6 6l12 12"
+    />
   </svg>
 );
 
 const SuccessIcon = () => (
-  <svg className="w-5 h-5 text-success" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+  <svg
+    className="w-5 h-5 text-success"
+    fill="none"
+    stroke="currentColor"
+    viewBox="0 0 24 24"
+  >
     <path
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -41,7 +56,12 @@ const WarningIcon = () => (
 );
 
 const CopyIcon = () => (
-  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+  <svg
+    className="w-4 h-4"
+    fill="none"
+    stroke="currentColor"
+    viewBox="0 0 24 24"
+  >
     <path
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -115,14 +135,17 @@ export default function CreateApiKeyModal({
         <div className="bg-neutral-900 border border-neutral-800 rounded-lg w-full max-w-md mx-4">
           <div className="flex items-center justify-between px-4 py-3 border-b border-neutral-800">
             <h3 className="text-sm font-medium">Create API Key</h3>
-            <button onClick={handleClose} className="p-1 hover:bg-neutral-800 rounded">
+            <button
+              onClick={handleClose}
+              className="p-1 hover:bg-neutral-800 rounded"
+            >
               <CloseIcon />
             </button>
           </div>
           <div className="p-4">
             <p className="text-sm text-neutral-400 mb-4">
-              Generate a new API key for the currently selected project. The key will be shown only
-              once.
+              Generate a new API key for the currently selected project. The key
+              will be shown only once.
             </p>
             {error && (
               <div className="text-sm text-rose-400 bg-rose-500/10 border border-rose-500/20 rounded-lg px-3 py-2 mb-4">
@@ -153,7 +176,10 @@ export default function CreateApiKeyModal({
               <SuccessIcon />
               <h3 className="text-sm font-medium">API Key Created</h3>
             </div>
-            <button onClick={handleClose} className="p-1 hover:bg-neutral-800 rounded">
+            <button
+              onClick={handleClose}
+              className="p-1 hover:bg-neutral-800 rounded"
+            >
               <CloseIcon />
             </button>
           </div>

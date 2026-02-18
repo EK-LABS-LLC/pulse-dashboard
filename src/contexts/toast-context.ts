@@ -14,4 +14,6 @@ export interface ToastContextValue {
   showInfo: (message: string) => void;
 }
 
-export const ToastContext = createContext<ToastContextValue | undefined>(undefined);
+export const ToastContext = createContext<ToastContextValue | undefined>(
+  undefined,
+);

@@ -8,7 +8,10 @@ export function LandingNav() {
           <Link
             to="/"
             className="font-bold text-lg tracking-tight text-white"
-            style={{ fontFamily: "'Space Grotesk', sans-serif", letterSpacing: "-0.03em" }}
+            style={{
+              fontFamily: "'Space Grotesk', sans-serif",
+              letterSpacing: "-0.03em",
+            }}
           >
             Pulse
           </Link>

@@ -49,7 +49,10 @@ export function getProviderColor(provider: string): string {
  * Get Tailwind color classes for provider badges.
  * Returns an object with bg and text classes.
  */
-export function getProviderBadgeClasses(provider: string): { bg: string; text: string } {
+export function getProviderBadgeClasses(provider: string): {
+  bg: string;
+  text: string;
+} {
   return PROVIDER_BADGE_CLASSES[getProviderColorIndex(provider)];
 }
 

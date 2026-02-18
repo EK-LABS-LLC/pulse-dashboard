@@ -1,6 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import type { Trace } from "../../lib/apiClient";
-import { getProviderBadgeClasses, getProviderLabel } from "../../lib/providerUtils";
+import {
+  getProviderBadgeClasses,
+  getProviderLabel,
+} from "../../lib/providerUtils";
 
 interface RecentTracesTableProps {
   traces: Trace[];
@@ -33,7 +36,10 @@ function formatCost(cents: number): string {
   return "$" + (cents / 100).toFixed(4);
 }
 
-function formatTokens(input?: number, output?: number): { input: string; output: string } {
+function formatTokens(
+  input?: number,
+  output?: number,
+): { input: string; output: string } {
   const formatNum = (n: number | undefined) => {
     if (n === undefined) return "-";
     if (n >= 1000) return (n / 1000).toFixed(1) + "K";
@@ -78,24 +84,39 @@ export function RecentTracesTable({ traces, loading }: RecentTracesTableProps) {
         <table className="w-full">
           <thead>
             <tr className="border-b border-neutral-800">
-              <th className="text-left py-2.5 px-4 text-xs font-medium text-neutral-500">ID</th>
-              <th className="text-left py-2.5 px-4 text-xs font-medium text-neutral-500">Time</th>
+              <th className="text-left py-2.5 px-4 text-xs font-medium text-neutral-500">
+                ID
+              </th>
+              <th className="text-left py-2.5 px-4 text-xs font-medium text-neutral-500">
+                Time
+              </th>
               <th className="text-left py-2.5 px-4 text-xs font-medium text-neutral-500">
                 Provider
               </th>
-              <th className="text-left py-2.5 px-4 text-xs font-medium text-neutral-500">Model</th>
-              <th className="text-left py-2.5 px-4 text-xs font-medium text-neutral-500">Tokens</th>
+              <th className="text-left py-2.5 px-4 text-xs font-medium text-neutral-500">
+                Model
+              </th>
+              <th className="text-left py-2.5 px-4 text-xs font-medium text-neutral-500">
+                Tokens
+              </th>
               <th className="text-left py-2.5 px-4 text-xs font-medium text-neutral-500">
                 Latency
               </th>
-              <th className="text-left py-2.5 px-4 text-xs font-medium text-neutral-500">Cost</th>
-              <th className="text-left py-2.5 px-4 text-xs font-medium text-neutral-500">Status</th>
+              <th className="text-left py-2.5 px-4 text-xs font-medium text-neutral-500">
+                Cost
+              </th>
+              <th className="text-left py-2.5 px-4 text-xs font-medium text-neutral-500">
+                Status
+              </th>
             </tr>
           </thead>
           <tbody>
             {loading && traces.length === 0 ? (
               <tr>
-                <td colSpan={8} className="py-8 text-center text-neutral-500 text-sm">
+                <td
+                  colSpan={8}
+                  className="py-8 text-center text-neutral-500 text-sm"
+                >
                   <div className="flex items-center justify-center gap-2">
                     <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24">
                       <circle
@@ -119,13 +140,19 @@ export function RecentTracesTable({ traces, loading }: RecentTracesTableProps) {
               </tr>
             ) : traces.length === 0 ? (
               <tr>
-                <td colSpan={8} className="py-8 text-center text-neutral-500 text-sm">
+                <td
+                  colSpan={8}
+                  className="py-8 text-center text-neutral-500 text-sm"
+                >
                   No traces found
                 </td>
               </tr>
             ) : (
               traces.map((trace) => {
-                const tokens = formatTokens(trace.inputTokens, trace.outputTokens);
+                const tokens = formatTokens(
+                  trace.inputTokens,
+                  trace.outputTokens,
+                );
                 const isError = trace.status === "error";
                 return (
                   <tr
@@ -151,13 +178,17 @@ export function RecentTracesTable({ traces, loading }: RecentTracesTableProps) {
                       </span>
                     </td>
                     <td className="py-2.5 px-4">
-                      <span className="text-sm">{trace.modelUsed || trace.modelRequested}</span>
+                      <span className="text-sm">
+                        {trace.modelUsed || trace.modelRequested}
+                      </span>
                     </td>
                     <td className="py-2.5 px-4">
                       <span className="text-sm">
                         <span className="text-neutral-300">{tokens.input}</span>
                         <span className="text-neutral-600 mx-1">/</span>
-                        <span className="text-neutral-500">{tokens.output}</span>
+                        <span className="text-neutral-500">
+                          {tokens.output}
+                        </span>
                       </span>
                     </td>
                     <td className="py-2.5 px-4">

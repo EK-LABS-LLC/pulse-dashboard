@@ -8,7 +8,10 @@ export function Footer() {
           <div>
             <div
               className="font-bold text-lg text-white"
-              style={{ fontFamily: "'Space Grotesk', sans-serif", letterSpacing: "-0.03em" }}
+              style={{
+                fontFamily: "'Space Grotesk', sans-serif",
+                letterSpacing: "-0.03em",
+              }}
             >
               Pulse
             </div>

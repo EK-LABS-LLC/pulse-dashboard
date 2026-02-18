@@ -42,19 +42,31 @@ function CustomTooltip({
   label,
 }: {
   active?: boolean;
-  payload?: Array<{ value: number; dataKey: string; color: string; name: string }>;
+  payload?: Array<{
+    value: number;
+    dataKey: string;
+    color: string;
+    name: string;
+  }>;
   label?: string;
 }) {
   if (!active || !payload || !payload.length) return null;
 
   return (
     <div className="bg-neutral-850 border border-neutral-700 rounded px-3 py-2 shadow-xl">
-      <p className="text-xs text-neutral-400 mb-1">{formatPeriodLabel(label || "")}</p>
+      <p className="text-xs text-neutral-400 mb-1">
+        {formatPeriodLabel(label || "")}
+      </p>
       {payload.map((entry, index) => (
         <div key={index} className="flex items-center gap-2 text-sm">
-          <div className="w-2 h-2 rounded-sm" style={{ backgroundColor: entry.color }} />
+          <div
+            className="w-2 h-2 rounded-sm"
+            style={{ backgroundColor: entry.color }}
+          />
           <span className="text-neutral-300">{entry.name}:</span>
-          <span className="font-medium text-white">{formatLatency(entry.value)}</span>
+          <span className="font-medium text-white">
+            {formatLatency(entry.value)}
+          </span>
         </div>
       ))}
     </div>
@@ -86,8 +98,15 @@ export default function LatencyChart({ data }: LatencyChartProps) {
   return (
     <div className="h-[280px]">
       <ResponsiveContainer width="100%" height="100%">
-        <LineChart data={chartData} margin={{ top: 5, right: 20, left: 0, bottom: 5 }}>
-          <CartesianGrid strokeDasharray="3 3" stroke="#1f1f1f" vertical={false} />
+        <LineChart
+          data={chartData}
+          margin={{ top: 5, right: 20, left: 0, bottom: 5 }}
+        >
+          <CartesianGrid
+            strokeDasharray="3 3"
+            stroke="#1f1f1f"
+            vertical={false}
+          />
           <XAxis
             dataKey="period"
             stroke="#525252"
@@ -109,7 +128,9 @@ export default function LatencyChart({ data }: LatencyChartProps) {
             align="right"
             verticalAlign="top"
             wrapperStyle={{ paddingBottom: 10 }}
-            formatter={(value) => <span className="text-neutral-500 text-xs">{value}</span>}
+            formatter={(value) => (
+              <span className="text-neutral-500 text-xs">{value}</span>
+            )}
           />
           <Line
             type="monotone"

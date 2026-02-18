@@ -39,7 +39,7 @@ function highlightTypeScript(code: string): ReactNode[] {
         tokens.push(
           <span key={key++} className={colors.comment}>
             {remaining}
-          </span>
+          </span>,
         );
         break;
       }
@@ -50,7 +50,7 @@ function highlightTypeScript(code: string): ReactNode[] {
         tokens.push(
           <span key={key++} className={colors.string}>
             {stringMatch[0]}
-          </span>
+          </span>,
         );
         remaining = remaining.slice(stringMatch[0].length);
         continue;
@@ -62,7 +62,7 @@ function highlightTypeScript(code: string): ReactNode[] {
         tokens.push(
           <span key={key++} className={colors.string}>
             {singleStringMatch[0]}
-          </span>
+          </span>,
         );
         remaining = remaining.slice(singleStringMatch[0].length);
         continue;
@@ -78,7 +78,7 @@ function highlightTypeScript(code: string): ReactNode[] {
         tokens.push(
           <span key={key++} className={colors.string}>
             {remaining.slice(0, end + 1)}
-          </span>
+          </span>,
         );
         remaining = remaining.slice(end + 1);
         continue;
@@ -86,33 +86,101 @@ function highlightTypeScript(code: string): ReactNode[] {
 
       // Keywords
       const keywords = [
-        "import", "export", "from", "const", "let", "var", "function", "return",
-        "if", "else", "for", "while", "class", "interface", "type", "enum",
-        "new", "this", "super", "extends", "implements", "async", "await",
-        "try", "catch", "throw", "typeof", "instanceof", "in", "of",
-        "true", "false", "null", "undefined", "void", "never", "any", "string", "number", "boolean",
-        "as", "is", "keyof", "readonly", "public", "private", "protected",
-        "static", "get", "set", "default", "switch", "case", "break", "continue",
+        "import",
+        "export",
+        "from",
+        "const",
+        "let",
+        "var",
+        "function",
+        "return",
+        "if",
+        "else",
+        "for",
+        "while",
+        "class",
+        "interface",
+        "type",
+        "enum",
+        "new",
+        "this",
+        "super",
+        "extends",
+        "implements",
+        "async",
+        "await",
+        "try",
+        "catch",
+        "throw",
+        "typeof",
+        "instanceof",
+        "in",
+        "of",
+        "true",
+        "false",
+        "null",
+        "undefined",
+        "void",
+        "never",
+        "any",
+        "string",
+        "number",
+        "boolean",
+        "as",
+        "is",
+        "keyof",
+        "readonly",
+        "public",
+        "private",
+        "protected",
+        "static",
+        "get",
+        "set",
+        "default",
+        "switch",
+        "case",
+        "break",
+        "continue",
       ];
-      const keywordMatch = remaining.match(new RegExp(`^(${keywords.join("|")})\\b`));
+      const keywordMatch = remaining.match(
+        new RegExp(`^(${keywords.join("|")})\\b`),
+      );
       if (keywordMatch) {
         tokens.push(
           <span key={key++} className={colors.keyword}>
             {keywordMatch[0]}
-          </span>
+          </span>,
         );
         remaining = remaining.slice(keywordMatch[0].length);
         continue;
       }
 
       // Built-in objects/values
-      const builtins = ["console", "Promise", "Array", "Object", "String", "Number", "Boolean", "JSON", "Math", "Date", "Error", "Map", "Set", "WeakMap", "WeakSet"];
-      const builtinMatch = remaining.match(new RegExp(`^(${builtins.join("|")})\\b`));
+      const builtins = [
+        "console",
+        "Promise",
+        "Array",
+        "Object",
+        "String",
+        "Number",
+        "Boolean",
+        "JSON",
+        "Math",
+        "Date",
+        "Error",
+        "Map",
+        "Set",
+        "WeakMap",
+        "WeakSet",
+      ];
+      const builtinMatch = remaining.match(
+        new RegExp(`^(${builtins.join("|")})\\b`),
+      );
       if (builtinMatch) {
         tokens.push(
           <span key={key++} className={colors.builtin}>
             {builtinMatch[0]}
-          </span>
+          </span>,
         );
         remaining = remaining.slice(builtinMatch[0].length);
         continue;
@@ -124,7 +192,7 @@ function highlightTypeScript(code: string): ReactNode[] {
         tokens.push(
           <span key={key++} className={colors.function}>
             {funcMatch[1]}
-          </span>
+          </span>,
         );
         remaining = remaining.slice(funcMatch[1].length);
         continue;
@@ -136,7 +204,7 @@ function highlightTypeScript(code: string): ReactNode[] {
         tokens.push(
           <span key={key++} className={colors.number}>
             {numMatch[0]}
-          </span>
+          </span>,
         );
         remaining = remaining.slice(numMatch[0].length);
         continue;
@@ -146,12 +214,14 @@ function highlightTypeScript(code: string): ReactNode[] {
       const propMatch = remaining.match(/^\.([a-zA-Z_$][a-zA-Z0-9_$]*)/);
       if (propMatch) {
         tokens.push(
-          <span key={key++} className={colors.punctuation}>.</span>
+          <span key={key++} className={colors.punctuation}>
+            .
+          </span>,
         );
         tokens.push(
           <span key={key++} className={colors.property}>
             {propMatch[1]}
-          </span>
+          </span>,
         );
         remaining = remaining.slice(propMatch[0].length);
         continue;
@@ -163,19 +233,21 @@ function highlightTypeScript(code: string): ReactNode[] {
         tokens.push(
           <span key={key++} className={colors.variable}>
             {varMatch[0]}
-          </span>
+          </span>,
         );
         remaining = remaining.slice(varMatch[0].length);
         continue;
       }
 
       // Operators
-      const opMatch = remaining.match(/^(=>|===|!==|==|!=|<=|>=|\+\+|--|&&|\|\||<<|>>|>>>|\?\?|\?\.|\.\.\.|[+\-*/%&|^~<>!=?])/);
+      const opMatch = remaining.match(
+        /^(=>|===|!==|==|!=|<=|>=|\+\+|--|&&|\|\||<<|>>|>>>|\?\?|\?\.|\.\.\.|[+\-*/%&|^~<>!=?])/,
+      );
       if (opMatch) {
         tokens.push(
           <span key={key++} className={colors.operator}>
             {opMatch[0]}
-          </span>
+          </span>,
         );
         remaining = remaining.slice(opMatch[0].length);
         continue;
@@ -187,7 +259,7 @@ function highlightTypeScript(code: string): ReactNode[] {
         tokens.push(
           <span key={key++} className={colors.punctuation}>
             {punctMatch[0]}
-          </span>
+          </span>,
         );
         remaining = remaining.slice(1);
         continue;
@@ -197,16 +269,12 @@ function highlightTypeScript(code: string): ReactNode[] {
       tokens.push(
         <span key={key++} className={colors.variable}>
           {remaining[0]}
-        </span>
+        </span>,
       );
       remaining = remaining.slice(1);
     }
 
-    return (
-      <div key={i}>
-        {tokens}
-      </div>
-    );
+    return <div key={i}>{tokens}</div>;
   });
 }
 
@@ -225,7 +293,7 @@ function highlightPython(code: string): ReactNode[] {
         tokens.push(
           <span key={key++} className={colors.comment}>
             {remaining}
-          </span>
+          </span>,
         );
         break;
       }
@@ -236,7 +304,7 @@ function highlightPython(code: string): ReactNode[] {
         tokens.push(
           <span key={key++} className={colors.string}>
             {stringMatch[0]}
-          </span>
+          </span>,
         );
         remaining = remaining.slice(stringMatch[0].length);
         continue;
@@ -248,7 +316,7 @@ function highlightPython(code: string): ReactNode[] {
         tokens.push(
           <span key={key++} className={colors.string}>
             {singleStringMatch[0]}
-          </span>
+          </span>,
         );
         remaining = remaining.slice(singleStringMatch[0].length);
         continue;
@@ -256,31 +324,86 @@ function highlightPython(code: string): ReactNode[] {
 
       // Keywords
       const keywords = [
-        "import", "from", "def", "class", "return", "if", "elif", "else",
-        "for", "while", "in", "not", "and", "or", "is", "as", "with",
-        "try", "except", "finally", "raise", "assert", "pass", "break", "continue",
-        "True", "False", "None", "lambda", "yield", "global", "nonlocal",
-        "async", "await", "match", "case",
+        "import",
+        "from",
+        "def",
+        "class",
+        "return",
+        "if",
+        "elif",
+        "else",
+        "for",
+        "while",
+        "in",
+        "not",
+        "and",
+        "or",
+        "is",
+        "as",
+        "with",
+        "try",
+        "except",
+        "finally",
+        "raise",
+        "assert",
+        "pass",
+        "break",
+        "continue",
+        "True",
+        "False",
+        "None",
+        "lambda",
+        "yield",
+        "global",
+        "nonlocal",
+        "async",
+        "await",
+        "match",
+        "case",
       ];
-      const keywordMatch = remaining.match(new RegExp(`^(${keywords.join("|")})\\b`));
+      const keywordMatch = remaining.match(
+        new RegExp(`^(${keywords.join("|")})\\b`),
+      );
       if (keywordMatch) {
         tokens.push(
           <span key={key++} className={colors.keyword}>
             {keywordMatch[0]}
-          </span>
+          </span>,
         );
         remaining = remaining.slice(keywordMatch[0].length);
         continue;
       }
 
       // Built-ins
-      const builtins = ["print", "len", "range", "str", "int", "float", "bool", "list", "dict", "set", "tuple", "type", "isinstance", "hasattr", "getattr", "setattr", "open", "self", "cls"];
-      const builtinMatch = remaining.match(new RegExp(`^(${builtins.join("|")})\\b`));
+      const builtins = [
+        "print",
+        "len",
+        "range",
+        "str",
+        "int",
+        "float",
+        "bool",
+        "list",
+        "dict",
+        "set",
+        "tuple",
+        "type",
+        "isinstance",
+        "hasattr",
+        "getattr",
+        "setattr",
+        "open",
+        "self",
+        "cls",
+      ];
+      const builtinMatch = remaining.match(
+        new RegExp(`^(${builtins.join("|")})\\b`),
+      );
       if (builtinMatch) {
         tokens.push(
           <span key={key++} className={colors.builtin}>
             {builtinMatch[0]}
-          </span>
+          </span>,
         );
         remaining = remaining.slice(builtinMatch[0].length);
         continue;
@@ -292,7 +415,7 @@ function highlightPython(code: string): ReactNode[] {
         tokens.push(
           <span key={key++} className={colors.function}>
             {funcMatch[1]}
-          </span>
+          </span>,
         );
         remaining = remaining.slice(funcMatch[1].length);
         continue;
@@ -304,7 +427,7 @@ function highlightPython(code: string): ReactNode[] {
         tokens.push(
           <span key={key++} className={colors.number}>
             {numMatch[0]}
-          </span>
+          </span>,
         );
         remaining = remaining.slice(numMatch[0].length);
         continue;
@@ -317,7 +440,7 @@ function highlightPython(code: string): ReactNode[] {
           tokens.push(
             <span key={key++} className={colors.function}>
               {decMatch[0]}
-            </span>
+            </span>,
           );
           remaining = remaining.slice(decMatch[0].length);
           continue;
@@ -330,19 +453,21 @@ function highlightPython(code: string): ReactNode[] {
         tokens.push(
           <span key={key++} className={colors.variable}>
             {varMatch[0]}
-          </span>
+          </span>,
         );
         remaining = remaining.slice(varMatch[0].length);
         continue;
       }
 
       // Operators
-      const opMatch = remaining.match(/^(==|!=|<=|>=|:=|->|\*\*|\/\/|and|or|not|in|is|[+\-*/%&|^~<>=])/);
+      const opMatch = remaining.match(
+        /^(==|!=|<=|>=|:=|->|\*\*|\/\/|and|or|not|in|is|[+\-*/%&|^~<>=])/,
+      );
       if (opMatch) {
         tokens.push(
           <span key={key++} className={colors.operator}>
             {opMatch[0]}
-          </span>
+          </span>,
         );
         remaining = remaining.slice(opMatch[0].length);
         continue;
@@ -354,7 +479,7 @@ function highlightPython(code: string): ReactNode[] {
         tokens.push(
           <span key={key++} className={colors.punctuation}>
             {punctMatch[0]}
-          </span>
+          </span>,
         );
         remaining = remaining.slice(1);
         continue;
@@ -364,16 +489,12 @@ function highlightPython(code: string): ReactNode[] {
       tokens.push(
         <span key={key++} className={colors.variable}>
           {remaining[0]}
-        </span>
+        </span>,
       );
       remaining = remaining.slice(1);
     }
 
-    return (
-      <div key={i}>
-        {tokens}
-      </div>
-    );
+    return <div key={i}>{tokens}</div>;
   });
 }
 
@@ -392,7 +513,7 @@ function highlightBash(code: string): ReactNode[] {
         tokens.push(
           <span key={key++} className={colors.comment}>
             {remaining}
-          </span>
+          </span>,
         );
         break;
       }
@@ -403,7 +524,7 @@ function highlightBash(code: string): ReactNode[] {
         tokens.push(
           <span key={key++} className={colors.string}>
             {stringMatch[0]}
-          </span>
+          </span>,
         );
         remaining = remaining.slice(stringMatch[0].length);
         continue;
@@ -415,7 +536,7 @@ function highlightBash(code: string): ReactNode[] {
         tokens.push(
           <span key={key++} className={colors.string}>
             {singleStringMatch[0]}
-          </span>
+          </span>,
         );
         remaining = remaining.slice(singleStringMatch[0].length);
         continue;
@@ -427,33 +548,81 @@ function highlightBash(code: string): ReactNode[] {
         tokens.push(
           <span key={key++} className={colors.flag}>
             {flagMatch[0]}
-          </span>
+          </span>,
         );
         remaining = remaining.slice(flagMatch[0].length);
         continue;
       }
 
       // Commands
-      const commands = ["pulse", "cargo", "npm", "yarn", "pnpm", "bun", "git", "docker", "kubectl", "make", "pip", "python", "node", "export", "source", "echo", "cd", "ls", "cat", "mkdir", "rm", "cp", "mv", "chmod", "curl", "wget"];
-      const cmdMatch = remaining.match(new RegExp(`^(${commands.join("|")})\\b`));
+      const commands = [
+        "pulse",
+        "cargo",
+        "npm",
+        "yarn",
+        "pnpm",
+        "bun",
+        "git",
+        "docker",
+        "kubectl",
+        "make",
+        "pip",
+        "python",
+        "node",
+        "export",
+        "source",
+        "echo",
+        "cd",
+        "ls",
+        "cat",
+        "mkdir",
+        "rm",
+        "cp",
+        "mv",
+        "chmod",
+        "curl",
+        "wget",
+      ];
+      const cmdMatch = remaining.match(
+        new RegExp(`^(${commands.join("|")})\\b`),
+      );
       if (cmdMatch) {
         tokens.push(
           <span key={key++} className={colors.command}>
             {cmdMatch[0]}
-          </span>
+          </span>,
         );
         remaining = remaining.slice(cmdMatch[0].length);
         continue;
       }
 
       // Keywords
-      const keywords = ["if", "then", "else", "fi", "for", "do", "done", "while", "until", "case", "esac", "function", "return", "exit", "true", "false"];
-      const keywordMatch = remaining.match(new RegExp(`^(${keywords.join("|")})\\b`));
+      const keywords = [
+        "if",
+        "then",
+        "else",
+        "fi",
+        "for",
+        "do",
+        "done",
+        "while",
+        "until",
+        "case",
+        "esac",
+        "function",
+        "return",
+        "exit",
+        "true",
+        "false",
+      ];
+      const keywordMatch = remaining.match(
+        new RegExp(`^(${keywords.join("|")})\\b`),
+      );
       if (keywordMatch) {
         tokens.push(
           <span key={key++} className={colors.keyword}>
             {keywordMatch[0]}
-          </span>
+          </span>,
         );
         remaining = remaining.slice(keywordMatch[0].length);
         continue;
@@ -465,7 +634,7 @@ function highlightBash(code: string): ReactNode[] {
         tokens.push(
           <span key={key++} className={colors.variable}>
             {varMatch[0]}
-          </span>
+          </span>,
         );
         remaining = remaining.slice(varMatch[0].length);
         continue;
@@ -477,19 +646,21 @@ function highlightBash(code: string): ReactNode[] {
         tokens.push(
           <span key={key++} className={colors.number}>
             {numMatch[0]}
-          </span>
+          </span>,
         );
         remaining = remaining.slice(numMatch[0].length);
         continue;
       }
 
       // Path-like strings
-      const pathMatch = remaining.match(/^(\/[a-zA-Z0-9_/.-]+|~\/[a-zA-Z0-9_/.-]+)/);
+      const pathMatch = remaining.match(
+        /^(\/[a-zA-Z0-9_/.-]+|~\/[a-zA-Z0-9_/.-]+)/,
+      );
       if (pathMatch) {
         tokens.push(
           <span key={key++} className={colors.stringAlt}>
             {pathMatch[0]}
-          </span>
+          </span>,
         );
         remaining = remaining.slice(pathMatch[0].length);
         continue;
@@ -501,7 +672,7 @@ function highlightBash(code: string): ReactNode[] {
         tokens.push(
           <span key={key++} className={colors.operator}>
             {opMatch[0]}
-          </span>
+          </span>,
         );
         remaining = remaining.slice(opMatch[0].length);
         continue;
@@ -513,7 +684,7 @@ function highlightBash(code: string): ReactNode[] {
         tokens.push(
           <span key={key++} className={colors.variable}>
             {wordMatch[0]}
-          </span>
+          </span>,
         );
         remaining = remaining.slice(wordMatch[0].length);
         continue;
@@ -523,16 +694,12 @@ function highlightBash(code: string): ReactNode[] {
       tokens.push(
         <span key={key++} className={colors.punctuation}>
           {remaining[0]}
-        </span>
+        </span>,
       );
       remaining = remaining.slice(1);
     }
 
-    return (
-      <div key={i}>
-        {tokens}
-      </div>
-    );
+    return <div key={i}>{tokens}</div>;
   });
 }
 
@@ -555,7 +722,7 @@ function highlightJSON(code: string): ReactNode[] {
         tokens.push(
           <span key={key++} className={isKey ? colors.property : colors.string}>
             {stringMatch[0]}
-          </span>
+          </span>,
         );
         remaining = remaining.slice(stringMatch[0].length);
         continue;
@@ -567,7 +734,7 @@ function highlightJSON(code: string): ReactNode[] {
         tokens.push(
           <span key={key++} className={colors.number}>
             {numMatch[0]}
-          </span>
+          </span>,
         );
         remaining = remaining.slice(numMatch[0].length);
         continue;
@@ -579,7 +746,7 @@ function highlightJSON(code: string): ReactNode[] {
         tokens.push(
           <span key={key++} className={colors.keyword}>
             {boolMatch[0]}
-          </span>
+          </span>,
         );
         remaining = remaining.slice(boolMatch[0].length);
         continue;
@@ -591,7 +758,7 @@ function highlightJSON(code: string): ReactNode[] {
         tokens.push(
           <span key={key++} className={colors.punctuation}>
             {punctMatch[0]}
-          </span>
+          </span>,
         );
         remaining = remaining.slice(1);
         continue;
@@ -600,9 +767,7 @@ function highlightJSON(code: string): ReactNode[] {
       // Whitespace
       const wsMatch = remaining.match(/^\s+/);
       if (wsMatch) {
-        tokens.push(
-          <span key={key++}>{wsMatch[0]}</span>
-        );
+        tokens.push(<span key={key++}>{wsMatch[0]}</span>);
         remaining = remaining.slice(wsMatch[0].length);
         continue;
       }
@@ -611,16 +776,12 @@ function highlightJSON(code: string): ReactNode[] {
       tokens.push(
         <span key={key++} className={colors.variable}>
           {remaining[0]}
-        </span>
+        </span>,
       );
       remaining = remaining.slice(1);
     }
 
-    return (
-      <div key={i}>
-        {tokens}
-      </div>
-    );
+    return <div key={i}>{tokens}</div>;
   });
 }
 
@@ -639,7 +800,7 @@ function highlightTOML(code: string): ReactNode[] {
         tokens.push(
           <span key={key++} className={colors.comment}>
             {remaining}
-          </span>
+          </span>,
         );
         break;
       }
@@ -650,7 +811,7 @@ function highlightTOML(code: string): ReactNode[] {
         tokens.push(
           <span key={key++} className={colors.function}>
             {sectionMatch[0]}
-          </span>
+          </span>,
         );
         remaining = remaining.slice(sectionMatch[0].length);
         continue;
@@ -662,7 +823,7 @@ function highlightTOML(code: string): ReactNode[] {
         tokens.push(
           <span key={key++} className={colors.string}>
             {stringMatch[0]}
-          </span>
+          </span>,
         );
         remaining = remaining.slice(stringMatch[0].length);
         continue;
@@ -674,7 +835,7 @@ function highlightTOML(code: string): ReactNode[] {
         tokens.push(
           <span key={key++} className={colors.property}>
             {keyMatch[1]}
-          </span>
+          </span>,
         );
         remaining = remaining.slice(keyMatch[1].length);
         continue;
@@ -686,7 +847,7 @@ function highlightTOML(code: string): ReactNode[] {
         tokens.push(
           <span key={key++} className={colors.number}>
             {numMatch[0]}
-          </span>
+          </span>,
         );
         remaining = remaining.slice(numMatch[0].length);
         continue;
@@ -698,7 +859,7 @@ function highlightTOML(code: string): ReactNode[] {
         tokens.push(
           <span key={key++} className={colors.keyword}>
             {boolMatch[0]}
-          </span>
+          </span>,
         );
         remaining = remaining.slice(boolMatch[0].length);
         continue;
@@ -710,7 +871,7 @@ function highlightTOML(code: string): ReactNode[] {
         tokens.push(
           <span key={key++} className={colors.punctuation}>
             {punctMatch[0]}
-          </span>
+          </span>,
         );
         remaining = remaining.slice(1);
         continue;
@@ -720,16 +881,12 @@ function highlightTOML(code: string): ReactNode[] {
       tokens.push(
         <span key={key++} className={colors.variable}>
           {remaining[0]}
-        </span>
+        </span>,
       );
       remaining = remaining.slice(1);
     }
 
-    return (
-      <div key={i}>
-        {tokens}
-      </div>
-    );
+    return <div key={i}>{tokens}</div>;
   });
 }
 
@@ -761,19 +918,43 @@ function CopyButton({ code }: { code: string }) {
       title={copied ? "Copied!" : "Copy code"}
     >
       {copied ? (
-        <svg className="w-4 h-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+        <svg
+          className="w-4 h-4 text-green-400"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M5 13l4 4L19 7"
+          />
         </svg>
       ) : (
-        <svg className="w-4 h-4 text-neutral-500 group-hover:text-neutral-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+        <svg
+          className="w-4 h-4 text-neutral-500 group-hover:text-neutral-300"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
+          />
         </svg>
       )}
     </button>
   );
 }
 
-export function CodeBlock({ children, language = "typescript", showLineNumbers = false }: CodeBlockProps) {
+export function CodeBlock({
+  children,
+  language = "typescript",
+  showLineNumbers = false,
+}: CodeBlockProps) {
   let highlighted: ReactNode[];
 
   switch (language) {

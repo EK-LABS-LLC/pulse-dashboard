@@ -8,7 +8,7 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "format": "bunx prettier --config ../.prettierrc --ignore-path ../.prettierignore --write \"**/*.{ts,tsx,js,json}\""
+    "format": "bunx prettier --write \"**/*.{ts,tsx,js,json}\""
   },
   "dependencies": {
     "@stripe/stripe-js": "^8.7.0",

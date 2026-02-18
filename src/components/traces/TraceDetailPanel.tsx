@@ -11,25 +11,60 @@ interface TraceDetailPanelProps {
 }
 
 const CloseIcon = () => (
-  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6 18L18 6M6 6l12 12" />
+  <svg
+    className="w-4 h-4"
+    fill="none"
+    stroke="currentColor"
+    viewBox="0 0 24 24"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={1.5}
+      d="M6 18L18 6M6 6l12 12"
+    />
   </svg>
 );
 
 const ChevronLeftIcon = () => (
-  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 19l-7-7 7-7" />
+  <svg
+    className="w-4 h-4"
+    fill="none"
+    stroke="currentColor"
+    viewBox="0 0 24 24"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={1.5}
+      d="M15 19l-7-7 7-7"
+    />
   </svg>
 );
 
 const ChevronRightIcon = () => (
-  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5l7 7-7 7" />
+  <svg
+    className="w-4 h-4"
+    fill="none"
+    stroke="currentColor"
+    viewBox="0 0 24 24"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={1.5}
+      d="M9 5l7 7-7 7"
+    />
   </svg>
 );
 
 const ExternalLinkIcon = () => (
-  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+  <svg
+    className="w-4 h-4"
+    fill="none"
+    stroke="currentColor"
+    viewBox="0 0 24 24"
+  >
     <path
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -40,7 +75,12 @@ const ExternalLinkIcon = () => (
 );
 
 const CopyIcon = () => (
-  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+  <svg
+    className="w-4 h-4"
+    fill="none"
+    stroke="currentColor"
+    viewBox="0 0 24 24"
+  >
     <path
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -66,7 +106,10 @@ const formatTokens = (tokens: number | null | undefined) => {
   return tokens;
 };
 
-const extractMessagePreview = (body: unknown, type: "input" | "output"): string => {
+const extractMessagePreview = (
+  body: unknown,
+  type: "input" | "output",
+): string => {
   if (!body || typeof body !== "object") return "";
 
   const obj = body as Record<string, unknown>;
@@ -74,8 +117,13 @@ const extractMessagePreview = (body: unknown, type: "input" | "output"): string 
   if (type === "input") {
     // Try to get the last user message or system message
     if (Array.isArray(obj.messages)) {
-      const messages = obj.messages as Array<{ role?: string; content?: string }>;
-      const lastUserMessage = [...messages].reverse().find((m) => m.role === "user");
+      const messages = obj.messages as Array<{
+        role?: string;
+        content?: string;
+      }>;
+      const lastUserMessage = [...messages]
+        .reverse()
+        .find((m) => m.role === "user");
       if (lastUserMessage?.content) return lastUserMessage.content;
       const systemMessage = messages.find((m) => m.role === "system");
       if (systemMessage?.content) return systemMessage.content;
@@ -87,7 +135,10 @@ const extractMessagePreview = (body: unknown, type: "input" | "output"): string 
   if (type === "output") {
     // Try to get the assistant's response
     if (Array.isArray(obj.choices)) {
-      const choices = obj.choices as Array<{ message?: { content?: string }; text?: string }>;
+      const choices = obj.choices as Array<{
+        message?: { content?: string };
+        text?: string;
+      }>;
       if (choices[0]?.message?.content) return choices[0].message.content;
       if (choices[0]?.text) return choices[0].text;
     }
@@ -117,7 +168,7 @@ export default function TraceDetailPanel({
         onClose();
       }
     },
-    [onClose]
+    [onClose],
   );
 
   useEffect(() => {
@@ -129,8 +180,10 @@ export default function TraceDetailPanel({
 
   const isError = trace.status === "error";
   const totalTokens = (trace.inputTokens || 0) + (trace.outputTokens || 0);
-  const inputPercent = totalTokens > 0 ? ((trace.inputTokens || 0) / totalTokens) * 100 : 0;
-  const outputPercent = totalTokens > 0 ? ((trace.outputTokens || 0) / totalTokens) * 100 : 0;
+  const inputPercent =
+    totalTokens > 0 ? ((trace.inputTokens || 0) / totalTokens) * 100 : 0;
+  const outputPercent =
+    totalTokens > 0 ? ((trace.outputTokens || 0) / totalTokens) * 100 : 0;
 
   const inputPreview = extractMessagePreview(trace.requestBody, "input");
   const outputPreview = isError
@@ -158,11 +211,17 @@ export default function TraceDetailPanel({
       {/* Header */}
       <div className="h-14 flex items-center justify-between px-4 border-b border-neutral-800 flex-shrink-0">
         <div className="flex items-center gap-2">
-          <span className="text-sm font-mono text-accent">{trace.traceId.slice(0, 12)}</span>
+          <span className="text-sm font-mono text-accent">
+            {trace.traceId.slice(0, 12)}
+          </span>
           {isError ? (
-            <span className="text-xs px-1.5 py-0.5 bg-error/10 text-error rounded">ERR</span>
+            <span className="text-xs px-1.5 py-0.5 bg-error/10 text-error rounded">
+              ERR
+            </span>
           ) : (
-            <span className="text-xs px-1.5 py-0.5 bg-success/10 text-success rounded">OK</span>
+            <span className="text-xs px-1.5 py-0.5 bg-success/10 text-success rounded">
+              OK
+            </span>
           )}
         </div>
         <div className="flex items-center gap-1">
@@ -211,21 +270,29 @@ export default function TraceDetailPanel({
           <div className="grid grid-cols-3 gap-3">
             <div className="bg-neutral-900 border border-neutral-800 rounded p-3 text-center">
               <div className="text-xs text-neutral-500 mb-1">Latency</div>
-              <div className="text-sm font-medium">{formatLatency(trace.latencyMs)}</div>
+              <div className="text-sm font-medium">
+                {formatLatency(trace.latencyMs)}
+              </div>
             </div>
             <div className="bg-neutral-900 border border-neutral-800 rounded p-3 text-center">
               <div className="text-xs text-neutral-500 mb-1">Tokens</div>
-              <div className="text-sm font-medium">{totalTokens.toLocaleString()}</div>
+              <div className="text-sm font-medium">
+                {totalTokens.toLocaleString()}
+              </div>
             </div>
             <div className="bg-neutral-900 border border-neutral-800 rounded p-3 text-center">
               <div className="text-xs text-neutral-500 mb-1">Cost</div>
-              <div className="text-sm font-medium">{formatCost(trace.costCents)}</div>
+              <div className="text-sm font-medium">
+                {formatCost(trace.costCents)}
+              </div>
             </div>
           </div>
 
           {/* Model Info */}
           <div className="bg-neutral-900 border border-neutral-800 rounded p-3">
-            <div className="text-xs text-neutral-500 uppercase tracking-wide mb-2">Model</div>
+            <div className="text-xs text-neutral-500 uppercase tracking-wide mb-2">
+              Model
+            </div>
             <div className="space-y-1.5 text-sm">
               <div className="flex justify-between">
                 <span className="text-neutral-500">Provider</span>
@@ -251,12 +318,16 @@ export default function TraceDetailPanel({
           {/* Tokens */}
           {totalTokens > 0 && (
             <div className="bg-neutral-900 border border-neutral-800 rounded p-3">
-              <div className="text-xs text-neutral-500 uppercase tracking-wide mb-2">Tokens</div>
+              <div className="text-xs text-neutral-500 uppercase tracking-wide mb-2">
+                Tokens
+              </div>
               <div className="space-y-2">
                 <div>
                   <div className="flex justify-between text-xs mb-1">
                     <span className="text-neutral-500">Input</span>
-                    <span>{formatTokens(trace.inputTokens).toLocaleString()}</span>
+                    <span>
+                      {formatTokens(trace.inputTokens).toLocaleString()}
+                    </span>
                   </div>
                   <div className="w-full bg-neutral-800 h-1.5 rounded">
                     <div
@@ -268,7 +339,9 @@ export default function TraceDetailPanel({
                 <div>
                   <div className="flex justify-between text-xs mb-1">
                     <span className="text-neutral-500">Output</span>
-                    <span>{formatTokens(trace.outputTokens).toLocaleString()}</span>
+                    <span>
+                      {formatTokens(trace.outputTokens).toLocaleString()}
+                    </span>
                   </div>
                   <div className="w-full bg-neutral-800 h-1.5 rounded">
                     <div
@@ -285,12 +358,19 @@ export default function TraceDetailPanel({
           {inputPreview && (
             <div className="bg-neutral-900 border border-neutral-800 rounded p-3">
               <div className="flex items-center justify-between mb-2">
-                <span className="text-xs text-neutral-500 uppercase tracking-wide">Input</span>
-                <button onClick={openInNewTab} className="text-xs text-accent/60 hover:text-accent">
+                <span className="text-xs text-neutral-500 uppercase tracking-wide">
+                  Input
+                </span>
+                <button
+                  onClick={openInNewTab}
+                  className="text-xs text-accent/60 hover:text-accent"
+                >
                   View full
                 </button>
               </div>
-              <div className="text-sm text-neutral-300 line-clamp-3">{inputPreview}</div>
+              <div className="text-sm text-neutral-300 line-clamp-3">
+                {inputPreview}
+              </div>
             </div>
           )}
 
@@ -305,7 +385,10 @@ export default function TraceDetailPanel({
                 >
                   {isError ? "Error" : "Output"}
                 </span>
-                <button onClick={openInNewTab} className="text-xs text-accent/60 hover:text-accent">
+                <button
+                  onClick={openInNewTab}
+                  className="text-xs text-accent/60 hover:text-accent"
+                >
                   View full
                 </button>
               </div>
@@ -320,12 +403,17 @@ export default function TraceDetailPanel({
           {/* Session Link */}
           {trace.sessionId && (
             <div className="bg-neutral-900 border border-neutral-800 rounded p-3">
-              <div className="text-xs text-neutral-500 uppercase tracking-wide mb-2">Session</div>
+              <div className="text-xs text-neutral-500 uppercase tracking-wide mb-2">
+                Session
+              </div>
               <div className="flex items-center justify-between">
                 <span className="text-sm font-mono text-accent/80">
                   {trace.sessionId.slice(0, 12)}...
                 </span>
-                <button onClick={viewSession} className="text-xs text-accent/60 hover:text-accent">
+                <button
+                  onClick={viewSession}
+                  className="text-xs text-accent/60 hover:text-accent"
+                >
                   View session
                 </button>
               </div>
@@ -335,7 +423,9 @@ export default function TraceDetailPanel({
           {/* Metadata */}
           {trace.metadata && Object.keys(trace.metadata).length > 0 && (
             <div className="bg-neutral-900 border border-neutral-800 rounded p-3">
-              <div className="text-xs text-neutral-500 uppercase tracking-wide mb-2">Metadata</div>
+              <div className="text-xs text-neutral-500 uppercase tracking-wide mb-2">
+                Metadata
+              </div>
               <div className="space-y-1.5 text-sm">
                 {Object.entries(trace.metadata)
                   .slice(0, 5)

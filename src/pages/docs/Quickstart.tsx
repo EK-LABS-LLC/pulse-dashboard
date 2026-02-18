@@ -10,7 +10,10 @@ export default function Quickstart() {
         </div>
         <h1
           className="text-3xl font-bold text-white mb-3"
-          style={{ fontFamily: "'Space Grotesk', sans-serif", letterSpacing: "-0.03em" }}
+          style={{
+            fontFamily: "'Space Grotesk', sans-serif",
+            letterSpacing: "-0.03em",
+          }}
         >
           Quickstart
         </h1>
@@ -43,8 +46,8 @@ export default function Quickstart() {
           Initialize
         </h2>
         <p className="text-sm text-neutral-500 mb-4">
-          Call <InlineCode>initPulse()</InlineCode> once at application
-          startup. You need an API key from the Pulse dashboard.
+          Call <InlineCode>initPulse()</InlineCode> once at application startup.
+          You need an API key from the Pulse dashboard.
         </p>
         <HighlightedCodeTabs
           ts={`import { initPulse } from '@pulse/sdk';
@@ -59,8 +62,8 @@ init_pulse({
 })`}
         />
         <p className="text-sm text-neutral-500 mt-3">
-          This starts background trace batches and registers shutdown handlers to flush remaining
-          traces on exit.
+          This starts background trace batches and registers shutdown handlers
+          to flush remaining traces on exit.
         </p>
       </section>
 
@@ -73,7 +76,8 @@ init_pulse({
         </h2>
         <p className="text-sm text-neutral-500 mb-4">
           Use <InlineCode>observe()</InlineCode> to wrap your LLM client. The
-          returned client behaves identically — all tracing happens as a side effect.
+          returned client behaves identically — all tracing happens as a side
+          effect.
         </p>
         <HighlightedCodeTabs
           ts={`import { initPulse, observe, Provider } from '@pulse/sdk';
@@ -116,7 +120,9 @@ res = client.chat.completions.create(
         >
           What gets captured
         </h2>
-        <p className="text-sm text-neutral-500 mb-4">Each traced call records:</p>
+        <p className="text-sm text-neutral-500 mb-4">
+          Each traced call records:
+        </p>
         <table className="w-full text-sm border border-neutral-800">
           <tbody>
             {[
@@ -147,9 +153,15 @@ res = client.chat.completions.create(
         <table className="w-full text-sm border border-neutral-800">
           <thead>
             <tr className="border-b border-neutral-800">
-              <th className="p-3 text-left text-neutral-400 font-medium">Provider</th>
-              <th className="p-3 text-left text-neutral-400 font-medium">Client</th>
-              <th className="p-3 text-left text-neutral-400 font-medium">Enum</th>
+              <th className="p-3 text-left text-neutral-400 font-medium">
+                Provider
+              </th>
+              <th className="p-3 text-left text-neutral-400 font-medium">
+                Client
+              </th>
+              <th className="p-3 text-left text-neutral-400 font-medium">
+                Enum
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -203,7 +215,10 @@ res = client.chat.completions.create(
         </h2>
         <ul className="text-sm text-neutral-500 space-y-2">
           <li>
-            <Link to="/docs/config" className="text-neutral-300 hover:text-white transition-colors">
+            <Link
+              to="/docs/config"
+              className="text-neutral-300 hover:text-white transition-colors"
+            >
               Configuration
             </Link>{" "}
             — tune batching, flush intervals, and more

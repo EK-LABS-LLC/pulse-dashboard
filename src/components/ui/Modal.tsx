@@ -15,11 +15,13 @@ export function Modal({ isOpen, onClose, title, children }: ModalProps) {
 
     // Focus trap
     const focusableElements = modalRef.current?.querySelectorAll(
-      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
     );
 
     const firstElement = focusableElements?.[0] as HTMLElement;
-    const lastElement = focusableElements?.[(focusableElements?.length || 0) - 1] as HTMLElement;
+    const lastElement = focusableElements?.[
+      (focusableElements?.length || 0) - 1
+    ] as HTMLElement;
 
     firstElement?.focus();
 
@@ -85,7 +87,10 @@ export function Modal({ isOpen, onClose, title, children }: ModalProps) {
       >
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b border-neutral-700">
-          <h2 id="modal-title" className="text-lg font-semibold text-neutral-100">
+          <h2
+            id="modal-title"
+            className="text-lg font-semibold text-neutral-100"
+          >
             {title}
           </h2>
           <button
@@ -93,7 +98,12 @@ export function Modal({ isOpen, onClose, title, children }: ModalProps) {
             className="text-neutral-400 hover:text-neutral-100 transition-colors"
             aria-label="Close modal"
           >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg
+              className="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
