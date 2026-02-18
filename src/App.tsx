@@ -23,6 +23,7 @@ import Configuration from "./pages/docs/Configuration";
 import Providers from "./pages/docs/Providers";
 import DocsSessions from "./pages/docs/Sessions";
 import ApiReference from "./pages/docs/ApiReference";
+import ClaudeCode from "./pages/docs/ClaudeCode";
 
 function NotFound() {
   return (
@@ -54,6 +55,7 @@ function App() {
                 <Route path="/docs" element={<DocsLayout />}>
                   <Route index element={<Quickstart />} />
                   <Route path="config" element={<Configuration />} />
+                  <Route path="claude-code" element={<ClaudeCode />} />
                   <Route path="providers" element={<Providers />} />
                   <Route path="sessions" element={<DocsSessions />} />
                   <Route path="api" element={<ApiReference />} />

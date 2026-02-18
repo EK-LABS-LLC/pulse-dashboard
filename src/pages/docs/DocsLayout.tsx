@@ -9,6 +9,12 @@ const sidebarGroups = [
     ],
   },
   {
+    label: "Integrations",
+    links: [
+      { to: "/docs/claude-code", label: "Claude Code" },
+    ],
+  },
+  {
     label: "SDK",
     links: [
       { to: "/docs/providers", label: "Providers" },
@@ -24,6 +30,7 @@ const sidebarGroups = [
 const topLinks = [
   { to: "/docs", label: "Quickstart", end: true },
   { to: "/docs/config", label: "Configuration" },
+  { to: "/docs/claude-code", label: "Claude Code" },
   { to: "/docs/providers", label: "Providers" },
   { to: "/docs/sessions", label: "Sessions & Metadata" },
   { to: "/docs/api", label: "API" },
