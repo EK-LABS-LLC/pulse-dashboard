@@ -1,4 +1,4 @@
-import { CodeTabs } from "../../components/landing/CodeTabs";
+import { HighlightedCodeTabs, InlineCode } from "../../components/docs";
 
 export default function Providers() {
   return (
@@ -14,7 +14,7 @@ export default function Providers() {
           Providers
         </h1>
         <p className="text-neutral-500 text-[15px]">
-          How to use <code className="font-mono text-[0.9em]">observe()</code> with each supported
+          How to use <InlineCode>observe()</InlineCode> with each supported
           provider.
         </p>
       </div>
@@ -30,31 +30,23 @@ export default function Providers() {
           Wraps an LLM client and returns a traced version. The returned client has same type and
           API as original.
         </p>
-        <CodeTabs
-          ts={
-            <pre className="bg-[#111111] border border-neutral-800 p-4 font-mono text-sm text-neutral-400 overflow-x-auto">
-              <code>{`const traced = observe(client, Provider.OpenAI);
+        <HighlightedCodeTabs
+          ts={`const traced = observe(client, Provider.OpenAI);
 const traced = observe(client, Provider.Anthropic);
-const traced = observe(client, Provider.OpenRouter);`}</code>
-            </pre>
-          }
-          py={
-            <pre className="bg-[#111111] border border-neutral-800 p-4 font-mono text-sm text-neutral-400 overflow-x-auto">
-              <code>{`traced = observe(client, Provider.OPENAI)
+const traced = observe(client, Provider.OpenRouter);`}
+          py={`traced = observe(client, Provider.OPENAI)
 traced = observe(client, Provider.ANTHROPIC)
-traced = observe(client, Provider.OPENROUTER)`}</code>
-            </pre>
-          }
+traced = observe(client, Provider.OPENROUTER)`}
         />
         <p className="text-sm text-neutral-500 mt-3">What gets patched:</p>
         <ul className="text-sm text-neutral-500 space-y-1.5 list-disc pl-5 mt-2">
           <li>
             <strong className="text-neutral-300">OpenAI / OpenRouter</strong> —{" "}
-            <code className="font-mono text-[0.9em]">client.chat.completions.create</code>
+            <InlineCode>client.chat.completions.create</InlineCode>
           </li>
           <li>
             <strong className="text-neutral-300">Anthropic</strong> —{" "}
-            <code className="font-mono text-[0.9em]">client.messages.create</code>
+            <InlineCode>client.messages.create</InlineCode>
           </li>
         </ul>
         <p className="text-sm text-neutral-500 mt-3">
@@ -69,10 +61,8 @@ traced = observe(client, Provider.OPENROUTER)`}</code>
         >
           OpenAI
         </h2>
-        <CodeTabs
-          ts={
-            <pre className="bg-[#111111] border border-neutral-800 p-4 font-mono text-sm text-neutral-400 overflow-x-auto">
-              <code>{`import OpenAI from 'openai';
+        <HighlightedCodeTabs
+          ts={`import OpenAI from 'openai';
 import { observe, Provider } from '@pulse/sdk';
 
 const client = observe(
@@ -95,12 +85,8 @@ const stream = await client.chat.completions.create({
 
 for await (const chunk of stream) {
   process.stdout.write(chunk.choices[0]?.delta?.content ?? '');
-}`}</code>
-            </pre>
-          }
-          py={
-            <pre className="bg-[#111111] border border-neutral-800 p-4 font-mono text-sm text-neutral-400 overflow-x-auto">
-              <code>{`from openai import OpenAI
+}`}
+          py={`from openai import OpenAI
 from pulse_sdk import observe, Provider
 
 client = observe(
@@ -122,9 +108,7 @@ stream = client.chat.completions.create(
 )
 
 for chunk in stream:
-  print(chunk.choices[0].delta.content or "", end="")`}</code>
-            </pre>
-          }
+  print(chunk.choices[0].delta.content or "", end="")`}
         />
         <p className="text-sm text-neutral-500 mt-3">
           Both streaming and non-streaming calls are traced. For streams, trace is recorded after
@@ -139,10 +123,8 @@ for chunk in stream:
         >
           Anthropic
         </h2>
-        <CodeTabs
-          ts={
-            <pre className="bg-[#111111] border border-neutral-800 p-4 font-mono text-sm text-neutral-400 overflow-x-auto">
-              <code>{`import Anthropic from '@anthropic-ai/sdk';
+        <HighlightedCodeTabs
+          ts={`import Anthropic from '@anthropic-ai/sdk';
 import { observe, Provider } from '@pulse/sdk';
 
 const client = observe(
@@ -169,12 +151,8 @@ for await (const event of stream) {
   if (event.type === 'content_block_delta') {
     process.stdout.write(event.delta.text);
   }
-}`}</code>
-            </pre>
-          }
-          py={
-            <pre className="bg-[#111111] border border-neutral-800 p-4 font-mono text-sm text-neutral-400 overflow-x-auto">
-              <code>{`from anthropic import Anthropic
+}`}
+          py={`from anthropic import Anthropic
 from pulse_sdk import observe, Provider
 
 client = observe(
@@ -196,20 +174,18 @@ with client.messages.stream(
   messages=[{"role": "user", "content": "Hello"}],
 ) as stream:
   for text in stream.text_stream:
-    print(text, end="")`}</code>
-            </pre>
-          }
+    print(text, end="")`}
         />
         <div className="mt-4 border border-neutral-800 bg-[#111111] p-4 text-sm text-neutral-500">
           <strong className="text-neutral-300">Stop reason mapping.</strong> Anthropic stop reasons
-          are normalized: <code className="font-mono text-[0.9em]">end_turn</code> &rarr;{" "}
-          <code className="font-mono text-[0.9em]">stop</code>,{" "}
-          <code className="font-mono text-[0.9em]">max_tokens</code> &rarr;{" "}
-          <code className="font-mono text-[0.9em]">length</code>,{" "}
-          <code className="font-mono text-[0.9em]">stop_sequence</code> &rarr;{" "}
-          <code className="font-mono text-[0.9em]">stop</code>,{" "}
-          <code className="font-mono text-[0.9em]">tool_use</code> &rarr;{" "}
-          <code className="font-mono text-[0.9em]">tool_calls</code>.
+          are normalized: <InlineCode variant="muted">end_turn</InlineCode> &rarr;{" "}
+          <InlineCode variant="muted">stop</InlineCode>,{" "}
+          <InlineCode variant="muted">max_tokens</InlineCode> &rarr;{" "}
+          <InlineCode variant="muted">length</InlineCode>,{" "}
+          <InlineCode variant="muted">stop_sequence</InlineCode> &rarr;{" "}
+          <InlineCode variant="muted">stop</InlineCode>,{" "}
+          <InlineCode variant="muted">tool_use</InlineCode> &rarr;{" "}
+          <InlineCode variant="muted">tool_calls</InlineCode>.
         </div>
       </section>
 
@@ -222,13 +198,11 @@ with client.messages.stream(
         </h2>
         <p className="text-sm text-neutral-500 mb-4">
           OpenRouter uses OpenAI client library. Pass{" "}
-          <code className="font-mono text-[0.9em]">Provider.OpenRouter</code> so Pulse records
+          <InlineCode>Provider.OpenRouter</InlineCode> so Pulse records
           correct provider and extracts OpenRouter-specific cost data.
         </p>
-        <CodeTabs
-          ts={
-            <pre className="bg-[#111111] border border-neutral-800 p-4 font-mono text-sm text-neutral-400 overflow-x-auto">
-              <code>{`import OpenAI from 'openai';
+        <HighlightedCodeTabs
+          ts={`import OpenAI from 'openai';
 import { observe, Provider } from '@pulse/sdk';
 
 const client = observe(
@@ -242,12 +216,8 @@ const client = observe(
 const res = await client.chat.completions.create({
   model: 'anthropic/claude-3.5-sonnet',
   messages: [{ role: 'user', content: 'Hello' }],
-});`}</code>
-            </pre>
-          }
-          py={
-            <pre className="bg-[#111111] border border-neutral-800 p-4 font-mono text-sm text-neutral-400 overflow-x-auto">
-              <code>{`from openai import OpenAI
+});`}
+          py={`from openai import OpenAI
 from pulse_sdk import observe, Provider
 
 client = observe(
@@ -261,12 +231,10 @@ client = observe(
 res = client.chat.completions.create(
   model="anthropic/claude-3.5-sonnet",
   messages=[{"role": "user", "content": "Hello"}],
-)`}</code>
-            </pre>
-          }
+)`}
         />
         <p className="text-sm text-neutral-500 mt-3">
-          When OpenRouter includes a <code className="font-mono text-[0.9em]">cost</code> field in
+          When OpenRouter includes a <InlineCode>cost</InlineCode> field in
           response, Pulse uses that directly instead of calculating from token counts.
         </p>
       </section>
@@ -301,7 +269,7 @@ res = client.chat.completions.create(
             ].map(([model, input, output]) => (
               <tr key={model} className="border-b border-neutral-800">
                 <td className="p-3">
-                  <code className="font-mono text-sm text-neutral-400">{model}</code>
+                  <InlineCode variant="muted">{model}</InlineCode>
                 </td>
                 <td className="p-3 text-neutral-500">{input}</td>
                 <td className="p-3 text-neutral-500">{output}</td>
@@ -310,9 +278,9 @@ res = client.chat.completions.create(
           </tbody>
         </table>
         <p className="text-sm text-neutral-500 mt-3">
-          Model aliases (e.g. <code className="font-mono text-[0.9em]">gpt-4o-2024-11-20</code>) are
+          Model aliases (e.g. <InlineCode>gpt-4o-2024-11-20</InlineCode>) are
           resolved to their base model for pricing. Unknown models report{" "}
-          <code className="font-mono text-[0.9em]">null</code> cost.
+          <InlineCode>null</InlineCode> cost.
         </p>
       </section>
 
@@ -325,7 +293,7 @@ res = client.chat.completions.create(
         </h2>
         <p className="text-sm text-neutral-500 mb-3">
           If LLM call throws, SDK captures an error trace (with{" "}
-          <code className="font-mono text-[0.9em]">status: "error"</code> and error details) and
+          <InlineCode>status: "error"</InlineCode> and error details) and
           then re-throws original error. Your application error handling is unaffected.
         </p>
         <p className="text-sm text-neutral-500">

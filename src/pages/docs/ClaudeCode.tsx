@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { BashCode, InlineCode } from "../../components/docs";
 
 export default function ClaudeCode() {
   return (
@@ -61,33 +61,21 @@ export default function ClaudeCode() {
         <div className="space-y-4">
           <div>
             <div className="text-xs text-neutral-500 mb-2">1. Install the CLI</div>
-            <div className="bg-[#111111] border border-neutral-800 p-4 font-mono text-sm overflow-x-auto">
-              <div>
-                <span className="text-neutral-300">cargo install --path .</span>
-              </div>
-            </div>
+            <BashCode>cargo install --path .</BashCode>
           </div>
 
           <div>
             <div className="text-xs text-neutral-500 mb-2">2. Initialize with your trace service</div>
-            <div className="bg-[#111111] border border-neutral-800 p-4 font-mono text-sm overflow-x-auto">
-              <div>
-                <span className="text-neutral-300">pulse init</span>
-              </div>
-            </div>
+            <BashCode>pulse init</BashCode>
             <p className="text-xs text-neutral-600 mt-2">
               Prompts for your trace service URL, API key, and project ID. Saves to{" "}
-              <code className="font-mono text-neutral-400">~/.pulse/config.toml</code>.
+              <InlineCode variant="muted">~/.pulse/config.toml</InlineCode>.
             </p>
           </div>
 
           <div>
             <div className="text-xs text-neutral-500 mb-2">3. Connect hooks to Claude Code</div>
-            <div className="bg-[#111111] border border-neutral-800 p-4 font-mono text-sm overflow-x-auto">
-              <div>
-                <span className="text-neutral-300">pulse connect</span>
-              </div>
-            </div>
+            <BashCode>pulse connect</BashCode>
             <p className="text-xs text-neutral-600 mt-2">
               That's it. Every Claude Code session now sends spans to your trace service.
             </p>
@@ -103,8 +91,8 @@ export default function ClaudeCode() {
           Hooks Installed
         </h2>
         <p className="text-sm text-neutral-500 mb-4">
-          <code className="font-mono text-neutral-400">pulse connect</code> installs 10 async hooks
-          into <code className="font-mono text-neutral-400">~/.claude/settings.json</code>:
+          <InlineCode variant="muted">pulse connect</InlineCode> installs 10 async hooks
+          into <InlineCode variant="muted">~/.claude/settings.json</InlineCode>:
         </p>
         <div className="bg-[#111111] border border-neutral-800 rounded p-4">
           <div className="grid grid-cols-2 gap-2 text-sm font-mono">
@@ -207,29 +195,11 @@ export default function ClaudeCode() {
         <p className="text-sm text-neutral-500 mb-4">
           For automated environments, use flags to skip prompts:
         </p>
-        <div className="bg-[#111111] border border-neutral-800 p-4 font-mono text-sm overflow-x-auto">
-          <div>
-            <span className="text-neutral-300">pulse init \</span>
-          </div>
-          <div>
-            <span className="text-neutral-500">  --api-url</span>{" "}
-            <span className="text-green-300">https://pulse.example.com</span>{" "}
-            <span className="text-neutral-500">\</span>
-          </div>
-          <div>
-            <span className="text-neutral-500">  --api-key</span>{" "}
-            <span className="text-green-300">sk-your-key</span>{" "}
-            <span className="text-neutral-500">\</span>
-          </div>
-          <div>
-            <span className="text-neutral-500">  --project-id</span>{" "}
-            <span className="text-green-300">my-project</span>{" "}
-            <span className="text-neutral-500">\</span>
-          </div>
-          <div>
-            <span className="text-neutral-500">  --no-validate</span>
-          </div>
-        </div>
+        <BashCode>{`pulse init \\
+  --api-url https://pulse.example.com \\
+  --api-key sk-your-key \\
+  --project-id my-project \\
+  --no-validate`}</BashCode>
       </section>
 
       <section className="mb-10">
@@ -240,17 +210,12 @@ export default function ClaudeCode() {
           Debugging
         </h2>
         <p className="text-sm text-neutral-500 mb-4">
-          Set <code className="font-mono text-neutral-400">PULSE_DEBUG=1</code> to log raw payloads:
+          Set <InlineCode variant="muted">PULSE_DEBUG=1</InlineCode> to log raw payloads:
         </p>
-        <div className="bg-[#111111] border border-neutral-800 p-4 font-mono text-sm overflow-x-auto">
-          <div>
-            <span className="text-violet-300">export</span>{" "}
-            <span className="text-neutral-300">PULSE_DEBUG=1</span>
-          </div>
-        </div>
+        <BashCode>{`export PULSE_DEBUG=1`}</BashCode>
         <p className="text-xs text-neutral-600 mt-2">
-          Writes to <code className="font-mono text-neutral-400">~/.pulse/debug.log</code>. Override
-          with <code className="font-mono text-neutral-400">PULSE_DEBUG_LOG=/path/to/file</code>.
+          Writes to <InlineCode variant="muted">~/.pulse/debug.log</InlineCode>. Override
+          with <InlineCode variant="muted">PULSE_DEBUG_LOG=/path/to/file</InlineCode>.
         </p>
       </section>
 

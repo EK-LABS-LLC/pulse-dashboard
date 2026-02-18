@@ -199,10 +199,6 @@ export default function Dashboard() {
                 spansQuery.error instanceof Error ? spansQuery.error.message : null;
 
   // LLM metrics (from trace analytics)
-  const totalCost = analytics?.totalCost ?? 0;
-  const totalRequests = analytics?.totalRequests ?? 0;
-  const totalSessions = analytics?.totalSessions ?? 0;
-  const totalTokens = analytics?.totalTokens ?? { input: 0, output: 0, total: 0 };
   const errorRate = analytics?.errorRate ?? 0;
 
   // Span/Agent metrics (from spans analytics)

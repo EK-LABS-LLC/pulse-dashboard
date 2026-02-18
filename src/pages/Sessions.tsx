@@ -174,7 +174,6 @@ export default function Sessions() {
     : agentSessions;
 
   const total = activeTab === "llm" ? llmSessions.length : agentSessions.length;
-  const loading = activeTab === "llm" ? llmLoading : agentLoading;
   const error = activeTab === "llm" ? llmError : agentError;
 
   return (

@@ -1,3 +1,5 @@
+import { CodeBlock, BashCode, JSONCode, InlineCode } from "../../components/docs";
+
 export default function ApiReference() {
   return (
     <div>
@@ -23,11 +25,9 @@ export default function ApiReference() {
         </h2>
         <p className="text-sm text-neutral-500 mb-4">
           All endpoints require a Bearer token in the{" "}
-          <code className="font-mono text-[0.9em]">Authorization</code> header.
+          <InlineCode>Authorization</InlineCode> header.
         </p>
-        <pre className="bg-[#111111] border border-neutral-800 p-4 font-mono text-sm text-neutral-400 overflow-x-auto">
-          <code>Authorization: Bearer pulse_sk_...</code>
-        </pre>
+        <CodeBlock language="bash">Authorization: Bearer pulse_sk_...</CodeBlock>
       </section>
 
       <section className="mb-10">
@@ -45,7 +45,7 @@ export default function ApiReference() {
             <tr className="border-b border-neutral-800">
               <td className="p-3 text-neutral-300">Method</td>
               <td className="p-3">
-                <code className="font-mono text-neutral-400">POST</code>
+                <InlineCode variant="muted">POST</InlineCode>
               </td>
             </tr>
             <tr className="border-b border-neutral-800">
@@ -55,13 +55,12 @@ export default function ApiReference() {
             <tr className="border-b border-neutral-800">
               <td className="p-3 text-neutral-300">Response</td>
               <td className="p-3">
-                <code className="font-mono text-neutral-400">202 Accepted</code>
+                <InlineCode variant="muted">202 Accepted</InlineCode>
               </td>
             </tr>
           </tbody>
         </table>
-        <pre className="bg-[#111111] border border-neutral-800 p-4 font-mono text-sm text-neutral-400 overflow-x-auto">
-          <code>{`curl -X POST https://your-pulse/v1/traces/async \\
+        <BashCode>{`curl -X POST https://your-pulse/v1/traces/async \\
   -H "Authorization: Bearer pulse_sk_..." \\
   -H "Content-Type: application/json" \\
   -d '[{
@@ -75,8 +74,7 @@ export default function ApiReference() {
     "output_tokens": 100,
     "latency_ms": 1200,
     "status": "success"
-  }]'`}</code>
-        </pre>
+  }]'`}</BashCode>
       </section>
 
       <section className="mb-10">
@@ -116,12 +114,10 @@ export default function ApiReference() {
             </div>
           ))}
         </div>
-        <pre className="bg-[#111111] border border-neutral-800 p-4 font-mono text-sm text-neutral-400 overflow-x-auto">
-          <code>GET /v1/traces?provider=openai&status=error&limit=20</code>
-        </pre>
+        <CodeBlock language="bash">GET /v1/traces?provider=openai&status=error&limit=20</CodeBlock>
         <p className="text-sm text-neutral-500 mt-3">
           Returns{" "}
-          <code className="font-mono text-[0.9em]">{"{ traces: [...], total: number }"}</code>.
+          <InlineCode>{"{ traces: [...], total: number }"}</InlineCode>.
         </p>
       </section>
 
@@ -133,11 +129,9 @@ export default function ApiReference() {
           GET /v1/traces/:id
         </h2>
         <p className="text-sm text-neutral-500 mb-4">Get a single trace by ID.</p>
-        <pre className="bg-[#111111] border border-neutral-800 p-4 font-mono text-sm text-neutral-400 overflow-x-auto">
-          <code>GET /v1/traces/550e8400-e29b-41d4-a716-446655440000</code>
-        </pre>
+        <CodeBlock language="bash">GET /v1/traces/550e8400-e29b-41d4-a716-446655440000</CodeBlock>
         <p className="text-sm text-neutral-500 mt-3">
-          Returns the trace object or <code className="font-mono text-[0.9em]">404</code>.
+          Returns the trace object or <InlineCode variant="muted">404</InlineCode>.
         </p>
       </section>
 
@@ -151,13 +145,11 @@ export default function ApiReference() {
         <p className="text-sm text-neutral-500 mb-4">
           Get all traces for a session, ordered by timestamp ascending.
         </p>
-        <pre className="bg-[#111111] border border-neutral-800 p-4 font-mono text-sm text-neutral-400 overflow-x-auto">
-          <code>GET /v1/sessions/conv-abc-123</code>
-        </pre>
+        <CodeBlock language="bash">GET /v1/sessions/conv-abc-123</CodeBlock>
         <p className="text-sm text-neutral-500 mt-3">
           Returns{" "}
-          <code className="font-mono text-[0.9em]">{"{ traces: [...], metadata: {...} }"}</code> or{" "}
-          <code className="font-mono text-[0.9em]">404</code>.
+          <InlineCode>{"{ traces: [...], metadata: {...} }"}</InlineCode> or{" "}
+          <InlineCode variant="muted">404</InlineCode>.
         </p>
       </section>
 
@@ -207,13 +199,11 @@ export default function ApiReference() {
 
         <h3 className="text-base font-medium text-neutral-300 mb-3">POST /admin/projects</h3>
         <p className="text-sm text-neutral-500 mb-3">Create a new project.</p>
-        <pre className="bg-[#111111] border border-neutral-800 p-4 font-mono text-sm text-neutral-400 overflow-x-auto mb-3">
-          <code>{`curl -X POST https://your-pulse/admin/projects \\
+        <BashCode>{`curl -X POST https://your-pulse/admin/projects \\
   -H "Content-Type: application/json" \\
-  -d '{ "name": "my-app" }'`}</code>
-        </pre>
+  -d '{ "name": "my-app" }'`}</BashCode>
         <p className="text-sm text-neutral-500 mb-6">
-          Returns <code className="font-mono text-[0.9em]">201</code> with project info and a new
+          Returns <InlineCode variant="muted">201</InlineCode> with project info and a new
           API key.
         </p>
 
@@ -224,8 +214,8 @@ export default function ApiReference() {
 
         <h3 className="text-base font-medium text-neutral-300 mb-3">DELETE /admin/api-keys/:id</h3>
         <p className="text-sm text-neutral-500">
-          Delete an API key by ID. Returns <code className="font-mono text-[0.9em]">200</code> or{" "}
-          <code className="font-mono text-[0.9em]">404</code>.
+          Delete an API key by ID. Returns <InlineCode variant="muted">200</InlineCode> or{" "}
+          <InlineCode variant="muted">404</InlineCode>.
         </p>
       </section>
 
@@ -236,8 +226,7 @@ export default function ApiReference() {
         >
           Trace object
         </h2>
-        <pre className="bg-[#111111] border border-neutral-800 p-4 font-mono text-sm text-neutral-400 overflow-x-auto">
-          <code>{`{
+        <JSONCode>{`{
   "trace_id": "uuid",
   "timestamp": "ISO 8601",
   "provider": "openai | anthropic | openrouter",
@@ -256,8 +245,7 @@ export default function ApiReference() {
   "latency_ms": 1234,
   "session_id": "conv-abc-123",
   "metadata": { "userId": "user-123" }
-}`}</code>
-        </pre>
+}`}</JSONCode>
       </section>
     </div>
   );

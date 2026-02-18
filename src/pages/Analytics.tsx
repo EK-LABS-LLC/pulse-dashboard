@@ -306,7 +306,7 @@ export default function Analytics() {
                       provider: d.provider,
                     })) || []
                   }
-                  groupBy={groupBy === "model" ? "day" : groupBy}
+                  groupBy="day"
                 />
               </div>
 

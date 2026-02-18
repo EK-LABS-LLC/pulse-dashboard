@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { CodeTabs } from "../../components/landing/CodeTabs";
+import { HighlightedCodeTabs, CodeBlock, InlineCode } from "../../components/docs";
 
 export default function Sessions() {
   return (
@@ -42,58 +42,42 @@ export default function Sessions() {
         </h2>
         <h3 className="text-base font-medium text-neutral-300 mb-3">At observe-time</h3>
         <p className="text-sm text-neutral-500 mb-4">
-          Pass <code className="font-mono text-[0.9em]">sessionId</code> in the options. All calls
+          Pass <InlineCode>sessionId</InlineCode> in the options. All calls
           through this client use this session.
         </p>
-        <CodeTabs
-          ts={
-            <pre className="bg-[#111111] border border-neutral-800 p-4 font-mono text-sm text-neutral-400 overflow-x-auto">
-              <code>{`const client = observe(
+        <HighlightedCodeTabs
+          ts={`const client = observe(
   new OpenAI({ apiKey: 'sk-...' }),
   Provider.OpenAI,
   { sessionId: 'conv-abc-123' }
-);`}</code>
-            </pre>
-          }
-          py={
-            <pre className="bg-[#111111] border border-neutral-800 p-4 font-mono text-sm text-neutral-400 overflow-x-auto">
-              <code>{`client = observe(
+);`}
+          py={`client = observe(
   OpenAI(api_key="sk-..."),
   Provider.OPENAI,
   { "session_id": "conv-abc-123" }
-)`}</code>
-            </pre>
-          }
+)`}
         />
 
         <h3 className="text-base font-medium text-neutral-300 mb-3 mt-6">Per-call override</h3>
         <p className="text-sm text-neutral-500 mb-4">
-          Pass <code className="font-mono text-[0.9em]">pulseSessionId</code> in the request body to
+          Pass <InlineCode>pulseSessionId</InlineCode> in the request body to
           override the observe-time session for a specific call.
         </p>
-        <CodeTabs
-          ts={
-            <pre className="bg-[#111111] border border-neutral-800 p-4 font-mono text-sm text-neutral-400 overflow-x-auto">
-              <code>{`await client.chat.completions.create({
+        <HighlightedCodeTabs
+          ts={`await client.chat.completions.create({
   model: 'gpt-4o',
   messages: [{ role: 'user', content: 'Hello' }],
   pulseSessionId: 'different-session-456',
-});`}</code>
-            </pre>
-          }
-          py={
-            <pre className="bg-[#111111] border border-neutral-800 p-4 font-mono text-sm text-neutral-400 overflow-x-auto">
-              <code>{`client.chat.completions.create(
+});`}
+          py={`client.chat.completions.create(
   model="gpt-4o",
   messages=[{"role": "user", "content": "Hello"}],
   pulse_session_id="different-session-456",
-)`}</code>
-            </pre>
-          }
+)`}
         />
         <p className="text-sm text-neutral-500 mt-3">
           Per-call takes precedence. The{" "}
-          <code className="font-mono text-[0.9em]">pulseSessionId</code> param is stripped before
+          <InlineCode>pulseSessionId</InlineCode> param is stripped before
           the request reaches the provider.
         </p>
       </section>
@@ -111,10 +95,8 @@ export default function Sessions() {
         </p>
 
         <h3 className="text-base font-medium text-neutral-300 mb-3">At observe-time</h3>
-        <CodeTabs
-          ts={
-            <pre className="bg-[#111111] border border-neutral-800 p-4 font-mono text-sm text-neutral-400 overflow-x-auto">
-              <code>{`const client = observe(
+        <HighlightedCodeTabs
+          ts={`const client = observe(
   new OpenAI({ apiKey: 'sk-...' }),
   Provider.OpenAI,
   {
@@ -123,12 +105,8 @@ export default function Sessions() {
       environment: 'production',
     }
   }
-);`}</code>
-            </pre>
-          }
-          py={
-            <pre className="bg-[#111111] border border-neutral-800 p-4 font-mono text-sm text-neutral-400 overflow-x-auto">
-              <code>{`client = observe(
+);`}
+          py={`client = observe(
   OpenAI(api_key="sk-..."),
   Provider.OPENAI,
   {
@@ -137,20 +115,16 @@ export default function Sessions() {
       "environment": "production",
     }
   }
-)`}</code>
-            </pre>
-          }
+)`}
         />
 
         <h3 className="text-base font-medium text-neutral-300 mb-3 mt-6">Per-call extension</h3>
         <p className="text-sm text-neutral-500 mb-4">
-          Pass <code className="font-mono text-[0.9em]">pulseMetadata</code> in the request body. It
+          Pass <InlineCode>pulseMetadata</InlineCode> in the request body. It
           merges with the observe-time metadata — per-call values win on conflicts.
         </p>
-        <CodeTabs
-          ts={
-            <pre className="bg-[#111111] border border-neutral-800 p-4 font-mono text-sm text-neutral-400 overflow-x-auto">
-              <code>{`await client.chat.completions.create({
+        <HighlightedCodeTabs
+          ts={`await client.chat.completions.create({
   model: 'gpt-4o',
   messages: [{ role: 'user', content: 'Summarize this' }],
   pulseMetadata: {
@@ -160,12 +134,8 @@ export default function Sessions() {
 });
 
 // Final metadata on trace:
-// { userId: 'user-123', environment: 'production', feature: 'summarizer', version: '2.1' }`}</code>
-            </pre>
-          }
-          py={
-            <pre className="bg-[#111111] border border-neutral-800 p-4 font-mono text-sm text-neutral-400 overflow-x-auto">
-              <code>{`client.chat.completions.create(
+// { userId: 'user-123', environment: 'production', feature: 'summarizer', version: '2.1' }`}
+          py={`client.chat.completions.create(
   model="gpt-4o",
   messages=[{"role": "user", "content": "Summarize this"}],
   pulse_metadata={
@@ -175,9 +145,7 @@ export default function Sessions() {
 )
 
 # Final metadata on trace:
-# { "user_id": "user-123", "environment": "production", "feature": "summarizer", "version": "2.1" }`}</code>
-            </pre>
-          }
+# { "user_id": "user-123", "environment": "production", "feature": "summarizer", "version": "2.1" }`}
         />
       </section>
 
@@ -189,7 +157,7 @@ export default function Sessions() {
           ObserveOptions
         </h2>
         <p className="text-sm text-neutral-500 mb-4">
-          The third argument to <code className="font-mono text-[0.9em]">observe()</code>:
+          The third argument to <InlineCode>observe()</InlineCode>:
         </p>
         <div className="space-y-4">
           <div className="border border-neutral-800 p-4">
@@ -261,15 +229,12 @@ export default function Sessions() {
           shows a timeline of its traces ordered by timestamp.
         </p>
         <p className="text-sm text-neutral-500 mb-3">Via the API:</p>
-        <pre className="bg-[#111111] border border-neutral-800 p-4 font-mono text-sm text-neutral-400 overflow-x-auto">
-          <code>GET /v1/sessions/:id</code>
-        </pre>
+        <CodeBlock language="bash">GET /v1/sessions/:id</CodeBlock>
         <p className="text-sm text-neutral-500 mt-3">
           Returns all traces for that session. See{" "}
           <Link to="/docs/api" className="text-neutral-300 hover:text-white transition-colors">
             API reference
-          </Link>
-          .
+          </Link>.
         </p>
       </section>
     </div>

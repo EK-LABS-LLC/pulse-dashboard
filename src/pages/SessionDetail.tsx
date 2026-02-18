@@ -447,7 +447,6 @@ interface AgentSessionDetailProps {
 }
 
 function AgentSessionDetail({ sessionId, spans, loading, error, onRetry, onBack }: AgentSessionDetailProps) {
-  const navigate = useNavigate();
   const [selectedSpan, setSelectedSpan] = useState<Span | null>(null);
 
   if (loading) {
@@ -733,7 +732,6 @@ function AgentSessionDetail({ sessionId, spans, loading, error, onRetry, onBack 
                 )}
               </div>
 
-              {/* Model & Agent */}
               <div className="grid grid-cols-2 gap-3">
                 <div className="bg-neutral-900 border border-neutral-800 rounded p-3">
                   <div className="text-xs text-neutral-500 mb-1">Model</div>
@@ -777,7 +775,7 @@ function AgentSessionDetail({ sessionId, spans, loading, error, onRetry, onBack 
               </div>
 
               {/* Error */}
-              {selectedSpan.error && (
+              {selectedSpan.error != null && (
                 <div className="bg-rose-500/10 border border-rose-500/20 rounded p-3">
                   <div className="text-xs text-rose-400 mb-2">Error</div>
                   <pre className="text-xs text-rose-300 overflow-x-auto whitespace-pre-wrap break-all">

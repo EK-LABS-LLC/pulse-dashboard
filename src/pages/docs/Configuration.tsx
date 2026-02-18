@@ -1,4 +1,4 @@
-import { CodeTabs } from "../../components/landing/CodeTabs";
+import { HighlightedCodeTabs, InlineCode } from "../../components/docs";
 
 export default function Configuration() {
   return (
@@ -14,7 +14,7 @@ export default function Configuration() {
           Configuration
         </h1>
         <p className="text-neutral-500 text-[15px]">
-          All options for <code className="font-mono text-[0.9em]">initPulse()</code>.
+          All options for <InlineCode>initPulse()</InlineCode>.
         </p>
       </div>
 
@@ -27,12 +27,10 @@ export default function Configuration() {
         </h2>
         <p className="text-sm text-neutral-500 mb-4">
           Call once at application startup before any{" "}
-          <code className="font-mono text-[0.9em]">observe()</code> calls.
+          <InlineCode>observe()</InlineCode> calls.
         </p>
-        <CodeTabs
-          ts={
-            <pre className="bg-[#111111] border border-neutral-800 p-4 font-mono text-sm text-neutral-400 overflow-x-auto">
-              <code>{`import { initPulse } from '@pulse/sdk';
+        <HighlightedCodeTabs
+          ts={`import { initPulse } from '@pulse/sdk';
 
 initPulse({
   apiKey: 'pulse_sk_...',
@@ -40,12 +38,8 @@ initPulse({
   batchSize: 20,
   flushInterval: 10000,
   enabled: process.env.NODE_ENV === 'production',
-});`}</code>
-            </pre>
-          }
-          py={
-            <pre className="bg-[#111111] border border-neutral-800 p-4 font-mono text-sm text-neutral-400 overflow-x-auto">
-              <code>{`import os
+});`}
+          py={`import os
 from pulse_sdk import init_pulse
 
 init_pulse({
@@ -54,9 +48,7 @@ init_pulse({
   "batch_size": 20,
   "flush_interval": 10000,
   "enabled": os.environ.get("ENV") == "production",
-})`}</code>
-            </pre>
-          }
+})`}
         />
       </section>
 
@@ -126,18 +118,18 @@ init_pulse({
         </p>
         <ul className="text-sm text-neutral-500 space-y-1.5 list-disc pl-5">
           <li>
-            The buffer reaches <code className="font-mono text-[0.9em]">batchSize</code> — flushes
+            The buffer reaches <InlineCode>batchSize</InlineCode> — flushes
             immediately
           </li>
           <li>
-            The <code className="font-mono text-[0.9em]">flushInterval</code> timer fires — flushes
+            The <InlineCode>flushInterval</InlineCode> timer fires — flushes
             whatever is buffered
           </li>
         </ul>
         <p className="text-sm text-neutral-500 mt-3">
-          On process exit (<code className="font-mono text-[0.9em]">beforeExit</code>,{" "}
-          <code className="font-mono text-[0.9em]">SIGINT</code>,{" "}
-          <code className="font-mono text-[0.9em]">SIGTERM</code>), the SDK flushes all remaining
+          On process exit (<InlineCode>beforeExit</InlineCode>,{" "}
+          <InlineCode>SIGINT</InlineCode>,{" "}
+          <InlineCode>SIGTERM</InlineCode>), the SDK flushes all remaining
           traces before shutdown.
         </p>
       </section>
@@ -150,20 +142,20 @@ init_pulse({
           Validation
         </h2>
         <p className="text-sm text-neutral-500 mb-3">
-          <code className="font-mono text-[0.9em]">initPulse()</code> validates all config values at
+          <InlineCode>initPulse()</InlineCode> validates all config values at
           startup:
         </p>
         <ul className="text-sm text-neutral-500 space-y-1.5 list-disc pl-5">
           <li>
-            <code className="font-mono text-[0.9em]">apiKey</code> must be a non-empty string
-            starting with <code className="font-mono text-[0.9em]">pulse_sk_</code>
+            <InlineCode>apiKey</InlineCode> must be a non-empty string
+            starting with <InlineCode>pulse_sk_</InlineCode>
           </li>
           <li>
-            <code className="font-mono text-[0.9em]">batchSize</code> must be an integer between 1
+            <InlineCode>batchSize</InlineCode> must be an integer between 1
             and 100
           </li>
           <li>
-            <code className="font-mono text-[0.9em]">flushInterval</code> must be at least 1000ms
+            <InlineCode>flushInterval</InlineCode> must be at least 1000ms
           </li>
         </ul>
         <p className="text-sm text-neutral-500 mt-3">
@@ -179,27 +171,19 @@ init_pulse({
           Disabling tracing
         </h2>
         <p className="text-sm text-neutral-500 mb-4">
-          Set <code className="font-mono text-[0.9em]">enabled: false</code> to turn off all
-          tracing. The <code className="font-mono text-[0.9em]">observe()</code> wrapper still
+          Set <InlineCode>enabled: false</InlineCode> to turn off all
+          tracing. The <InlineCode>observe()</InlineCode> wrapper still
           returns a working client — it just skips trace capture.
         </p>
-        <CodeTabs
-          ts={
-            <pre className="bg-[#111111] border border-neutral-800 p-4 font-mono text-sm text-neutral-400 overflow-x-auto">
-              <code>{`initPulse({
+        <HighlightedCodeTabs
+          ts={`initPulse({
   apiKey: 'pulse_sk_...',
   enabled: false, // No traces sent
-});`}</code>
-            </pre>
-          }
-          py={
-            <pre className="bg-[#111111] border border-neutral-800 p-4 font-mono text-sm text-neutral-400 overflow-x-auto">
-              <code>{`init_pulse({
+});`}
+          py={`init_pulse({
   "api_key": "pulse_sk_...",
   "enabled": False,  # No traces sent
-})`}</code>
-            </pre>
-          }
+})`}
         />
       </section>
     </div>
