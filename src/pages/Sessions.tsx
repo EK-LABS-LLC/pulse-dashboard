@@ -1,10 +1,22 @@
 import { useState } from "react";
-import type { Trace } from "../lib/apiClient";
+import type { Trace, Span } from "../lib/apiClient";
 import SessionsTable from "../components/sessions/SessionsTable";
+import AgentSessionsTable from "../components/sessions/AgentSessionsTable";
 import type { SessionSummary } from "../components/sessions/SessionsTable";
 import { TableSkeleton } from "../components/ui/TableSkeleton";
-import { useTracesQuery } from "../api";
+import { useTracesQuery, useSpansQuery } from "../api";
 import { useProject } from "../hooks/useProject";
+
+type ViewTab = "llm" | "agents";
+
+interface AgentSessionSummary {
+  sessionId: string;
+  timestamp: string;
+  status: "success" | "error";
+  durationMs: number;
+  agentRuns: number;
+  toolCalls: number;
+}
 
 const CalendarIcon = () => (
   <svg className="w-4 h-4 text-neutral-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -82,32 +94,117 @@ function groupTracesIntoSessions(traces: Trace[]): SessionSummary[] {
   );
 }
 
+function groupSpansIntoSessions(spans: Span[]): AgentSessionSummary[] {
+  const sessionMap = new Map<string, Span[]>();
+
+  for (const span of spans) {
+    if (!span.sessionId) continue;
+    const existing = sessionMap.get(span.sessionId) || [];
+    existing.push(span);
+    sessionMap.set(span.sessionId, existing);
+  }
+
+  const sessions: AgentSessionSummary[] = [];
+  for (const [sessionId, sessionSpans] of sessionMap) {
+    const sorted = sessionSpans.sort(
+      (a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
+    );
+
+    const agentRuns = sorted.filter(s => s.kind === "agent_run").length;
+    const toolCalls = sorted.filter(s => s.kind === "tool_use").length;
+    const errorCount = sorted.filter(s => s.status === "error").length;
+
+    // Get duration from session span or calculate from first/last
+    const sessionSpan = sorted.find(s => s.kind === "session");
+    const durationMs = sessionSpan?.durationMs ?? 0;
+
+    const first = sorted[0];
+    if (!first) continue;
+
+    sessions.push({
+      sessionId,
+      timestamp: first.timestamp,
+      status: errorCount > 0 ? "error" : "success",
+      durationMs,
+      agentRuns,
+      toolCalls,
+    });
+  }
+
+  return sessions.sort(
+    (a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
+  );
+}
+
 export default function Sessions() {
   const { selectedProject } = useProject();
+  const [activeTab, setActiveTab] = useState<ViewTab>("llm");
   const [searchQuery, setSearchQuery] = useState("");
 
+  // LLM sessions (from traces)
   const sessionsQuery = useTracesQuery("sessions-source-traces", selectedProject?.id, {
     limit: 500,
   });
 
-  const sessions = groupTracesIntoSessions(sessionsQuery.data?.traces ?? []);
-  const total = sessions.length;
-  const loading = sessionsQuery.isPending;
-  const error = sessionsQuery.error instanceof Error ? sessionsQuery.error.message : null;
+  // Agent sessions (from spans)
+  const spansQuery = useSpansQuery("sessions-source-spans", selectedProject?.id, {
+    limit: 500,
+  });
 
-  const filteredSessions = searchQuery
-    ? sessions.filter(
+  const llmSessions = groupTracesIntoSessions(sessionsQuery.data?.traces ?? []);
+  const agentSessions = groupSpansIntoSessions(spansQuery.data?.spans ?? []);
+
+  const llmLoading = sessionsQuery.isPending;
+  const agentLoading = spansQuery.isPending;
+  const llmError = sessionsQuery.error instanceof Error ? sessionsQuery.error.message : null;
+  const agentError = spansQuery.error instanceof Error ? spansQuery.error.message : null;
+
+  const filteredLlmSessions = searchQuery
+    ? llmSessions.filter(
         (s) =>
           s.session_id.toLowerCase().includes(searchQuery.toLowerCase()) ||
           (s.user && s.user.toLowerCase().includes(searchQuery.toLowerCase()))
       )
-    : sessions;
+    : llmSessions;
+
+  const filteredAgentSessions = searchQuery
+    ? agentSessions.filter(
+        (s) => s.sessionId.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    : agentSessions;
+
+  const total = activeTab === "llm" ? llmSessions.length : agentSessions.length;
+  const loading = activeTab === "llm" ? llmLoading : agentLoading;
+  const error = activeTab === "llm" ? llmError : agentError;
 
   return (
     <div className="flex-1 flex flex-col overflow-hidden">
       <header className="h-14 flex items-center justify-between px-6 border-b border-neutral-800 flex-shrink-0 bg-neutral-950">
         <div className="flex items-center gap-4">
           <h1 className="text-sm font-medium">Sessions</h1>
+          {/* Tab Switcher */}
+          <div className="flex items-center bg-neutral-900 border border-neutral-800 rounded-sm p-0.5">
+            <button
+              onClick={() => setActiveTab("llm")}
+              className={`px-3 py-1 text-xs font-medium rounded-sm transition-colors ${
+                activeTab === "llm"
+                  ? "bg-neutral-800 text-white"
+                  : "text-neutral-500 hover:text-neutral-300"
+              }`}
+            >
+              LLM
+            </button>
+            <button
+              onClick={() => setActiveTab("agents")}
+              className={`px-3 py-1 text-xs font-medium rounded-sm transition-colors ${
+                activeTab === "agents"
+                  ? "bg-neutral-800 text-white"
+                  : "text-neutral-500 hover:text-neutral-300"
+              }`}
+            >
+              Agents
+            </button>
+          </div>
           <span className="text-xs text-neutral-500">{total.toLocaleString()} total</span>
         </div>
         <div className="flex items-center gap-3">
@@ -156,11 +253,14 @@ export default function Sessions() {
 
       <div className="flex-1 overflow-auto p-6">
         {error && (
-          <div className="mb-6 p-4 bg-rose-500/10 border border-rose-500/20 rounded-lg">
+          <div className="mb-6 p-4 bg-rose-500/10 border border-rose-500/20 rounded">
             <div className="flex items-center justify-between gap-4">
               <p className="text-rose-400 text-sm">{error}</p>
               <button
-                onClick={() => sessionsQuery.refetch()}
+                onClick={() => {
+                  if (activeTab === "llm") sessionsQuery.refetch();
+                  else spansQuery.refetch();
+                }}
                 className="text-sm text-accent hover:underline whitespace-nowrap"
               >
                 Retry
@@ -169,16 +269,55 @@ export default function Sessions() {
           </div>
         )}
 
-        {loading ? (
-          <div className="max-w-5xl mx-auto">
-            <div className="bg-neutral-900 border border-neutral-800 rounded-xl overflow-hidden">
-              <TableSkeleton rows={10} columns={7} />
-            </div>
-          </div>
-        ) : (
-          <div className="max-w-5xl mx-auto">
-            <SessionsTable sessions={filteredSessions} />
-          </div>
+        {activeTab === "llm" && (
+          <>
+            {llmLoading ? (
+              <div className="max-w-5xl mx-auto">
+                <div className="bg-neutral-900 border border-neutral-800 rounded overflow-hidden">
+                  <TableSkeleton rows={10} columns={7} />
+                </div>
+              </div>
+            ) : (
+              <div className="max-w-5xl mx-auto">
+                <SessionsTable sessions={filteredLlmSessions} />
+              </div>
+            )}
+          </>
+        )}
+
+        {activeTab === "agents" && (
+          <>
+            {agentLoading ? (
+              <div className="max-w-5xl mx-auto">
+                <div className="bg-neutral-900 border border-neutral-800 rounded overflow-hidden">
+                  <TableSkeleton rows={10} columns={6} />
+                </div>
+              </div>
+            ) : filteredAgentSessions.length === 0 ? (
+              <div className="max-w-5xl mx-auto">
+                <div className="bg-neutral-900 border border-neutral-800 rounded p-8 text-center">
+                  <div className="w-12 h-12 mx-auto mb-4 rounded-full bg-neutral-800 flex items-center justify-center">
+                    <svg className="w-6 h-6 text-neutral-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={1.5}
+                        d="M13 10V3L4 14h7v7l9-11h-7z"
+                      />
+                    </svg>
+                  </div>
+                  <h3 className="text-sm font-medium text-neutral-300 mb-2">No Agent Sessions</h3>
+                  <p className="text-xs text-neutral-500 max-w-sm mx-auto">
+                    Agent sessions with span data will appear here when available.
+                  </p>
+                </div>
+              </div>
+            ) : (
+              <div className="max-w-5xl mx-auto">
+                <AgentSessionsTable sessions={filteredAgentSessions} />
+              </div>
+            )}
+          </>
         )}
       </div>
     </div>

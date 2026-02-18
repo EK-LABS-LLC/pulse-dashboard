@@ -4,15 +4,15 @@ import { TimeRangeTabs } from "../components/dashboard/TimeRangeTabs";
 import type { TimeRange } from "../components/dashboard/TimeRangeTabs";
 import { RecentTracesTable } from "../components/dashboard/RecentTracesTable";
 import { LoadingSpinner } from "../components/ui/LoadingSpinner";
-import ProviderSplitChart from "../components/analytics/ProviderSplitChart";
+import ToolUsageChart from "../components/analytics/ToolUsageChart";
 import CostChart from "../components/analytics/CostChart";
-import { useAnalyticsQuery, useTracesQuery } from "../api";
+import { useAnalyticsQuery, useSpansAnalyticsQuery, useTracesQuery } from "../api";
 import { useProject } from "../hooks/useProject";
 import type { CostOverTimeByProvider } from "../lib/apiClient";
 
 // Icons for stat cards
 const DollarIcon = () => (
-  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
     <path
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -23,7 +23,7 @@ const DollarIcon = () => (
 );
 
 const BoltIcon = () => (
-  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
     <path
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -34,7 +34,7 @@ const BoltIcon = () => (
 );
 
 const ClockIcon = () => (
-  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
     <path
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -44,8 +44,36 @@ const ClockIcon = () => (
   </svg>
 );
 
+const WrenchIcon = () => (
+  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={1.5}
+      d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+    />
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={1.5}
+      d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+    />
+  </svg>
+);
+
+const CheckCircleIcon = () => (
+  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={1.5}
+      d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+    />
+  </svg>
+);
+
 const AlertIcon = () => (
-  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
     <path
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -67,7 +95,7 @@ const RefreshIcon = () => (
 );
 
 const TokensIcon = () => (
-  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
     <path
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -78,7 +106,7 @@ const TokensIcon = () => (
 );
 
 const SessionsIcon = () => (
-  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
     <path
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -125,11 +153,16 @@ function formatCost(cost: number): string {
   return "$" + cost.toFixed(2);
 }
 
-function formatLatency(ms: number): string {
-  if (ms >= 1000) {
-    return (ms / 1000).toFixed(2) + "s";
+function formatDuration(ms: number): string {
+  if (ms >= 60000) {
+    const mins = Math.floor(ms / 60000);
+    const secs = Math.floor((ms % 60000) / 1000);
+    return `${mins}m ${secs}s`;
   }
-  return Math.round(ms) + "ms";
+  if (ms >= 1000) {
+    return (ms / 1000).toFixed(1) + "s";
+  }
+  return ms + "ms";
 }
 
 export default function Dashboard() {
@@ -137,21 +170,47 @@ export default function Dashboard() {
   const [timeRange, setTimeRange] = useState<TimeRange>("7d");
 
   const { date_from, date_to } = useMemo(() => getDateRange(timeRange), [timeRange]);
+
+  // LLM/Trace analytics
   const analyticsQuery = useAnalyticsQuery("dashboard-analytics", selectedProject?.id, {
     date_from,
     date_to,
     group_by: "day",
   });
 
+  // Span/Agent analytics
+  const spansQuery = useSpansAnalyticsQuery("dashboard-spans-analytics", selectedProject?.id, {
+    date_from,
+    date_to,
+    group_by: "day",
+  });
+
+  // Recent traces for table
   const recentTracesQuery = useTracesQuery("dashboard-recent-traces", selectedProject?.id, {
     limit: 10,
   });
 
   const analytics = analyticsQuery.data;
+  const spansAnalytics = spansQuery.data;
   const recentTraces = recentTracesQuery.data?.traces ?? [];
-  const loading = analyticsQuery.isPending || analyticsQuery.isFetching;
+  const loading = analyticsQuery.isPending || analyticsQuery.isFetching || spansQuery.isPending;
   const tracesLoading = recentTracesQuery.isPending || recentTracesQuery.isFetching;
-  const error = analyticsQuery.error instanceof Error ? analyticsQuery.error.message : null;
+  const error = analyticsQuery.error instanceof Error ? analyticsQuery.error.message :
+                spansQuery.error instanceof Error ? spansQuery.error.message : null;
+
+  // LLM metrics (from trace analytics)
+  const totalCost = analytics?.totalCost ?? 0;
+  const totalRequests = analytics?.totalRequests ?? 0;
+  const totalSessions = analytics?.totalSessions ?? 0;
+  const totalTokens = analytics?.totalTokens ?? { input: 0, output: 0, total: 0 };
+  const errorRate = analytics?.errorRate ?? 0;
+
+  // Span/Agent metrics (from spans analytics)
+  const agentRuns = spansAnalytics?.agentRuns ?? 0;
+  const toolCalls = spansAnalytics?.toolCalls ?? 0;
+  const avgSessionDuration = spansAnalytics?.avgSessionDurationMs ?? 0;
+  const successRate = spansAnalytics?.successRate ?? (100 - errorRate);
+  const topTools = spansAnalytics?.topTools ?? [];
 
   return (
     <div className="flex-1 flex flex-col overflow-hidden">
@@ -163,7 +222,10 @@ export default function Dashboard() {
         <div className="flex items-center gap-3">
           <TimeRangeTabs value={timeRange} onChange={setTimeRange} />
           <button
-            onClick={() => analyticsQuery.refetch()}
+            onClick={() => {
+              analyticsQuery.refetch();
+              spansQuery.refetch();
+            }}
             disabled={loading}
             className="p-1.5 rounded border border-neutral-700 hover:bg-neutral-850 hover:border-neutral-600 transition-colors disabled:opacity-50"
           >
@@ -185,7 +247,7 @@ export default function Dashboard() {
       <div className="flex-1 overflow-y-auto">
         <div className="p-6">
           {error && (
-            <div className="mb-6 p-4 bg-rose-500/10 border border-rose-500/20 rounded-lg">
+            <div className="mb-6 p-4 bg-rose-500/10 border border-rose-500/20 rounded">
               <div className="flex items-center justify-between gap-4">
                 <p className="text-rose-400 text-sm">{error}</p>
                 <button
@@ -198,49 +260,45 @@ export default function Dashboard() {
             </div>
           )}
 
-          {/* Stats Grid */}
-          <div className="grid grid-cols-4 gap-4 mb-6">
+          {/* First Stats Row */}
+          <div className="grid grid-cols-4 gap-4 mb-4">
             <StatCard
-              label="Total Cost"
-              value={analytics ? formatCost(analytics.totalCost) : "--"}
-              icon={<DollarIcon />}
-              color="emerald"
+              label="Sessions"
+              value={analytics ? formatNumber(analytics.totalSessions) : "--"}
+              icon={<SessionsIcon />}
+              color="violet"
               subtitle={`${timeRange} period`}
             />
             <StatCard
-              label="Requests"
-              value={analytics ? formatNumber(analytics.totalRequests) : "--"}
+              label="Agent Runs"
+              value={formatNumber(agentRuns)}
               icon={<BoltIcon />}
               color="blue"
               subtitle={`${timeRange} period`}
             />
             <StatCard
-              label="Avg Latency"
-              value={analytics ? formatLatency(analytics.avgLatency) : "--"}
-              icon={<ClockIcon />}
-              color="amber"
+              label="Tool Calls"
+              value={formatNumber(toolCalls)}
+              icon={<WrenchIcon />}
+              color="cyan"
               subtitle={`${timeRange} period`}
             />
             <StatCard
-              label="Error Rate"
-              value={analytics ? analytics.errorRate.toFixed(1) + "%" : "--"}
-              icon={<AlertIcon />}
-              color="rose"
-              subtitle={
-                analytics
-                  ? `${Math.round(analytics.totalRequests * (analytics.errorRate / 100))} failed`
-                  : `${timeRange} period`
-              }
+              label="Avg Duration"
+              value={formatDuration(avgSessionDuration)}
+              icon={<ClockIcon />}
+              color="amber"
+              subtitle={`${timeRange} period`}
             />
           </div>
 
           {/* Second Stats Row */}
           <div className="grid grid-cols-4 gap-4 mb-6">
             <StatCard
-              label="Sessions"
-              value={analytics ? formatNumber(analytics.totalSessions) : "--"}
-              icon={<SessionsIcon />}
-              color="purple"
+              label="Cost"
+              value={analytics ? formatCost(analytics.totalCost) : "--"}
+              icon={<DollarIcon />}
+              color="emerald"
               subtitle={`${timeRange} period`}
             />
             <StatCard
@@ -255,19 +313,21 @@ export default function Dashboard() {
               subtitle={`${analytics ? formatNumber(analytics.totalTokens.input) : "0"} in / ${analytics ? formatNumber(analytics.totalTokens.output) : "0"} out`}
             />
             <StatCard
-              label="Cost/Request"
-              value={analytics ? "$" + analytics.computed.costPerRequest.toFixed(4) : "--"}
-              icon={<DollarIcon />}
-              color="cyan"
-              subtitle={`${timeRange} period`}
+              label="Error Rate"
+              value={analytics ? analytics.errorRate.toFixed(1) + "%" : "--"}
+              icon={<AlertIcon />}
+              color="rose"
+              subtitle={
+                analytics
+                  ? `${Math.round(analytics.totalRequests * (analytics.errorRate / 100))} failed`
+                  : `${timeRange} period`
+              }
             />
             <StatCard
-              label="Tokens/Request"
-              value={
-                analytics ? Math.round(analytics.computed.tokensPerRequest).toLocaleString() : "--"
-              }
-              icon={<TokensIcon />}
-              color="indigo"
+              label="Success Rate"
+              value={successRate.toFixed(1) + "%"}
+              icon={<CheckCircleIcon />}
+              color="emerald"
               subtitle={`${timeRange} period`}
             />
           </div>
@@ -279,16 +339,16 @@ export default function Dashboard() {
           )}
 
           {/* Charts Row */}
-          {analytics && (
-            <div className="grid grid-cols-3 gap-4 mb-6">
-              {/* Cost Over Time Chart */}
-              <div className="col-span-2 bg-neutral-900 border border-neutral-800 rounded p-4">
-                <div className="flex items-center justify-between mb-4">
-                  <div>
-                    <h3 className="text-sm font-medium">Cost Over Time</h3>
-                    <p className="text-xs text-neutral-500 mt-0.5">Daily spending by provider</p>
-                  </div>
+          <div className="grid grid-cols-3 gap-4 mb-6">
+            {/* Cost Over Time Chart */}
+            <div className="col-span-2 bg-neutral-900 border border-neutral-800 rounded p-4">
+              <div className="flex items-center justify-between mb-4">
+                <div>
+                  <h3 className="text-sm font-medium">Activity Over Time</h3>
+                  <p className="text-xs text-neutral-500 mt-0.5">Cost by day</p>
                 </div>
+              </div>
+              {analytics && (
                 <CostChart
                   data={analytics.costOverTime.map((d: CostOverTimeByProvider) => ({
                     period: d.period,
@@ -297,20 +357,20 @@ export default function Dashboard() {
                   }))}
                   groupBy="day"
                 />
-              </div>
-
-              {/* Provider Split */}
-              <div className="bg-neutral-900 border border-neutral-800 rounded p-4">
-                <div className="flex items-center justify-between mb-4">
-                  <div>
-                    <h3 className="text-sm font-medium">By Provider</h3>
-                    <p className="text-xs text-neutral-500 mt-0.5">Cost distribution</p>
-                  </div>
-                </div>
-                <ProviderSplitChart data={analytics.costByProvider} />
-              </div>
+              )}
             </div>
-          )}
+
+            {/* Tool Usage */}
+            <div className="bg-neutral-900 border border-neutral-800 rounded p-4">
+              <div className="flex items-center justify-between mb-4">
+                <div>
+                  <h3 className="text-sm font-medium">Tool Usage</h3>
+                  <p className="text-xs text-neutral-500 mt-0.5">Top tools this period</p>
+                </div>
+              </div>
+              <ToolUsageChart data={topTools} maxItems={5} />
+            </div>
+          </div>
 
           {/* Recent Traces */}
           <RecentTracesTable traces={recentTraces} loading={tracesLoading} />

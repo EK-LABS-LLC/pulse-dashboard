@@ -63,6 +63,55 @@ export interface TracesResponse {
 export interface Session {
   sessionId: string;
   traces: Trace[];
+  spans?: Span[];
+}
+
+export type SpanSource = "claude_code";
+
+export type SpanKind =
+  | "tool_use"
+  | "agent_run"
+  | "session"
+  | "user_prompt"
+  | "notification";
+
+export interface Span {
+  spanId: string;
+  sessionId: string;
+  parentSpanId?: string;
+  timestamp: string;
+  durationMs?: number;
+  source: SpanSource;
+  kind: SpanKind;
+  eventType: string;
+  status: "success" | "error";
+  toolUseId?: string;
+  toolName?: string;
+  toolInput?: unknown;
+  toolResponse?: unknown;
+  error?: unknown;
+  isInterrupt?: boolean;
+  cwd?: string;
+  model?: string;
+  agentName?: string;
+  metadata?: Record<string, unknown>;
+}
+
+export interface SpansResponse {
+  spans: Span[];
+  total: number;
+}
+
+export interface GetSpansParams {
+  session_id?: string;
+  source?: SpanSource;
+  kind?: SpanKind;
+  tool_name?: string;
+  status?: string;
+  date_from?: string;
+  date_to?: string;
+  limit?: number;
+  offset?: number;
 }
 
 export interface GetAnalyticsParams {
@@ -111,6 +160,34 @@ export interface ComputedMetrics {
   tracesPerSession: number;
   avgInputTokens: number;
   avgOutputTokens: number;
+}
+
+// Spans Analytics Response
+export interface SpansAnalyticsResponse {
+  agentRuns: number;
+  toolCalls: number;
+  avgSessionDurationMs: number;
+  successRate: number;
+  topTools: Array<{ name: string; count: number }>;
+  // Extra fields
+  totalSpans: number;
+  errorRate: number;
+  avgDurationMs: number;
+  spansByKind: Array<{ kind: string; count: number }>;
+  spansBySource: Array<{ source: string; count: number }>;
+  spansOverTime: Array<{ period: string; count: number }>;
+}
+
+// Session Spans Response
+export interface SessionSpansResponse {
+  sessionId: string;
+  spans: Span[];
+}
+
+export interface GetSpansAnalyticsParams {
+  date_from: string;
+  date_to: string;
+  group_by?: "day" | "hour";
 }
 
 export interface AnalyticsResponse {
@@ -203,6 +280,21 @@ export const getSession = async (id: string): Promise<Session> => {
   return handleResponse<Session>(response);
 };
 
+export const getSpans = async (params: GetSpansParams = {}): Promise<SpansResponse> => {
+  const url = new URL(`${getBaseUrl()}/dashboard/api/spans`);
+  Object.entries(params).forEach(([key, value]) => {
+    if (value !== undefined && value !== "") {
+      url.searchParams.set(key, String(value));
+    }
+  });
+
+  const response = await fetch(url.toString(), {
+    credentials: "include",
+    headers: getProjectHeaders(),
+  });
+  return handleResponse<SpansResponse>(response);
+};
+
 export const getAnalytics = async (params: GetAnalyticsParams = {}): Promise<AnalyticsResponse> => {
   const url = new URL(`${getBaseUrl()}/dashboard/api/analytics`);
   Object.entries(params).forEach(([key, value]) => {
@@ -216,6 +308,29 @@ export const getAnalytics = async (params: GetAnalyticsParams = {}): Promise<Ana
     headers: getProjectHeaders(),
   });
   return handleResponse<AnalyticsResponse>(response);
+};
+
+export const getSpansAnalytics = async (params: GetSpansAnalyticsParams): Promise<SpansAnalyticsResponse> => {
+  const url = new URL(`${getBaseUrl()}/dashboard/api/analytics/spans`);
+  Object.entries(params).forEach(([key, value]) => {
+    if (value !== undefined && value !== "") {
+      url.searchParams.set(key, String(value));
+    }
+  });
+
+  const response = await fetch(url.toString(), {
+    credentials: "include",
+    headers: getProjectHeaders(),
+  });
+  return handleResponse<SpansAnalyticsResponse>(response);
+};
+
+export const getSessionSpans = async (sessionId: string): Promise<SessionSpansResponse> => {
+  const response = await fetch(`${getBaseUrl()}/dashboard/api/sessions/${sessionId}/spans`, {
+    credentials: "include",
+    headers: getProjectHeaders(),
+  });
+  return handleResponse<SessionSpansResponse>(response);
 };
 
 export const createProject = async (name: string): Promise<CreateProjectResult> => {

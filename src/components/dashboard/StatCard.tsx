@@ -2,7 +2,7 @@ interface StatCardProps {
   label: string;
   value: string;
   icon: React.ReactNode;
-  color: "emerald" | "blue" | "purple" | "amber" | "rose" | "cyan" | "indigo" | "pink";
+  color?: "emerald" | "blue" | "purple" | "amber" | "rose" | "cyan" | "indigo" | "violet";
   change?: {
     value: string;
     positive: boolean;
@@ -12,73 +12,55 @@ interface StatCardProps {
 
 const colorClasses = {
   emerald: {
-    gradient: "",
-    iconBg: "bg-emerald-500/5",
-    iconText: "text-emerald-400/70",
-    valueText: "text-white",
+    iconBg: "bg-emerald-500/10",
+    iconText: "text-emerald-400",
   },
   blue: {
-    gradient: "",
-    iconBg: "bg-blue-500/5",
-    iconText: "text-blue-400/70",
-    valueText: "text-white",
+    iconBg: "bg-blue-500/10",
+    iconText: "text-blue-400",
   },
   purple: {
-    gradient: "",
-    iconBg: "bg-purple-500/5",
-    iconText: "text-purple-400/70",
-    valueText: "text-white",
+    iconBg: "bg-purple-500/10",
+    iconText: "text-purple-400",
   },
   amber: {
-    gradient: "",
-    iconBg: "bg-amber-500/5",
-    iconText: "text-amber-400/70",
-    valueText: "text-white",
+    iconBg: "bg-amber-500/10",
+    iconText: "text-amber-400",
   },
   rose: {
-    gradient: "",
-    iconBg: "bg-rose-500/5",
-    iconText: "text-rose-400/70",
-    valueText: "text-white",
+    iconBg: "bg-rose-500/10",
+    iconText: "text-rose-400",
   },
   cyan: {
-    gradient: "",
-    iconBg: "bg-cyan-500/5",
-    iconText: "text-cyan-400/70",
-    valueText: "text-white",
+    iconBg: "bg-cyan-500/10",
+    iconText: "text-cyan-400",
   },
   indigo: {
-    gradient: "",
-    iconBg: "bg-indigo-500/5",
-    iconText: "text-indigo-400/70",
-    valueText: "text-white",
+    iconBg: "bg-indigo-500/10",
+    iconText: "text-indigo-400",
   },
-  pink: {
-    gradient: "",
-    iconBg: "bg-pink-500/5",
-    iconText: "text-pink-400/70",
-    valueText: "text-white",
+  violet: {
+    iconBg: "bg-violet-500/10",
+    iconText: "text-violet-400",
   },
 };
 
 export function StatCard({ label, value, icon, color, change, subtitle }: StatCardProps) {
-  const colors = colorClasses[color];
+  const colors = color ? colorClasses[color] : null;
 
   return (
-    <div className="bg-neutral-900 border border-neutral-800 rounded-lg p-4 transition-colors hover:bg-neutral-850">
+    <div className="bg-neutral-900 border border-neutral-800 rounded p-4 transition-colors hover:border-neutral-700">
       <div className="flex items-center justify-between mb-3">
-        <div className="flex items-center gap-2">
-          <div className={`w-8 h-8 rounded-lg ${colors.iconBg} flex items-center justify-center`}>
-            <span className={colors.iconText}>{icon}</span>
+        <div className="flex items-center gap-2.5">
+          <div className={`w-7 h-7 rounded-sm flex items-center justify-center ${colors ? colors.iconBg : "bg-neutral-800"}`}>
+            <span className={colors ? colors.iconText : "text-neutral-400"}>{icon}</span>
           </div>
           <span className="text-xs text-neutral-500 uppercase tracking-wide">{label}</span>
         </div>
         {change && (
           <span
-            className={`text-xs px-1.5 py-0.5 rounded ${
-              change.positive
-                ? "text-emerald-400 bg-emerald-500/10"
-                : "text-rose-400 bg-rose-500/10"
+            className={`text-xs font-medium ${
+              change.positive ? "text-emerald-400" : "text-rose-400"
             }`}
           >
             {change.positive ? "+" : ""}
@@ -86,10 +68,8 @@ export function StatCard({ label, value, icon, color, change, subtitle }: StatCa
           </span>
         )}
       </div>
-      <div className="flex items-baseline gap-1">
-        <span className={`text-2xl font-semibold ${colors.valueText}`}>{value}</span>
-      </div>
-      {subtitle && <div className="mt-2 text-xs text-neutral-500">{subtitle}</div>}
+      <div className="text-2xl font-semibold text-white">{value}</div>
+      {subtitle && <div className="mt-1.5 text-xs text-neutral-500">{subtitle}</div>}
     </div>
   );
 }
