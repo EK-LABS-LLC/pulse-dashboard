@@ -907,7 +907,9 @@ function AgentSessionDetail({
               </div>
 
               {/* Error */}
-              {selectedSpan.error != null && (
+              {(typeof selectedSpan.error === "string"
+                ? selectedSpan.error.trim().length > 0
+                : selectedSpan.error != null) && (
                 <div className="bg-rose-500/10 border border-rose-500/20 rounded p-3">
                   <div className="text-xs text-rose-400 mb-2">Error</div>
                   <pre className="text-xs text-rose-300 overflow-x-auto whitespace-pre-wrap break-all">
