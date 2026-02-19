@@ -34,14 +34,6 @@ export function Footer() {
               </li>
               <li>
                 <a
-                  href="#pricing"
-                  className="text-[13px] text-neutral-600 hover:text-neutral-300 transition-colors"
-                >
-                  Pricing
-                </a>
-              </li>
-              <li>
-                <a
                   href="#"
                   className="text-[13px] text-neutral-600 hover:text-neutral-300 transition-colors"
                 >

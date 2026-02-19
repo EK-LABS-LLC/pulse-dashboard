@@ -28,12 +28,6 @@ export function LandingNav() {
             >
               How it works
             </a>
-            <a
-              href="#pricing"
-              className="px-4 py-2 text-sm text-neutral-500 hover:text-neutral-300 transition-colors"
-            >
-              Pricing
-            </a>
             <Link
               to="/docs"
               className="px-4 py-2 text-sm text-neutral-500 hover:text-neutral-300 transition-colors"
@@ -49,12 +43,12 @@ export function LandingNav() {
           >
             Sign in
           </Link>
-          <a
-            href="#pricing"
+          <Link
+            to="/login"
             className="inline-flex items-center px-5 py-2 text-[13px] font-medium bg-white border border-white text-[#080808] hover:bg-neutral-200 hover:border-neutral-200 transition-colors"
           >
             Get started
-          </a>
+          </Link>
         </div>
       </div>
     </nav>
