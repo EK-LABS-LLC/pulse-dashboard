@@ -65,7 +65,10 @@ export default function ApiKeyList({
         </div>
         <div className="py-12 text-center">
           <p className="text-sm text-neutral-500">No API keys</p>
-          <button onClick={onCreateClick} className="mt-3 text-sm text-accent hover:underline">
+          <button
+            onClick={onCreateClick}
+            className="mt-3 text-sm text-accent hover:underline"
+          >
             Create your first key
           </button>
         </div>
@@ -82,7 +85,9 @@ export default function ApiKeyList({
         {keys.map((key, index) => (
           <div
             key={key.id}
-            className={index < keys.length - 1 ? "border-b border-neutral-800" : ""}
+            className={
+              index < keys.length - 1 ? "border-b border-neutral-800" : ""
+            }
           >
             <ApiKeyCard
               id={key.id}

@@ -11,14 +11,18 @@ interface ProjectsResponse {
 export function ProjectProvider({ children }: { children: ReactNode }) {
   const { isAuthenticated } = useAuth();
   const [projects, setProjects] = useState<Project[]>([]);
-  const [selectedProject, setSelectedProjectState] = useState<Project | null>(null);
+  const [selectedProject, setSelectedProjectState] = useState<Project | null>(
+    null,
+  );
   const [isProjectLoading, setIsProjectLoading] = useState(false);
 
   const refreshProjects = useCallback(async () => {
     if (!isAuthenticated) return;
     setIsProjectLoading(true);
     try {
-      const res = await fetch("/dashboard/api/projects", { credentials: "include" });
+      const res = await fetch("/dashboard/api/projects", {
+        credentials: "include",
+      });
       if (!res.ok) return;
       const data = (await res.json()) as ProjectsResponse;
       setProjects(data.projects);

@@ -87,7 +87,11 @@ export default function Login() {
       }
       navigate("/dashboard");
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Authentication failed. Please try again.");
+      setError(
+        err instanceof Error
+          ? err.message
+          : "Authentication failed. Please try again.",
+      );
     } finally {
       setIsLoading(false);
     }
@@ -98,7 +102,9 @@ export default function Login() {
       <div className="w-full max-w-sm">
         {/* Logo */}
         <div className="flex items-center justify-center mb-8">
-          <span className="text-xl font-bold tracking-tight text-white">Pulse</span>
+          <span className="text-xl font-bold tracking-tight text-white">
+            Pulse
+          </span>
         </div>
 
         {/* Login Card */}
@@ -119,7 +125,9 @@ export default function Login() {
               {/* Name (sign-up only) */}
               {isSignUp && (
                 <div>
-                  <label className="block text-sm text-neutral-400 mb-1.5">Name</label>
+                  <label className="block text-sm text-neutral-400 mb-1.5">
+                    Name
+                  </label>
                   <input
                     type="text"
                     value={name}
@@ -134,7 +142,9 @@ export default function Login() {
               {/* Project Name (sign-up only) */}
               {isSignUp && (
                 <div>
-                  <label className="block text-sm text-neutral-400 mb-1.5">Project Name</label>
+                  <label className="block text-sm text-neutral-400 mb-1.5">
+                    Project Name
+                  </label>
                   <input
                     type="text"
                     value={projectName}
@@ -148,7 +158,9 @@ export default function Login() {
 
               {/* Email */}
               <div>
-                <label className="block text-sm text-neutral-400 mb-1.5">Email</label>
+                <label className="block text-sm text-neutral-400 mb-1.5">
+                  Email
+                </label>
                 <input
                   type="email"
                   value={email}
@@ -162,7 +174,9 @@ export default function Login() {
 
               {/* Password */}
               <div>
-                <label className="block text-sm text-neutral-400 mb-1.5">Password</label>
+                <label className="block text-sm text-neutral-400 mb-1.5">
+                  Password
+                </label>
                 <input
                   type="password"
                   value={password}
@@ -208,13 +222,17 @@ export default function Login() {
               }}
               className="text-sm text-neutral-500 hover:text-neutral-300 transition-colors"
             >
-              {isSignUp ? "Already have an account? Sign in" : "Don't have an account? Sign up"}
+              {isSignUp
+                ? "Already have an account? Sign in"
+                : "Don't have an account? Sign up"}
             </button>
           </div>
         </div>
 
         {/* Footer */}
-        <p className="text-center text-xs text-neutral-600 mt-6">Pulse - LLM Observability</p>
+        <p className="text-center text-xs text-neutral-600 mt-6">
+          Pulse - LLM Observability
+        </p>
       </div>
     </div>
   );

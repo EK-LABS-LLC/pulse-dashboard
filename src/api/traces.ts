@@ -4,7 +4,7 @@ import { getTrace, getTraces, type GetTracesParams } from "../lib/apiClient";
 export function useTracesQuery(
   scope: string,
   projectId: string | undefined,
-  params: GetTracesParams
+  params: GetTracesParams,
 ) {
   return useQuery({
     queryKey: [scope, projectId, params],
@@ -13,7 +13,10 @@ export function useTracesQuery(
   });
 }
 
-export function useTraceDetailQuery(projectId: string | undefined, traceId: string | undefined) {
+export function useTraceDetailQuery(
+  projectId: string | undefined,
+  traceId: string | undefined,
+) {
   return useQuery({
     queryKey: ["trace", projectId, traceId],
     enabled: !!projectId && !!traceId,

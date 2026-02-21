@@ -19,7 +19,12 @@ interface AgentSessionSummary {
 }
 
 const CalendarIcon = () => (
-  <svg className="w-4 h-4 text-neutral-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+  <svg
+    className="w-4 h-4 text-neutral-500"
+    fill="none"
+    stroke="currentColor"
+    viewBox="0 0 24 24"
+  >
     <path
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -30,7 +35,12 @@ const CalendarIcon = () => (
 );
 
 const SearchIcon = () => (
-  <svg className="w-4 h-4 text-neutral-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+  <svg
+    className="w-4 h-4 text-neutral-500"
+    fill="none"
+    stroke="currentColor"
+    viewBox="0 0 24 24"
+  >
     <path
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -47,7 +57,12 @@ const ChevronDownIcon = () => (
     stroke="currentColor"
     viewBox="0 0 24 24"
   >
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={2}
+      d="M19 9l-7 7-7-7"
+    />
   </svg>
 );
 
@@ -64,11 +79,12 @@ function groupTracesIntoSessions(traces: Trace[]): SessionSummary[] {
   const sessions: SessionSummary[] = [];
   for (const [session_id, sessionTraces] of sessionMap) {
     const sorted = sessionTraces.sort(
-      (a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
+      (a, b) =>
+        new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime(),
     );
     const totalTokens = sorted.reduce(
       (sum, t) => sum + (t.inputTokens || 0) + (t.outputTokens || 0),
-      0
+      0,
     );
     const totalCost = sorted.reduce((sum, t) => sum + (t.costCents || 0), 0);
     const errorCount = sorted.filter((t) => t.status === "error").length;
@@ -90,7 +106,9 @@ function groupTracesIntoSessions(traces: Trace[]): SessionSummary[] {
   }
 
   return sessions.sort(
-    (a, b) => new Date(b.first_trace_time).getTime() - new Date(a.first_trace_time).getTime()
+    (a, b) =>
+      new Date(b.first_trace_time).getTime() -
+      new Date(a.first_trace_time).getTime(),
   );
 }
 
@@ -107,15 +125,16 @@ function groupSpansIntoSessions(spans: Span[]): AgentSessionSummary[] {
   const sessions: AgentSessionSummary[] = [];
   for (const [sessionId, sessionSpans] of sessionMap) {
     const sorted = sessionSpans.sort(
-      (a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
+      (a, b) =>
+        new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime(),
     );
 
-    const agentRuns = sorted.filter(s => s.kind === "agent_run").length;
-    const toolCalls = sorted.filter(s => s.kind === "tool_use").length;
-    const errorCount = sorted.filter(s => s.status === "error").length;
+    const agentRuns = sorted.filter((s) => s.kind === "agent_run").length;
+    const toolCalls = sorted.filter((s) => s.kind === "tool_use").length;
+    const errorCount = sorted.filter((s) => s.status === "error").length;
 
     // Get duration from session span or calculate from first/last
-    const sessionSpan = sorted.find(s => s.kind === "session");
+    const sessionSpan = sorted.find((s) => s.kind === "session");
     const durationMs = sessionSpan?.durationMs ?? 0;
 
     const first = sorted[0];
@@ -132,7 +151,7 @@ function groupSpansIntoSessions(spans: Span[]): AgentSessionSummary[] {
   }
 
   return sessions.sort(
-    (a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
+    (a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime(),
   );
 }
 
@@ -142,39 +161,48 @@ export default function Sessions() {
   const [searchQuery, setSearchQuery] = useState("");
 
   // LLM sessions (from traces)
-  const sessionsQuery = useTracesQuery("sessions-source-traces", selectedProject?.id, {
-    limit: 500,
-  });
+  const sessionsQuery = useTracesQuery(
+    "sessions-source-traces",
+    selectedProject?.id,
+    {
+      limit: 500,
+    },
+  );
 
   // Agent sessions (from spans)
-  const spansQuery = useSpansQuery("sessions-source-spans", selectedProject?.id, {
-    limit: 500,
-  });
+  const spansQuery = useSpansQuery(
+    "sessions-source-spans",
+    selectedProject?.id,
+    {
+      limit: 500,
+    },
+  );
 
   const llmSessions = groupTracesIntoSessions(sessionsQuery.data?.traces ?? []);
   const agentSessions = groupSpansIntoSessions(spansQuery.data?.spans ?? []);
 
   const llmLoading = sessionsQuery.isPending;
   const agentLoading = spansQuery.isPending;
-  const llmError = sessionsQuery.error instanceof Error ? sessionsQuery.error.message : null;
-  const agentError = spansQuery.error instanceof Error ? spansQuery.error.message : null;
+  const llmError =
+    sessionsQuery.error instanceof Error ? sessionsQuery.error.message : null;
+  const agentError =
+    spansQuery.error instanceof Error ? spansQuery.error.message : null;
 
   const filteredLlmSessions = searchQuery
     ? llmSessions.filter(
         (s) =>
           s.session_id.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          (s.user && s.user.toLowerCase().includes(searchQuery.toLowerCase()))
+          (s.user && s.user.toLowerCase().includes(searchQuery.toLowerCase())),
       )
     : llmSessions;
 
   const filteredAgentSessions = searchQuery
-    ? agentSessions.filter(
-        (s) => s.sessionId.toLowerCase().includes(searchQuery.toLowerCase())
+    ? agentSessions.filter((s) =>
+        s.sessionId.toLowerCase().includes(searchQuery.toLowerCase()),
       )
     : agentSessions;
 
   const total = activeTab === "llm" ? llmSessions.length : agentSessions.length;
-  const loading = activeTab === "llm" ? llmLoading : agentLoading;
   const error = activeTab === "llm" ? llmError : agentError;
 
   return (
@@ -205,7 +233,9 @@ export default function Sessions() {
               Agents
             </button>
           </div>
-          <span className="text-xs text-neutral-500">{total.toLocaleString()} total</span>
+          <span className="text-xs text-neutral-500">
+            {total.toLocaleString()} total
+          </span>
         </div>
         <div className="flex items-center gap-3">
           <button className="flex items-center gap-2 px-3 py-1.5 text-sm text-neutral-300 rounded border border-neutral-700 hover:bg-neutral-850 hover:border-neutral-600 transition-colors">
@@ -238,7 +268,12 @@ export default function Sessions() {
             </div>
           </div>
           <button className="flex items-center gap-1.5 px-3 py-1.5 text-sm text-neutral-400 rounded border border-neutral-700 hover:bg-neutral-850 hover:border-neutral-600 transition-colors">
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg
+              className="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -297,7 +332,12 @@ export default function Sessions() {
               <div className="max-w-5xl mx-auto">
                 <div className="bg-neutral-900 border border-neutral-800 rounded p-8 text-center">
                   <div className="w-12 h-12 mx-auto mb-4 rounded-full bg-neutral-800 flex items-center justify-center">
-                    <svg className="w-6 h-6 text-neutral-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg
+                      className="w-6 h-6 text-neutral-500"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
                       <path
                         strokeLinecap="round"
                         strokeLinejoin="round"
@@ -306,9 +346,12 @@ export default function Sessions() {
                       />
                     </svg>
                   </div>
-                  <h3 className="text-sm font-medium text-neutral-300 mb-2">No Agent Sessions</h3>
+                  <h3 className="text-sm font-medium text-neutral-300 mb-2">
+                    No Agent Sessions
+                  </h3>
                   <p className="text-xs text-neutral-500 max-w-sm mx-auto">
-                    Agent sessions with span data will appear here when available.
+                    Agent sessions with span data will appear here when
+                    available.
                   </p>
                 </div>
               </div>

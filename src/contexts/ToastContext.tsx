@@ -14,28 +14,28 @@ export function ToastProvider({ children }: { children: ReactNode }) {
       setNextId((prev) => prev + 1);
       setToasts((prev) => [...prev, { id, message, type }]);
     },
-    [nextId]
+    [nextId],
   );
 
   const showSuccess = useCallback(
     (message: string) => {
       showToast(message, "success");
     },
-    [showToast]
+    [showToast],
   );
 
   const showError = useCallback(
     (message: string) => {
       showToast(message, "error");
     },
-    [showToast]
+    [showToast],
   );
 
   const showInfo = useCallback(
     (message: string) => {
       showToast(message, "info");
     },
-    [showToast]
+    [showToast],
   );
 
   const removeToast = useCallback((id: number) => {
@@ -43,7 +43,9 @@ export function ToastProvider({ children }: { children: ReactNode }) {
   }, []);
 
   return (
-    <ToastContext.Provider value={{ showToast, showSuccess, showError, showInfo }}>
+    <ToastContext.Provider
+      value={{ showToast, showSuccess, showError, showInfo }}
+    >
       {children}
       {toasts.map((toast) => (
         <Toast

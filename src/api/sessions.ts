@@ -3,7 +3,7 @@ import { getSession } from "../lib/apiClient";
 
 export function useSessionDetailQuery(
   projectId: string | undefined,
-  sessionId: string | undefined
+  sessionId: string | undefined,
 ) {
   return useQuery({
     queryKey: ["session", projectId, sessionId],

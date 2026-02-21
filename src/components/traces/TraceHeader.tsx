@@ -10,7 +10,12 @@ interface TraceHeaderProps {
 }
 
 const ArrowLeftIcon = () => (
-  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+  <svg
+    className="w-4 h-4"
+    fill="none"
+    stroke="currentColor"
+    viewBox="0 0 24 24"
+  >
     <path
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -21,7 +26,12 @@ const ArrowLeftIcon = () => (
 );
 
 const CopyIcon = () => (
-  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+  <svg
+    className="w-4 h-4"
+    fill="none"
+    stroke="currentColor"
+    viewBox="0 0 24 24"
+  >
     <path
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -32,8 +42,18 @@ const CopyIcon = () => (
 );
 
 const CheckIcon = () => (
-  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M5 13l4 4L19 7" />
+  <svg
+    className="w-4 h-4"
+    fill="none"
+    stroke="currentColor"
+    viewBox="0 0 24 24"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={1.5}
+      d="M5 13l4 4L19 7"
+    />
   </svg>
 );
 
@@ -123,7 +143,9 @@ export default function TraceHeader({
 
       {/* Bottom row: Timestamp, provider, model */}
       <div className="px-6 pb-4 flex items-center gap-4">
-        <span className="text-sm text-neutral-500">{formatTimestamp(timestamp)}</span>
+        <span className="text-sm text-neutral-500">
+          {formatTimestamp(timestamp)}
+        </span>
         <div className="flex items-center gap-2">
           <ProviderBadge provider={provider} />
           <ModelBadge model={model} />

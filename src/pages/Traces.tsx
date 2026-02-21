@@ -9,7 +9,12 @@ import { TableSkeleton } from "../components/ui/TableSkeleton";
 import { useProject } from "../hooks/useProject";
 
 const RefreshIcon = () => (
-  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+  <svg
+    className="w-4 h-4"
+    fill="none"
+    stroke="currentColor"
+    viewBox="0 0 24 24"
+  >
     <path
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -39,7 +44,10 @@ const defaultFilters: TracesFilters = {
 
 const DEFAULT_PAGE_SIZE = 25;
 
-const toIsoDateRangeParam = (value: string, boundary: "start" | "end"): string => {
+const toIsoDateRangeParam = (
+  value: string,
+  boundary: "start" | "end",
+): string => {
   if (!value) return value;
   if (value.includes("T")) return value;
   if (boundary === "start") return `${value}T00:00:00.000Z`;
@@ -79,27 +87,39 @@ export default function Traces() {
     if (filters.provider) params.provider = filters.provider;
     if (filters.model) params.model = filters.model;
     if (filters.status) params.status = filters.status;
-    if (filters.date_from) params.date_from = toIsoDateRangeParam(filters.date_from, "start");
-    if (filters.date_to) params.date_to = toIsoDateRangeParam(filters.date_to, "end");
+    if (filters.date_from)
+      params.date_from = toIsoDateRangeParam(filters.date_from, "start");
+    if (filters.date_to)
+      params.date_to = toIsoDateRangeParam(filters.date_to, "end");
     if (filters.session_id) params.session_id = filters.session_id;
 
     return params;
   }, [filters, page, pageSize]);
 
-  const tracesQuery = useTracesQuery("traces", selectedProject?.id, queryParams);
+  const tracesQuery = useTracesQuery(
+    "traces",
+    selectedProject?.id,
+    queryParams,
+  );
 
   const traces = tracesQuery.data?.traces ?? [];
   const total = tracesQuery.data?.total ?? 0;
   const loading = tracesQuery.isPending;
-  const error = tracesQuery.error instanceof Error ? tracesQuery.error.message : null;
+  const error =
+    tracesQuery.error instanceof Error ? tracesQuery.error.message : null;
 
-  const updateUrlParams = (newFilters: TracesFilters, newPage: number, newPageSize: number) => {
+  const updateUrlParams = (
+    newFilters: TracesFilters,
+    newPage: number,
+    newPageSize: number,
+  ) => {
     const params = new URLSearchParams();
     Object.entries(newFilters).forEach(([key, value]) => {
       if (value) params.set(key, value);
     });
     if (newPage > 1) params.set("page", String(newPage));
-    if (newPageSize !== DEFAULT_PAGE_SIZE) params.set("pageSize", String(newPageSize));
+    if (newPageSize !== DEFAULT_PAGE_SIZE)
+      params.set("pageSize", String(newPageSize));
     setSearchParams(params);
   };
 
@@ -137,7 +157,9 @@ export default function Traces() {
 
   const handleNavigateTrace = (direction: "prev" | "next") => {
     if (!selectedTrace) return;
-    const currentIndex = traces.findIndex((t) => t.traceId === selectedTrace.traceId);
+    const currentIndex = traces.findIndex(
+      (t) => t.traceId === selectedTrace.traceId,
+    );
     if (currentIndex === -1) return;
 
     const newIndex = direction === "prev" ? currentIndex - 1 : currentIndex + 1;
@@ -156,7 +178,9 @@ export default function Traces() {
       <header className="h-14 flex items-center justify-between px-6 border-b border-neutral-800 flex-shrink-0 bg-neutral-950">
         <div className="flex items-center gap-4">
           <h1 className="text-sm font-medium">Traces</h1>
-          <span className="text-xs text-neutral-500">{total.toLocaleString()} total</span>
+          <span className="text-xs text-neutral-500">
+            {total.toLocaleString()} total
+          </span>
         </div>
         <div className="flex items-center gap-3">
           <button
@@ -164,7 +188,11 @@ export default function Traces() {
             disabled={loading || tracesQuery.isFetching}
             className="p-1.5 rounded border border-neutral-700 hover:bg-neutral-850 hover:border-neutral-600 transition-colors disabled:opacity-50"
           >
-            <span className={tracesQuery.isFetching ? "animate-spin inline-block" : ""}>
+            <span
+              className={
+                tracesQuery.isFetching ? "animate-spin inline-block" : ""
+              }
+            >
               <RefreshIcon />
             </span>
           </button>
@@ -187,7 +215,9 @@ export default function Traces() {
         />
 
         <main className="flex-1 overflow-hidden relative">
-          <div className={`h-full overflow-auto p-6 ${selectedTrace ? "pr-[460px]" : ""}`}>
+          <div
+            className={`h-full overflow-auto p-6 ${selectedTrace ? "pr-[460px]" : ""}`}
+          >
             {error && (
               <div className="mb-6 p-4 bg-rose-500/10 border border-rose-500/20 rounded-lg">
                 <div className="flex items-center justify-between gap-4">
@@ -221,7 +251,9 @@ export default function Traces() {
                     d="M4 6h16M4 12h16M4 18h7"
                   />
                 </svg>
-                <h3 className="text-sm font-medium text-neutral-400 mb-1">No traces found</h3>
+                <h3 className="text-sm font-medium text-neutral-400 mb-1">
+                  No traces found
+                </h3>
                 <p className="text-xs text-neutral-500">
                   Try adjusting your filters or check back later
                 </p>

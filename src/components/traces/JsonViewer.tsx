@@ -6,7 +6,12 @@ interface JsonViewerProps {
 }
 
 const CopyIcon = () => (
-  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+  <svg
+    className="w-4 h-4"
+    fill="none"
+    stroke="currentColor"
+    viewBox="0 0 24 24"
+  >
     <path
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -17,8 +22,18 @@ const CopyIcon = () => (
 );
 
 const CheckIcon = () => (
-  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M5 13l4 4L19 7" />
+  <svg
+    className="w-4 h-4"
+    fill="none"
+    stroke="currentColor"
+    viewBox="0 0 24 24"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={1.5}
+      d="M5 13l4 4L19 7"
+    />
   </svg>
 );
 
@@ -29,11 +44,22 @@ const ChevronIcon = ({ expanded }: { expanded: boolean }) => (
     stroke="currentColor"
     viewBox="0 0 24 24"
   >
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={2}
+      d="M9 5l7 7-7 7"
+    />
   </svg>
 );
 
-type JsonValue = string | number | boolean | null | JsonValue[] | { [key: string]: JsonValue };
+type JsonValue =
+  | string
+  | number
+  | boolean
+  | null
+  | JsonValue[]
+  | { [key: string]: JsonValue };
 
 function JsonNode({
   keyName,
@@ -46,7 +72,8 @@ function JsonNode({
 }) {
   const [expanded, setExpanded] = useState(depth < 2);
 
-  const isObject = value !== null && typeof value === "object" && !Array.isArray(value);
+  const isObject =
+    value !== null && typeof value === "object" && !Array.isArray(value);
   const isArray = Array.isArray(value);
   const isExpandable = isObject || isArray;
 
@@ -123,7 +150,10 @@ function JsonNode({
                   depth={depth + 1}
                 />
                 {index < entries.length - 1 && (
-                  <span className="text-neutral-500" style={{ paddingLeft: (depth + 1) * 16 }}>
+                  <span
+                    className="text-neutral-500"
+                    style={{ paddingLeft: (depth + 1) * 16 }}
+                  >
                     ,
                   </span>
                 )}
@@ -140,7 +170,9 @@ function JsonNode({
 
   return (
     <div className="flex items-center py-0.5" style={{ paddingLeft: indent }}>
-      {keyName !== undefined && <span className="text-sky-400">"{keyName}": </span>}
+      {keyName !== undefined && (
+        <span className="text-sky-400">"{keyName}": </span>
+      )}
       <span className={getValueColor(value)}>{renderValue(value)}</span>
     </div>
   );

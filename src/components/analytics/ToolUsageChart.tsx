@@ -17,7 +17,10 @@ const BAR_COLORS = [
   "bg-gradient-to-r from-amber-500/80 to-amber-600/80",
 ];
 
-export default function ToolUsageChart({ data, maxItems = 5 }: ToolUsageChartProps) {
+export default function ToolUsageChart({
+  data,
+  maxItems = 5,
+}: ToolUsageChartProps) {
   if (!data || data.length === 0) {
     return (
       <div className="h-[180px] flex items-center justify-center text-neutral-500">
@@ -26,7 +29,9 @@ export default function ToolUsageChart({ data, maxItems = 5 }: ToolUsageChartPro
     );
   }
 
-  const sortedData = [...data].sort((a, b) => b.count - a.count).slice(0, maxItems);
+  const sortedData = [...data]
+    .sort((a, b) => b.count - a.count)
+    .slice(0, maxItems);
   const maxCount = Math.max(...sortedData.map((d) => d.count));
 
   return (
@@ -36,14 +41,18 @@ export default function ToolUsageChart({ data, maxItems = 5 }: ToolUsageChartPro
         const barColor = BAR_COLORS[index % BAR_COLORS.length];
         return (
           <div key={tool.name} className="flex items-center gap-3">
-            <div className="w-16 text-xs text-neutral-300 font-medium truncate">{tool.name}</div>
+            <div className="w-16 text-xs text-neutral-300 font-medium truncate">
+              {tool.name}
+            </div>
             <div className="flex-1 h-5 bg-neutral-800/50 rounded-sm overflow-hidden">
               <div
                 className={`h-full ${barColor} rounded-sm transition-all duration-500 ease-out`}
                 style={{ width: `${percentage}%` }}
               />
             </div>
-            <div className="w-10 text-xs text-neutral-400 text-right font-medium">{tool.count}</div>
+            <div className="w-10 text-xs text-neutral-400 text-right font-medium">
+              {tool.count}
+            </div>
           </div>
         );
       })}

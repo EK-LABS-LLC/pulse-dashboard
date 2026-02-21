@@ -4,7 +4,9 @@ interface UserInfoProps {
 }
 
 export default function UserInfo({ name, email }: UserInfoProps) {
-  const initial = name ? name.charAt(0).toUpperCase() : email.charAt(0).toUpperCase();
+  const initial = name
+    ? name.charAt(0).toUpperCase()
+    : email.charAt(0).toUpperCase();
 
   return (
     <section className="mb-10">
@@ -20,7 +22,9 @@ export default function UserInfo({ name, email }: UserInfoProps) {
               {initial}
             </div>
             <div>
-              <div className="text-sm font-medium text-neutral-100">{name || "User"}</div>
+              <div className="text-sm font-medium text-neutral-100">
+                {name || "User"}
+              </div>
               <div className="text-sm text-neutral-500">{email}</div>
             </div>
           </div>

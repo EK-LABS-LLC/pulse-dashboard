@@ -19,7 +19,9 @@ export default function FilterSidebar({
     <aside className="w-64 border-r border-neutral-800 flex-shrink-0 overflow-y-auto p-4">
       <div className="space-y-4">
         <div className="flex items-center justify-between">
-          <h2 className="text-xs font-medium text-neutral-400 uppercase tracking-wide">Filters</h2>
+          <h2 className="text-xs font-medium text-neutral-400 uppercase tracking-wide">
+            Filters
+          </h2>
           <button
             onClick={onClearFilters}
             className="text-xs text-neutral-500 hover:text-neutral-300 transition-colors"
@@ -30,7 +32,9 @@ export default function FilterSidebar({
 
         {/* Provider Filter */}
         <div>
-          <label className="block text-xs text-neutral-500 mb-1.5">Provider</label>
+          <label className="block text-xs text-neutral-500 mb-1.5">
+            Provider
+          </label>
           <select
             value={filters.provider}
             onChange={(e) => updateFilter("provider", e.target.value)}
@@ -61,7 +65,9 @@ export default function FilterSidebar({
 
         {/* Status Filter */}
         <div>
-          <label className="block text-xs text-neutral-500 mb-1.5">Status</label>
+          <label className="block text-xs text-neutral-500 mb-1.5">
+            Status
+          </label>
           <select
             value={filters.status}
             onChange={(e) => updateFilter("status", e.target.value)}
@@ -75,7 +81,9 @@ export default function FilterSidebar({
 
         {/* Date From */}
         <div>
-          <label className="block text-xs text-neutral-500 mb-1.5">Date from</label>
+          <label className="block text-xs text-neutral-500 mb-1.5">
+            Date from
+          </label>
           <input
             type="date"
             value={filters.date_from}
@@ -86,7 +94,9 @@ export default function FilterSidebar({
 
         {/* Date To */}
         <div>
-          <label className="block text-xs text-neutral-500 mb-1.5">Date to</label>
+          <label className="block text-xs text-neutral-500 mb-1.5">
+            Date to
+          </label>
           <input
             type="date"
             value={filters.date_to}
@@ -97,7 +107,9 @@ export default function FilterSidebar({
 
         {/* Session ID */}
         <div>
-          <label className="block text-xs text-neutral-500 mb-1.5">Session ID</label>
+          <label className="block text-xs text-neutral-500 mb-1.5">
+            Session ID
+          </label>
           <input
             type="text"
             value={filters.session_id}

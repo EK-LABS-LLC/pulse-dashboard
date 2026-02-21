@@ -79,12 +79,19 @@ function CustomTooltip({
 
   return (
     <div className="bg-neutral-850 border border-neutral-700 rounded px-3 py-2 shadow-xl">
-      <p className="text-xs text-neutral-400 mb-1">{formatPeriodLabel(label || "")}</p>
+      <p className="text-xs text-neutral-400 mb-1">
+        {formatPeriodLabel(label || "")}
+      </p>
       {payload.map((entry, index) => (
         <div key={index} className="flex items-center gap-2 text-sm">
-          <div className="w-2 h-2 rounded-sm" style={{ backgroundColor: entry.color }} />
+          <div
+            className="w-2 h-2 rounded-sm"
+            style={{ backgroundColor: entry.color }}
+          />
           <span className="capitalize text-neutral-300">{entry.dataKey}:</span>
-          <span className="font-medium text-white">{formatCurrency(entry.value)}</span>
+          <span className="font-medium text-white">
+            {formatCurrency(entry.value)}
+          </span>
         </div>
       ))}
     </div>
@@ -107,7 +114,9 @@ export default function CostChart({ data, groupBy = "day" }: CostChartProps) {
     // Multi-line chart by provider
     const { periods, series } = groupDataByProvider(data);
     const chartData = periods.map((period, i) => {
-      const point: Record<string, string | number> = { period: formatPeriodLabel(period) };
+      const point: Record<string, string | number> = {
+        period: formatPeriodLabel(period),
+      };
       for (const [provider, values] of Object.entries(series)) {
         point[provider] = values[i];
       }
@@ -119,8 +128,15 @@ export default function CostChart({ data, groupBy = "day" }: CostChartProps) {
     return (
       <div className="h-[280px]">
         <ResponsiveContainer width="100%" height="100%">
-          <LineChart data={chartData} margin={{ top: 5, right: 20, left: 0, bottom: 5 }}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#1f1f1f" vertical={false} />
+          <LineChart
+            data={chartData}
+            margin={{ top: 5, right: 20, left: 0, bottom: 5 }}
+          >
+            <CartesianGrid
+              strokeDasharray="3 3"
+              stroke="#1f1f1f"
+              vertical={false}
+            />
             <XAxis
               dataKey="period"
               stroke="#525252"
@@ -143,7 +159,9 @@ export default function CostChart({ data, groupBy = "day" }: CostChartProps) {
               verticalAlign="top"
               wrapperStyle={{ paddingBottom: 10 }}
               formatter={(value) => (
-                <span className="text-neutral-500 text-xs capitalize">{value}</span>
+                <span className="text-neutral-500 text-xs capitalize">
+                  {value}
+                </span>
               )}
             />
             {providers.map((provider) => (
@@ -172,8 +190,15 @@ export default function CostChart({ data, groupBy = "day" }: CostChartProps) {
   return (
     <div className="h-[280px]">
       <ResponsiveContainer width="100%" height="100%">
-        <LineChart data={chartData} margin={{ top: 5, right: 20, left: 0, bottom: 5 }}>
-          <CartesianGrid strokeDasharray="3 3" stroke="#1f1f1f" vertical={false} />
+        <LineChart
+          data={chartData}
+          margin={{ top: 5, right: 20, left: 0, bottom: 5 }}
+        >
+          <CartesianGrid
+            strokeDasharray="3 3"
+            stroke="#1f1f1f"
+            vertical={false}
+          />
           <XAxis
             dataKey="period"
             stroke="#525252"

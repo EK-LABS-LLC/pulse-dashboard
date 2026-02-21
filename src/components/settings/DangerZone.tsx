@@ -22,12 +22,25 @@ const WarningIcon = () => (
 );
 
 const CloseIcon = () => (
-  <svg className="w-4 h-4 text-neutral-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6 18L18 6M6 6l12 12" />
+  <svg
+    className="w-4 h-4 text-neutral-500"
+    fill="none"
+    stroke="currentColor"
+    viewBox="0 0 24 24"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={1.5}
+      d="M6 18L18 6M6 6l12 12"
+    />
   </svg>
 );
 
-export default function DangerZone({ projectName, onDeleteProject }: DangerZoneProps) {
+export default function DangerZone({
+  projectName,
+  onDeleteProject,
+}: DangerZoneProps) {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [confirmText, setConfirmText] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
@@ -94,10 +107,12 @@ export default function DangerZone({ projectName, onDeleteProject }: DangerZoneP
                 <div className="flex gap-2">
                   <WarningIcon />
                   <div>
-                    <p className="text-sm text-error font-medium">This action cannot be undone</p>
+                    <p className="text-sm text-error font-medium">
+                      This action cannot be undone
+                    </p>
                     <p className="text-xs text-neutral-500 mt-1">
-                      All traces, sessions, API keys, and analytics data will be permanently
-                      deleted.
+                      All traces, sessions, API keys, and analytics data will be
+                      permanently deleted.
                     </p>
                   </div>
                 </div>

@@ -34,8 +34,10 @@ function loadPreferences(): UserPreferences {
 
     const prefs = JSON.parse(storedPrefs);
     return {
-      emailNotifications: prefs.emailNotifications ?? defaultPreferences.emailNotifications,
-      marketingEmails: prefs.marketingEmails ?? defaultPreferences.marketingEmails,
+      emailNotifications:
+        prefs.emailNotifications ?? defaultPreferences.emailNotifications,
+      marketingEmails:
+        prefs.marketingEmails ?? defaultPreferences.marketingEmails,
       theme: prefs.theme ?? defaultPreferences.theme,
       timezone: prefs.timezone ?? defaultPreferences.timezone,
     };
@@ -48,7 +50,8 @@ export default function Account() {
   const { user } = useAuth();
   const [activeSection, setActiveSection] = useState<AccountSection>("profile");
 
-  const [preferences, setPreferences] = useState<UserPreferences>(loadPreferences);
+  const [preferences, setPreferences] =
+    useState<UserPreferences>(loadPreferences);
   const { emailNotifications, marketingEmails, theme, timezone } = preferences;
 
   const userEmail = user?.email || "user@pulse.dev";
@@ -106,12 +109,16 @@ export default function Account() {
           {activeSection === "security" && (
             <section className="mb-10">
               <h2 className="text-lg font-medium mb-1">Security</h2>
-              <p className="text-sm text-neutral-500 mb-6">Manage your account security</p>
+              <p className="text-sm text-neutral-500 mb-6">
+                Manage your account security
+              </p>
 
               <div className="space-y-6">
                 {/* Active Session */}
                 <div>
-                  <label className="text-sm font-medium mb-3 block">Active Session</label>
+                  <label className="text-sm font-medium mb-3 block">
+                    Active Session
+                  </label>
                   <div className="bg-neutral-900 border border-neutral-800 rounded">
                     <div className="flex items-center justify-between px-4 py-3">
                       <div className="flex items-center gap-3">
@@ -130,7 +137,9 @@ export default function Account() {
                         </svg>
                         <div>
                           <div className="text-sm">Current Browser</div>
-                          <div className="text-xs text-neutral-500">Current session</div>
+                          <div className="text-xs text-neutral-500">
+                            Current session
+                          </div>
                         </div>
                       </div>
                       <span className="text-xs px-1.5 py-0.5 bg-success/10 text-success rounded">
@@ -147,26 +156,36 @@ export default function Account() {
           {activeSection === "preferences" && (
             <section className="mb-10">
               <h2 className="text-lg font-medium mb-1">Preferences</h2>
-              <p className="text-sm text-neutral-500 mb-6">Customize your experience</p>
+              <p className="text-sm text-neutral-500 mb-6">
+                Customize your experience
+              </p>
 
               <div className="space-y-4">
                 {/* Email Notifications */}
                 <div className="flex items-center justify-between py-3">
                   <div>
-                    <div className="text-sm font-medium">Email Notifications</div>
+                    <div className="text-sm font-medium">
+                      Email Notifications
+                    </div>
                     <p className="text-xs text-neutral-500 mt-0.5">
                       Receive email updates about your projects
                     </p>
                   </div>
                   <button
-                    onClick={() => updatePreferences({ emailNotifications: !emailNotifications })}
+                    onClick={() =>
+                      updatePreferences({
+                        emailNotifications: !emailNotifications,
+                      })
+                    }
                     className={`relative w-10 h-[22px] rounded-full transition-colors ${
                       emailNotifications ? "bg-accent" : "bg-neutral-700"
                     }`}
                   >
                     <div
                       className={`absolute top-0.5 w-[18px] h-[18px] bg-white rounded-full transition-transform ${
-                        emailNotifications ? "translate-x-[22px]" : "translate-x-0.5"
+                        emailNotifications
+                          ? "translate-x-[22px]"
+                          : "translate-x-0.5"
                       }`}
                     />
                   </button>
@@ -181,14 +200,18 @@ export default function Account() {
                     </p>
                   </div>
                   <button
-                    onClick={() => updatePreferences({ marketingEmails: !marketingEmails })}
+                    onClick={() =>
+                      updatePreferences({ marketingEmails: !marketingEmails })
+                    }
                     className={`relative w-10 h-[22px] rounded-full transition-colors ${
                       marketingEmails ? "bg-accent" : "bg-neutral-700"
                     }`}
                   >
                     <div
                       className={`absolute top-0.5 w-[18px] h-[18px] bg-white rounded-full transition-transform ${
-                        marketingEmails ? "translate-x-[22px]" : "translate-x-0.5"
+                        marketingEmails
+                          ? "translate-x-[22px]"
+                          : "translate-x-0.5"
                       }`}
                     />
                   </button>
@@ -198,11 +221,15 @@ export default function Account() {
                 <div className="flex items-center justify-between py-3 border-t border-neutral-800">
                   <div>
                     <div className="text-sm font-medium">Theme</div>
-                    <p className="text-xs text-neutral-500 mt-0.5">Select your preferred theme</p>
+                    <p className="text-xs text-neutral-500 mt-0.5">
+                      Select your preferred theme
+                    </p>
                   </div>
                   <select
                     value={theme}
-                    onChange={(e) => updatePreferences({ theme: e.target.value })}
+                    onChange={(e) =>
+                      updatePreferences({ theme: e.target.value })
+                    }
                     className="bg-neutral-800 border border-neutral-700 rounded px-3 py-1.5 text-sm text-neutral-300 focus:outline-none focus:border-accent"
                   >
                     <option value="dark">Dark</option>
@@ -221,12 +248,18 @@ export default function Account() {
                   </div>
                   <select
                     value={timezone}
-                    onChange={(e) => updatePreferences({ timezone: e.target.value })}
+                    onChange={(e) =>
+                      updatePreferences({ timezone: e.target.value })
+                    }
                     className="bg-neutral-800 border border-neutral-700 rounded px-3 py-1.5 text-sm text-neutral-300 focus:outline-none focus:border-accent"
                   >
                     <option value="UTC">UTC</option>
-                    <option value="America/New_York">America/New_York (EST)</option>
-                    <option value="America/Los_Angeles">America/Los_Angeles (PST)</option>
+                    <option value="America/New_York">
+                      America/New_York (EST)
+                    </option>
+                    <option value="America/Los_Angeles">
+                      America/Los_Angeles (PST)
+                    </option>
                     <option value="Europe/London">Europe/London (GMT)</option>
                   </select>
                 </div>

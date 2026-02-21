@@ -6,13 +6,22 @@ import { RecentTracesTable } from "../components/dashboard/RecentTracesTable";
 import { LoadingSpinner } from "../components/ui/LoadingSpinner";
 import ToolUsageChart from "../components/analytics/ToolUsageChart";
 import CostChart from "../components/analytics/CostChart";
-import { useAnalyticsQuery, useSpansAnalyticsQuery, useTracesQuery } from "../api";
+import {
+  useAnalyticsQuery,
+  useSpansAnalyticsQuery,
+  useTracesQuery,
+} from "../api";
 import { useProject } from "../hooks/useProject";
 import type { CostOverTimeByProvider } from "../lib/apiClient";
 
 // Icons for stat cards
 const DollarIcon = () => (
-  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+  <svg
+    className="w-3.5 h-3.5"
+    fill="none"
+    stroke="currentColor"
+    viewBox="0 0 24 24"
+  >
     <path
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -23,7 +32,12 @@ const DollarIcon = () => (
 );
 
 const BoltIcon = () => (
-  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+  <svg
+    className="w-3.5 h-3.5"
+    fill="none"
+    stroke="currentColor"
+    viewBox="0 0 24 24"
+  >
     <path
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -34,7 +48,12 @@ const BoltIcon = () => (
 );
 
 const ClockIcon = () => (
-  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+  <svg
+    className="w-3.5 h-3.5"
+    fill="none"
+    stroke="currentColor"
+    viewBox="0 0 24 24"
+  >
     <path
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -45,7 +64,12 @@ const ClockIcon = () => (
 );
 
 const WrenchIcon = () => (
-  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+  <svg
+    className="w-3.5 h-3.5"
+    fill="none"
+    stroke="currentColor"
+    viewBox="0 0 24 24"
+  >
     <path
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -62,7 +86,12 @@ const WrenchIcon = () => (
 );
 
 const CheckCircleIcon = () => (
-  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+  <svg
+    className="w-3.5 h-3.5"
+    fill="none"
+    stroke="currentColor"
+    viewBox="0 0 24 24"
+  >
     <path
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -73,7 +102,12 @@ const CheckCircleIcon = () => (
 );
 
 const AlertIcon = () => (
-  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+  <svg
+    className="w-3.5 h-3.5"
+    fill="none"
+    stroke="currentColor"
+    viewBox="0 0 24 24"
+  >
     <path
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -84,7 +118,12 @@ const AlertIcon = () => (
 );
 
 const RefreshIcon = () => (
-  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+  <svg
+    className="w-4 h-4"
+    fill="none"
+    stroke="currentColor"
+    viewBox="0 0 24 24"
+  >
     <path
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -95,7 +134,12 @@ const RefreshIcon = () => (
 );
 
 const TokensIcon = () => (
-  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+  <svg
+    className="w-3.5 h-3.5"
+    fill="none"
+    stroke="currentColor"
+    viewBox="0 0 24 24"
+  >
     <path
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -106,7 +150,12 @@ const TokensIcon = () => (
 );
 
 const SessionsIcon = () => (
-  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+  <svg
+    className="w-3.5 h-3.5"
+    fill="none"
+    stroke="currentColor"
+    viewBox="0 0 24 24"
+  >
     <path
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -116,7 +165,10 @@ const SessionsIcon = () => (
   </svg>
 );
 
-function getDateRange(range: TimeRange): { date_from: string; date_to: string } {
+function getDateRange(range: TimeRange): {
+  date_from: string;
+  date_to: string;
+} {
   const now = new Date();
   const to = now.toISOString();
   let from: Date;
@@ -169,47 +221,66 @@ export default function Dashboard() {
   const { selectedProject } = useProject();
   const [timeRange, setTimeRange] = useState<TimeRange>("7d");
 
-  const { date_from, date_to } = useMemo(() => getDateRange(timeRange), [timeRange]);
+  const { date_from, date_to } = useMemo(
+    () => getDateRange(timeRange),
+    [timeRange],
+  );
 
   // LLM/Trace analytics
-  const analyticsQuery = useAnalyticsQuery("dashboard-analytics", selectedProject?.id, {
-    date_from,
-    date_to,
-    group_by: "day",
-  });
+  const analyticsQuery = useAnalyticsQuery(
+    "dashboard-analytics",
+    selectedProject?.id,
+    {
+      date_from,
+      date_to,
+      group_by: "day",
+    },
+  );
 
   // Span/Agent analytics
-  const spansQuery = useSpansAnalyticsQuery("dashboard-spans-analytics", selectedProject?.id, {
-    date_from,
-    date_to,
-    group_by: "day",
-  });
+  const spansQuery = useSpansAnalyticsQuery(
+    "dashboard-spans-analytics",
+    selectedProject?.id,
+    {
+      date_from,
+      date_to,
+      group_by: "day",
+    },
+  );
 
   // Recent traces for table
-  const recentTracesQuery = useTracesQuery("dashboard-recent-traces", selectedProject?.id, {
-    limit: 10,
-  });
+  const recentTracesQuery = useTracesQuery(
+    "dashboard-recent-traces",
+    selectedProject?.id,
+    {
+      limit: 10,
+    },
+  );
 
   const analytics = analyticsQuery.data;
   const spansAnalytics = spansQuery.data;
   const recentTraces = recentTracesQuery.data?.traces ?? [];
-  const loading = analyticsQuery.isPending || analyticsQuery.isFetching || spansQuery.isPending;
-  const tracesLoading = recentTracesQuery.isPending || recentTracesQuery.isFetching;
-  const error = analyticsQuery.error instanceof Error ? analyticsQuery.error.message :
-                spansQuery.error instanceof Error ? spansQuery.error.message : null;
+  const loading =
+    analyticsQuery.isPending ||
+    analyticsQuery.isFetching ||
+    spansQuery.isPending;
+  const tracesLoading =
+    recentTracesQuery.isPending || recentTracesQuery.isFetching;
+  const error =
+    analyticsQuery.error instanceof Error
+      ? analyticsQuery.error.message
+      : spansQuery.error instanceof Error
+        ? spansQuery.error.message
+        : null;
 
   // LLM metrics (from trace analytics)
-  const totalCost = analytics?.totalCost ?? 0;
-  const totalRequests = analytics?.totalRequests ?? 0;
-  const totalSessions = analytics?.totalSessions ?? 0;
-  const totalTokens = analytics?.totalTokens ?? { input: 0, output: 0, total: 0 };
   const errorRate = analytics?.errorRate ?? 0;
 
   // Span/Agent metrics (from spans analytics)
   const agentRuns = spansAnalytics?.agentRuns ?? 0;
   const toolCalls = spansAnalytics?.toolCalls ?? 0;
   const avgSessionDuration = spansAnalytics?.avgSessionDurationMs ?? 0;
-  const successRate = spansAnalytics?.successRate ?? (100 - errorRate);
+  const successRate = spansAnalytics?.successRate ?? 100 - errorRate;
   const topTools = spansAnalytics?.topTools ?? [];
 
   return (
@@ -305,7 +376,10 @@ export default function Dashboard() {
               label="Tokens"
               value={
                 analytics
-                  ? formatNumber(analytics.totalTokens.input + analytics.totalTokens.output)
+                  ? formatNumber(
+                      analytics.totalTokens.input +
+                        analytics.totalTokens.output,
+                    )
                   : "--"
               }
               icon={<TokensIcon />}
@@ -350,11 +424,13 @@ export default function Dashboard() {
               </div>
               {analytics && (
                 <CostChart
-                  data={analytics.costOverTime.map((d: CostOverTimeByProvider) => ({
-                    period: d.period,
-                    cost: d.costCents / 100,
-                    provider: d.provider,
-                  }))}
+                  data={analytics.costOverTime.map(
+                    (d: CostOverTimeByProvider) => ({
+                      period: d.period,
+                      cost: d.costCents / 100,
+                      provider: d.provider,
+                    }),
+                  )}
                   groupBy="day"
                 />
               )}
@@ -365,7 +441,9 @@ export default function Dashboard() {
               <div className="flex items-center justify-between mb-4">
                 <div>
                   <h3 className="text-sm font-medium">Tool Usage</h3>
-                  <p className="text-xs text-neutral-500 mt-0.5">Top tools this period</p>
+                  <p className="text-xs text-neutral-500 mt-0.5">
+                    Top tools this period
+                  </p>
                 </div>
               </div>
               <ToolUsageChart data={topTools} maxItems={5} />

@@ -29,7 +29,13 @@ function LoadingState() {
   );
 }
 
-function ErrorState({ message, onRetry }: { message: string; onRetry: () => void }) {
+function ErrorState({
+  message,
+  onRetry,
+}: {
+  message: string;
+  onRetry: () => void;
+}) {
   return (
     <div className="flex-1 flex items-center justify-center">
       <div className="text-center">
@@ -53,7 +59,8 @@ export default function TraceDetail() {
 
   const loading = traceQuery.isPending;
   const trace = traceQuery.data ?? null;
-  const errorMessage = traceQuery.error instanceof Error ? traceQuery.error.message : null;
+  const errorMessage =
+    traceQuery.error instanceof Error ? traceQuery.error.message : null;
 
   const notFound = useMemo(() => {
     if (!id) return true;
@@ -71,7 +78,9 @@ export default function TraceDetail() {
   }
 
   if (errorMessage) {
-    return <ErrorState message={errorMessage} onRetry={() => traceQuery.refetch()} />;
+    return (
+      <ErrorState message={errorMessage} onRetry={() => traceQuery.refetch()} />
+    );
   }
 
   if (!trace) {
@@ -102,7 +111,9 @@ export default function TraceDetail() {
                   <div key={key}>
                     <dt className="text-xs text-neutral-500 mb-1">{key}</dt>
                     <dd className="text-sm text-neutral-100 font-mono">
-                      {typeof value === "string" ? value : JSON.stringify(value)}
+                      {typeof value === "string"
+                        ? value
+                        : JSON.stringify(value)}
                     </dd>
                   </div>
                 ))}

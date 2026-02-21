@@ -1,12 +1,22 @@
 import { useState } from "react";
-import { useParams, useNavigate, Link, useSearchParams } from "react-router-dom";
+import {
+  useParams,
+  useNavigate,
+  Link,
+  useSearchParams,
+} from "react-router-dom";
 import type { Trace, Span } from "../lib/apiClient";
 import { LoadingSpinner } from "../components/ui/LoadingSpinner";
 import { useSessionDetailQuery, useSessionSpansQuery } from "../api";
 import { useProject } from "../hooks/useProject";
 
 const BackIcon = () => (
-  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+  <svg
+    className="w-4 h-4"
+    fill="none"
+    stroke="currentColor"
+    viewBox="0 0 24 24"
+  >
     <path
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -17,7 +27,12 @@ const BackIcon = () => (
 );
 
 const CopyIcon = () => (
-  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+  <svg
+    className="w-3.5 h-3.5"
+    fill="none"
+    stroke="currentColor"
+    viewBox="0 0 24 24"
+  >
     <path
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -28,13 +43,28 @@ const CopyIcon = () => (
 );
 
 const CheckIcon = () => (
-  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+  <svg
+    className="w-3.5 h-3.5"
+    fill="none"
+    stroke="currentColor"
+    viewBox="0 0 24 24"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={2}
+      d="M5 13l4 4L19 7"
+    />
   </svg>
 );
 
 const ExternalLinkIcon = () => (
-  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+  <svg
+    className="w-4 h-4"
+    fill="none"
+    stroke="currentColor"
+    viewBox="0 0 24 24"
+  >
     <path
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -107,12 +137,12 @@ interface SessionStats {
 
 function calculateSessionStats(traces: Trace[]): SessionStats {
   const sorted = [...traces].sort(
-    (a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
+    (a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime(),
   );
 
   const totalTokens = sorted.reduce(
     (sum, t) => sum + (t.inputTokens || 0) + (t.outputTokens || 0),
-    0
+    0,
   );
   const totalCost = sorted.reduce((sum, t) => sum + (t.costCents || 0), 0);
   const errorCount = sorted.filter((t) => t.status === "error").length;
@@ -173,22 +203,33 @@ function TraceCard({ trace, isLatest, onClick }: TraceCardProps) {
     >
       <div className="flex items-center justify-between mb-2">
         <div className="flex items-center gap-2">
-          <span className={`w-2 h-2 rounded-full ${isError ? "bg-error" : "bg-success"}`}></span>
-          <span className="text-xs font-mono text-neutral-300">{trace.traceId.slice(0, 8)}</span>
+          <span
+            className={`w-2 h-2 rounded-full ${isError ? "bg-error" : "bg-success"}`}
+          ></span>
+          <span className="text-xs font-mono text-neutral-300">
+            {trace.traceId.slice(0, 8)}
+          </span>
           {isLatest && (
             <span className="text-[10px] px-1.5 py-0.5 bg-accent/10 text-accent rounded">
               Latest
             </span>
           )}
         </div>
-        <span className="text-xs text-neutral-500">{formatTime(trace.timestamp)}</span>
+        <span className="text-xs text-neutral-500">
+          {formatTime(trace.timestamp)}
+        </span>
       </div>
       <div className="flex items-center justify-between text-xs">
         <div className="flex items-center gap-2">
-          <span className="text-neutral-500">{trace.modelUsed || trace.modelRequested}</span>
+          <span className="text-neutral-500">
+            {trace.modelUsed || trace.modelRequested}
+          </span>
         </div>
         <div className="flex items-center gap-3 text-neutral-500">
-          <span>{formatTokens((trace.inputTokens || 0) + (trace.outputTokens || 0))} tok</span>
+          <span>
+            {formatTokens((trace.inputTokens || 0) + (trace.outputTokens || 0))}{" "}
+            tok
+          </span>
           <span>{formatLatency(trace.latencyMs)}</span>
           <span>{formatCost(trace.costCents)}</span>
         </div>
@@ -207,17 +248,28 @@ export default function SessionDetail() {
   const isAgentView = view === "agents";
 
   // Fetch traces for LLM view
-  const sessionQuery = useSessionDetailQuery(selectedProject?.id, isAgentView ? undefined : id);
+  const sessionQuery = useSessionDetailQuery(
+    selectedProject?.id,
+    isAgentView ? undefined : id,
+  );
   // Fetch spans for Agent view
-  const spansQuery = useSessionSpansQuery("session-spans", selectedProject?.id, isAgentView ? id : undefined);
+  const spansQuery = useSessionSpansQuery(
+    "session-spans",
+    selectedProject?.id,
+    isAgentView ? id : undefined,
+  );
 
   const session = !isAgentView ? (sessionQuery.data ?? null) : null;
   const spansData = isAgentView ? (spansQuery.data ?? null) : null;
 
   const loading = isAgentView ? spansQuery.isPending : sessionQuery.isPending;
   const error = isAgentView
-    ? (spansQuery.error instanceof Error ? spansQuery.error.message : null)
-    : (sessionQuery.error instanceof Error ? sessionQuery.error.message : null);
+    ? spansQuery.error instanceof Error
+      ? spansQuery.error.message
+      : null
+    : sessionQuery.error instanceof Error
+      ? sessionQuery.error.message
+      : null;
 
   // Agent view rendering
   if (isAgentView) {
@@ -262,9 +314,16 @@ export default function SessionDetail() {
     return (
       <div className="flex-1 flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-2xl font-semibold text-neutral-100 mb-2">Session not found</h1>
-          <p className="text-neutral-500 mb-6">The session you're looking for doesn't exist.</p>
-          <Link to="/dashboard/sessions" className="text-accent hover:underline">
+          <h1 className="text-2xl font-semibold text-neutral-100 mb-2">
+            Session not found
+          </h1>
+          <p className="text-neutral-500 mb-6">
+            The session you're looking for doesn't exist.
+          </p>
+          <Link
+            to="/dashboard/sessions"
+            className="text-accent hover:underline"
+          >
             Back to Sessions
           </Link>
         </div>
@@ -274,7 +333,7 @@ export default function SessionDetail() {
 
   const sessionId = session.sessionId || id || "";
   const traces = [...session.traces].sort(
-    (a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
+    (a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime(),
   );
   const stats = calculateSessionStats(traces);
   const firstTrace = traces[0];
@@ -301,7 +360,9 @@ export default function SessionDetail() {
               {stats.errorCount} Error{stats.errorCount > 1 ? "s" : ""}
             </span>
           ) : (
-            <span className="text-xs px-1.5 py-0.5 bg-success/10 text-success rounded">OK</span>
+            <span className="text-xs px-1.5 py-0.5 bg-success/10 text-success rounded">
+              OK
+            </span>
           )}
         </div>
         <div className="flex items-center gap-2">
@@ -328,7 +389,9 @@ export default function SessionDetail() {
                 <div className="text-xs text-neutral-500">Traces</div>
               </div>
               <div className="text-center">
-                <div className="text-lg font-semibold">{formatTokens(stats.totalTokens)}</div>
+                <div className="text-lg font-semibold">
+                  {formatTokens(stats.totalTokens)}
+                </div>
                 <div className="text-xs text-neutral-500">Tokens</div>
               </div>
               <div className="text-center">
@@ -363,7 +426,9 @@ export default function SessionDetail() {
                 {firstTrace && (
                   <div>
                     <span className="text-neutral-500">Started</span>
-                    <div className="text-xs mt-1">{formatDate(firstTrace.timestamp)}</div>
+                    <div className="text-xs mt-1">
+                      {formatDate(firstTrace.timestamp)}
+                    </div>
                   </div>
                 )}
                 {environment && (
@@ -400,7 +465,9 @@ export default function SessionDetail() {
                 <h3 className="text-sm font-medium text-neutral-400 mb-1">
                   No traces in this session
                 </h3>
-                <p className="text-xs text-neutral-500">Traces will appear here once recorded</p>
+                <p className="text-xs text-neutral-500">
+                  Traces will appear here once recorded
+                </p>
               </div>
             ) : (
               <div className="relative">
@@ -422,7 +489,9 @@ export default function SessionDetail() {
                       <TraceCard
                         trace={trace}
                         isLatest={index === traces.length - 1}
-                        onClick={() => navigate(`/dashboard/traces/${trace.traceId}`)}
+                        onClick={() =>
+                          navigate(`/dashboard/traces/${trace.traceId}`)
+                        }
                       />
                     </div>
                   ))}
@@ -446,8 +515,14 @@ interface AgentSessionDetailProps {
   onBack: () => void;
 }
 
-function AgentSessionDetail({ sessionId, spans, loading, error, onRetry, onBack }: AgentSessionDetailProps) {
-  const navigate = useNavigate();
+function AgentSessionDetail({
+  sessionId,
+  spans,
+  loading,
+  error,
+  onRetry,
+  onBack,
+}: AgentSessionDetailProps) {
   const [selectedSpan, setSelectedSpan] = useState<Span | null>(null);
 
   if (loading) {
@@ -490,8 +565,12 @@ function AgentSessionDetail({ sessionId, spans, loading, error, onRetry, onBack 
         </header>
         <div className="flex-1 flex items-center justify-center">
           <div className="text-center">
-            <h1 className="text-lg font-semibold text-neutral-100 mb-2">No spans found</h1>
-            <p className="text-neutral-500 mb-6">This session doesn't have any span data.</p>
+            <h1 className="text-lg font-semibold text-neutral-100 mb-2">
+              No spans found
+            </h1>
+            <p className="text-neutral-500 mb-6">
+              This session doesn't have any span data.
+            </p>
           </div>
         </div>
       </div>
@@ -500,14 +579,14 @@ function AgentSessionDetail({ sessionId, spans, loading, error, onRetry, onBack 
 
   // Sort spans by timestamp
   const sortedSpans = [...spans].sort(
-    (a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
+    (a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime(),
   );
 
   // Calculate stats
-  const agentRuns = sortedSpans.filter(s => s.kind === "agent_run").length;
-  const toolCalls = sortedSpans.filter(s => s.kind === "tool_use").length;
-  const errorCount = sortedSpans.filter(s => s.status === "error").length;
-  const sessionSpan = sortedSpans.find(s => s.kind === "session");
+  const agentRuns = sortedSpans.filter((s) => s.kind === "agent_run").length;
+  const toolCalls = sortedSpans.filter((s) => s.kind === "tool_use").length;
+  const errorCount = sortedSpans.filter((s) => s.status === "error").length;
+  const sessionSpan = sortedSpans.find((s) => s.kind === "session");
   const durationMs = sessionSpan?.durationMs ?? 0;
 
   const formatSpanDuration = (ms: number | undefined): string => {
@@ -539,7 +618,9 @@ function AgentSessionDetail({ sessionId, spans, loading, error, onRetry, onBack 
               {errorCount} Error{errorCount > 1 ? "s" : ""}
             </span>
           ) : (
-            <span className="text-xs px-1.5 py-0.5 bg-emerald-500/10 text-emerald-400 rounded">OK</span>
+            <span className="text-xs px-1.5 py-0.5 bg-emerald-500/10 text-emerald-400 rounded">
+              OK
+            </span>
           )}
         </div>
       </header>
@@ -559,11 +640,15 @@ function AgentSessionDetail({ sessionId, spans, loading, error, onRetry, onBack 
                 <div className="text-xs text-neutral-500">Tool Calls</div>
               </div>
               <div className="text-center">
-                <div className="text-lg font-semibold">{sortedSpans.length}</div>
+                <div className="text-lg font-semibold">
+                  {sortedSpans.length}
+                </div>
                 <div className="text-xs text-neutral-500">Total Spans</div>
               </div>
               <div className="text-center">
-                <div className="text-lg font-semibold">{formatSpanDuration(durationMs)}</div>
+                <div className="text-lg font-semibold">
+                  {formatSpanDuration(durationMs)}
+                </div>
                 <div className="text-xs text-neutral-500">Duration</div>
               </div>
             </div>
@@ -588,10 +673,10 @@ function AgentSessionDetail({ sessionId, spans, loading, error, onRetry, onBack 
                         span.status === "error"
                           ? "bg-rose-500/20 border-rose-500"
                           : span.kind === "tool_use"
-                          ? "bg-cyan-500/20 border-cyan-500"
-                          : span.kind === "agent_run"
-                          ? "bg-violet-500/20 border-violet-500"
-                          : "bg-neutral-500/20 border-neutral-500"
+                            ? "bg-cyan-500/20 border-cyan-500"
+                            : span.kind === "agent_run"
+                              ? "bg-violet-500/20 border-violet-500"
+                              : "bg-neutral-500/20 border-neutral-500"
                       }`}
                     ></div>
 
@@ -605,22 +690,28 @@ function AgentSessionDetail({ sessionId, spans, loading, error, onRetry, onBack 
                     >
                       <div className="flex items-center justify-between mb-2">
                         <div className="flex items-center gap-2">
-                          <span className={`text-xs px-1.5 py-0.5 rounded ${
-                            span.kind === "tool_use"
-                              ? "bg-cyan-500/10 text-cyan-400"
-                              : span.kind === "agent_run"
-                              ? "bg-violet-500/10 text-violet-400"
-                              : span.kind === "session"
-                              ? "bg-blue-500/10 text-blue-400"
-                              : "bg-neutral-500/10 text-neutral-400"
-                          }`}>
+                          <span
+                            className={`text-xs px-1.5 py-0.5 rounded ${
+                              span.kind === "tool_use"
+                                ? "bg-cyan-500/10 text-cyan-400"
+                                : span.kind === "agent_run"
+                                  ? "bg-violet-500/10 text-violet-400"
+                                  : span.kind === "session"
+                                    ? "bg-blue-500/10 text-blue-400"
+                                    : "bg-neutral-500/10 text-neutral-400"
+                            }`}
+                          >
                             {span.kind}
                           </span>
                           {span.toolName && (
-                            <span className="text-sm font-medium text-neutral-300">{span.toolName}</span>
+                            <span className="text-sm font-medium text-neutral-300">
+                              {span.toolName}
+                            </span>
                           )}
                           {span.model && (
-                            <span className="text-xs text-neutral-500">{span.model}</span>
+                            <span className="text-xs text-neutral-500">
+                              {span.model}
+                            </span>
                           )}
                         </div>
                         <div className="flex items-center gap-3 text-neutral-500 text-xs">
@@ -652,25 +743,39 @@ function AgentSessionDetail({ sessionId, spans, loading, error, onRetry, onBack 
           <div className="relative w-[600px] bg-neutral-950 border-l border-neutral-800 overflow-y-auto">
             <div className="sticky top-0 bg-neutral-950 border-b border-neutral-800 p-4 flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <span className={`text-xs px-1.5 py-0.5 rounded ${
-                  selectedSpan.kind === "tool_use"
-                    ? "bg-cyan-500/10 text-cyan-400"
-                    : selectedSpan.kind === "agent_run"
-                    ? "bg-violet-500/10 text-violet-400"
-                    : "bg-neutral-500/10 text-neutral-400"
-                }`}>
+                <span
+                  className={`text-xs px-1.5 py-0.5 rounded ${
+                    selectedSpan.kind === "tool_use"
+                      ? "bg-cyan-500/10 text-cyan-400"
+                      : selectedSpan.kind === "agent_run"
+                        ? "bg-violet-500/10 text-violet-400"
+                        : "bg-neutral-500/10 text-neutral-400"
+                  }`}
+                >
                   {selectedSpan.kind}
                 </span>
                 {selectedSpan.toolName && (
-                  <span className="text-sm font-medium">{selectedSpan.toolName}</span>
+                  <span className="text-sm font-medium">
+                    {selectedSpan.toolName}
+                  </span>
                 )}
               </div>
               <button
                 onClick={() => setSelectedSpan(null)}
                 className="p-1 hover:bg-neutral-800 rounded text-neutral-500 hover:text-white transition-colors"
               >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
                 </svg>
               </button>
             </div>
@@ -680,7 +785,13 @@ function AgentSessionDetail({ sessionId, spans, loading, error, onRetry, onBack 
               <div className="grid grid-cols-3 gap-3">
                 <div className="bg-neutral-900 border border-neutral-800 rounded p-3">
                   <div className="text-xs text-neutral-500 mb-1">Status</div>
-                  <div className={selectedSpan.status === "error" ? "text-rose-400" : "text-emerald-400"}>
+                  <div
+                    className={
+                      selectedSpan.status === "error"
+                        ? "text-rose-400"
+                        : "text-emerald-400"
+                    }
+                  >
                     {selectedSpan.status}
                   </div>
                 </div>
@@ -697,13 +808,17 @@ function AgentSessionDetail({ sessionId, spans, loading, error, onRetry, onBack 
               {/* Timestamp */}
               <div className="bg-neutral-900 border border-neutral-800 rounded p-3">
                 <div className="text-xs text-neutral-500 mb-1">Timestamp</div>
-                <div className="text-sm">{formatDate(selectedSpan.timestamp)}</div>
+                <div className="text-sm">
+                  {formatDate(selectedSpan.timestamp)}
+                </div>
               </div>
 
               {/* Event Type */}
               <div className="bg-neutral-900 border border-neutral-800 rounded p-3">
                 <div className="text-xs text-neutral-500 mb-1">Event Type</div>
-                <div className="text-sm font-mono">{selectedSpan.eventType || "—"}</div>
+                <div className="text-sm font-mono">
+                  {selectedSpan.eventType || "—"}
+                </div>
               </div>
 
               {/* IDs */}
@@ -716,24 +831,35 @@ function AgentSessionDetail({ sessionId, spans, loading, error, onRetry, onBack 
                   </div>
                 </div>
                 <div>
-                  <div className="text-xs text-neutral-500 mb-1">Session ID</div>
-                  <div className="text-xs font-mono text-neutral-400">{selectedSpan.sessionId}</div>
+                  <div className="text-xs text-neutral-500 mb-1">
+                    Session ID
+                  </div>
+                  <div className="text-xs font-mono text-neutral-400">
+                    {selectedSpan.sessionId}
+                  </div>
                 </div>
                 {selectedSpan.parentSpanId && (
                   <div>
-                    <div className="text-xs text-neutral-500 mb-1">Parent Span ID</div>
-                    <div className="text-xs font-mono text-neutral-400">{selectedSpan.parentSpanId}</div>
+                    <div className="text-xs text-neutral-500 mb-1">
+                      Parent Span ID
+                    </div>
+                    <div className="text-xs font-mono text-neutral-400">
+                      {selectedSpan.parentSpanId}
+                    </div>
                   </div>
                 )}
                 {selectedSpan.toolUseId && (
                   <div>
-                    <div className="text-xs text-neutral-500 mb-1">Tool Use ID</div>
-                    <div className="text-xs font-mono text-neutral-400">{selectedSpan.toolUseId}</div>
+                    <div className="text-xs text-neutral-500 mb-1">
+                      Tool Use ID
+                    </div>
+                    <div className="text-xs font-mono text-neutral-400">
+                      {selectedSpan.toolUseId}
+                    </div>
                   </div>
                 )}
               </div>
 
-              {/* Model & Agent */}
               <div className="grid grid-cols-2 gap-3">
                 <div className="bg-neutral-900 border border-neutral-800 rounded p-3">
                   <div className="text-xs text-neutral-500 mb-1">Model</div>
@@ -748,7 +874,9 @@ function AgentSessionDetail({ sessionId, spans, loading, error, onRetry, onBack 
               {/* Flags */}
               {selectedSpan.isInterrupt && (
                 <div className="bg-amber-500/10 border border-amber-500/20 rounded p-3">
-                  <div className="text-xs text-amber-400">⚠ This span was interrupted</div>
+                  <div className="text-xs text-amber-400">
+                    ⚠ This span was interrupted
+                  </div>
                 </div>
               )}
 
@@ -766,7 +894,9 @@ function AgentSessionDetail({ sessionId, spans, loading, error, onRetry, onBack 
 
               {/* Tool Response */}
               <div className="bg-neutral-900 border border-neutral-800 rounded p-3">
-                <div className="text-xs text-neutral-500 mb-2">Tool Response</div>
+                <div className="text-xs text-neutral-500 mb-2">
+                  Tool Response
+                </div>
                 <pre className="text-xs text-neutral-300 overflow-x-auto whitespace-pre-wrap break-all bg-neutral-850 p-2 rounded max-h-60 overflow-y-auto">
                   {selectedSpan.toolResponse
                     ? typeof selectedSpan.toolResponse === "string"
@@ -777,7 +907,9 @@ function AgentSessionDetail({ sessionId, spans, loading, error, onRetry, onBack 
               </div>
 
               {/* Error */}
-              {selectedSpan.error && (
+              {(typeof selectedSpan.error === "string"
+                ? selectedSpan.error.trim().length > 0
+                : selectedSpan.error != null) && (
                 <div className="bg-rose-500/10 border border-rose-500/20 rounded p-3">
                   <div className="text-xs text-rose-400 mb-2">Error</div>
                   <pre className="text-xs text-rose-300 overflow-x-auto whitespace-pre-wrap break-all">
@@ -790,15 +922,20 @@ function AgentSessionDetail({ sessionId, spans, loading, error, onRetry, onBack 
 
               {/* Working Directory */}
               <div className="bg-neutral-900 border border-neutral-800 rounded p-3">
-                <div className="text-xs text-neutral-500 mb-1">Working Directory</div>
-                <div className="text-xs font-mono text-neutral-400">{selectedSpan.cwd || "—"}</div>
+                <div className="text-xs text-neutral-500 mb-1">
+                  Working Directory
+                </div>
+                <div className="text-xs font-mono text-neutral-400">
+                  {selectedSpan.cwd || "—"}
+                </div>
               </div>
 
               {/* Metadata */}
               <div className="bg-neutral-900 border border-neutral-800 rounded p-3">
                 <div className="text-xs text-neutral-500 mb-2">Metadata</div>
                 <pre className="text-xs text-neutral-300 overflow-x-auto whitespace-pre-wrap break-all bg-neutral-850 p-2 rounded max-h-40 overflow-y-auto">
-                  {selectedSpan.metadata && Object.keys(selectedSpan.metadata).length > 0
+                  {selectedSpan.metadata &&
+                  Object.keys(selectedSpan.metadata).length > 0
                     ? JSON.stringify(selectedSpan.metadata, null, 2)
                     : "— No metadata —"}
                 </pre>

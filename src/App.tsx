@@ -16,14 +16,6 @@ import Analytics from "./pages/Analytics";
 import ApiKeys from "./pages/ApiKeys";
 import Settings from "./pages/Settings";
 import Account from "./pages/Account";
-import LandingPage from "./pages/landing/LandingPage";
-import DocsLayout from "./pages/docs/DocsLayout";
-import Quickstart from "./pages/docs/Quickstart";
-import Configuration from "./pages/docs/Configuration";
-import Providers from "./pages/docs/Providers";
-import DocsSessions from "./pages/docs/Sessions";
-import ApiReference from "./pages/docs/ApiReference";
-import ClaudeCode from "./pages/docs/ClaudeCode";
 
 function NotFound() {
   return (
@@ -48,18 +40,8 @@ function App() {
             <BrowserRouter>
               <Routes>
                 {/* Public routes */}
-                <Route path="/" element={<LandingPage />} />
+                <Route path="/" element={<Login />} />
                 <Route path="/login" element={<Login />} />
-
-                {/* Docs routes */}
-                <Route path="/docs" element={<DocsLayout />}>
-                  <Route index element={<Quickstart />} />
-                  <Route path="config" element={<Configuration />} />
-                  <Route path="claude-code" element={<ClaudeCode />} />
-                  <Route path="providers" element={<Providers />} />
-                  <Route path="sessions" element={<DocsSessions />} />
-                  <Route path="api" element={<ApiReference />} />
-                </Route>
 
                 {/* Protected dashboard routes */}
                 <Route
