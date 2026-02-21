@@ -1,7 +1,9 @@
+import { getApiBaseUrl } from "./runtime-config";
+
 const SELECTED_PROJECT_KEY = "pulse_selected_project";
 
 const getBaseUrl = (): string => {
-  return import.meta.env.VITE_API_BASE_URL || window.location.origin;
+  return getApiBaseUrl();
 };
 
 const getProjectHeaders = (): HeadersInit => {
